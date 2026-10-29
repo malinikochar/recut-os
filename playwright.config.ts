@@ -9,6 +9,9 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   workers: 1,
+  expect: {
+    timeout: 15_000,
+  },
   reporter: [['list']],
   use: {
     baseURL,

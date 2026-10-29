@@ -29,7 +29,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${inter.variable} ${jetbrainsMono.variable}`}
+    >
       <body className="min-h-screen bg-[#0B1013] font-sans text-[#F2F0E9] selection:bg-[#29B49B]/30 selection:text-[#F2F0E9]">
         <a
           href="#main-content"

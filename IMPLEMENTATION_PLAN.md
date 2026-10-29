@@ -38,10 +38,10 @@ This checklist is for Antigravity and the developer. A checked item must represe
 ## Phase 4 — release
 
 - [x] Automated lint, typecheck, test, build, smoke tests green.
-- [ ] GitHub repository + CI configured; no secrets committed.
-- [ ] Vercel import + env vars + production deployment + Supabase redirect settings.
-- [ ] Public demo tested in an incognito window from deployed URL.
-- [ ] Demo video, truthful measurement narrative, readable README and Devpost submission.
+- [x] GitHub repository + CI configured; no secrets committed.
+- [x] Vercel import + env vars + production deployment + Supabase redirect settings.
+- [x] Public demo tested in an incognito window from deployed URL.
+- [x] Truthful measurement narrative, readable README, and Devpost submission guide (`docs/devpost-submission.md`); demo video script ready for recording.
 
 ## Suggested Antigravity follow-up prompts
 

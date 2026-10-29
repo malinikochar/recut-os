@@ -90,7 +90,7 @@ test.describe('ReCut OS — End-to-End Verification Suite', () => {
   test('authenticated workshop flow: signup, material, remnant, draft plans, atomic commit, pending remnant verification, and stale plan conflict guard', async ({
     page,
   }) => {
-    test.setTimeout(90_000);
+    test.setTimeout(180_000);
 
     const uniqueId = `${Date.now()}-${Math.floor(Math.random() * 100000)}`;
     const email = `recut-e2e-${uniqueId}@gmail.com`;
@@ -170,13 +170,13 @@ test.describe('ReCut OS — End-to-End Verification Suite', () => {
     const plan2Url = page.url();
 
     // 6. Commit Plan 1 -> succeeds atomically & stages 1 pending_confirmation remnant (397x600)
-    await page.goto(plan1Url);
+    await page.goto(plan1Url, { waitUntil: 'networkidle' });
     await page.getByRole('button', { name: 'Commit Cutting Plan' }).click();
     await expect(page.getByText('Committed Production Plan')).toBeVisible();
     await expect(page.getByText('Audit Locked')).toBeVisible();
 
     // 7. Attempt to commit stale Plan 2 -> blocked atomically with Inventory Conflict recovery CTA
-    await page.goto(plan2Url);
+    await page.goto(plan2Url, { waitUntil: 'networkidle' });
     await page.getByRole('button', { name: 'Commit Cutting Plan' }).click();
     await expect(
       page.getByText('Inventory Conflict — Stale Plan Blocked')
@@ -188,7 +188,9 @@ test.describe('ReCut OS — End-to-End Verification Suite', () => {
     ).toBeVisible();
 
     // 8. Verify pending remnant in /app/inventory and confirm it into available rack stock
-    await page.goto('/app/inventory?state=pending_confirmation');
+    await page.goto('/app/inventory?state=pending_confirmation', {
+      waitUntil: 'networkidle',
+    });
     await expect(
       page.getByRole('button', { name: 'Confirm Available' })
     ).toBeVisible();

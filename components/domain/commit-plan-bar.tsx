@@ -144,7 +144,9 @@ export function CommitPlanBar({
                           year: 'numeric',
                           hour: '2-digit',
                           minute: '2-digit',
-                        })}
+                          timeZone: 'UTC',
+                        })}{' '}
+                        UTC
                       </>
                     )}
                     . Allocated owned stock is marked `consumed` and qualifying
