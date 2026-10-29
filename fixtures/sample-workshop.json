@@ -1,0 +1,105 @@
+{
+  "fixtureId": "sample-workshop-v1",
+  "title": "Illustrative plywood workshop - not real production data",
+  "currency": "INR",
+  "materials": [
+    {
+      "id": "plywood-18",
+      "name": "Birch plywood 18 mm",
+      "category": "Plywood",
+      "thicknessMm": 18,
+      "standardWidthMm": 2440,
+      "standardHeightMm": 1220,
+      "pricePerSheetMinor": 180000,
+      "currencyCode": "INR",
+      "kerfMm": 3,
+      "grainAxis": "none",
+      "minReusableWidthMm": 150,
+      "minReusableHeightMm": 150
+    }
+  ],
+  "stockItems": [
+    {
+      "id": "REM-A",
+      "label": "Offcut REM-A (Rack 1)",
+      "materialId": "plywood-18",
+      "origin": "remnant",
+      "state": "available",
+      "widthMm": 1220,
+      "heightMm": 800,
+      "notes": "Clean offcut from prior wardrobe order"
+    },
+    {
+      "id": "REM-B",
+      "label": "Offcut REM-B (Rack 1)",
+      "materialId": "plywood-18",
+      "origin": "remnant",
+      "state": "available",
+      "widthMm": 1000,
+      "heightMm": 600,
+      "notes": "Square-edged birch offcut"
+    },
+    {
+      "id": "REM-C",
+      "label": "Offcut REM-C (Rack 2)",
+      "materialId": "plywood-18",
+      "origin": "remnant",
+      "state": "available",
+      "widthMm": 700,
+      "heightMm": 420,
+      "notes": "Bench shelf remnant"
+    }
+  ],
+  "job": {
+    "id": "SAMPLE-JOB",
+    "title": "Small cabinet batch",
+    "parts": [
+      {
+        "id": "SIDE",
+        "label": "Side panel",
+        "materialId": "plywood-18",
+        "widthMm": 700,
+        "heightMm": 350,
+        "quantity": 2,
+        "allowRotation": true,
+        "requiredGrainAxis": "none"
+      },
+      {
+        "id": "SHELF",
+        "label": "Shelf",
+        "materialId": "plywood-18",
+        "widthMm": 550,
+        "heightMm": 300,
+        "quantity": 3,
+        "allowRotation": true,
+        "requiredGrainAxis": "none"
+      },
+      {
+        "id": "BACK",
+        "label": "Back brace",
+        "materialId": "plywood-18",
+        "widthMm": 850,
+        "heightMm": 160,
+        "quantity": 2,
+        "allowRotation": true,
+        "requiredGrainAxis": "none"
+      },
+      {
+        "id": "SMALL",
+        "label": "Small divider",
+        "materialId": "plywood-18",
+        "widthMm": 300,
+        "heightMm": 250,
+        "quantity": 3,
+        "allowRotation": true,
+        "requiredGrainAxis": "none"
+      }
+    ]
+  },
+  "benchmarkPolicy": {
+    "baseline": "new-sheet-only first-fit decreasing guillotine",
+    "optimized": "remnant-first cost-prioritized guillotine heuristic",
+    "seed": 42,
+    "note": "Compute all results at runtime; do not hardcode improvements or percentages."
+  }
+}

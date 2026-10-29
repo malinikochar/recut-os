@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+:root {
+  --bg-page: #0b1013;
+  --bg-shell: #11171b;
+  --bg-card: #1c2529;
+  --bg-elevated: #232e33;
+  --border-subtle: #2a363c;
+  --border-strong: #394950;
+  --text-primary: #f2f0e9;
+  --text-muted: #a9b4b4;
+  --accent-teal: #29b49b;
+  --accent-teal-hover: #229a84;
+  --accent-amber: #e8aa65;
+  --status-error: #e05a5a;
+}
+
+@layer base {
+  * {
+    border-color: var(--border-subtle);
+  }
+
+  html {
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-teal);
+    outline-offset: 2px;
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #11171b !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}

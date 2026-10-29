@@ -1,0 +1,183 @@
+[
+  {
+    "fixtureId": "no-inventory-v1",
+    "title": "Empty remnant rack — only newly purchased standard sheets available",
+    "currency": "INR",
+    "materials": [
+      {
+        "id": "mdf-16",
+        "name": "MR Grade MDF 16 mm",
+        "category": "MDF",
+        "thicknessMm": 16,
+        "standardWidthMm": 2440,
+        "standardHeightMm": 1220,
+        "pricePerSheetMinor": 145000,
+        "kerfMm": 3,
+        "grainAxis": "none",
+        "minReusableWidthMm": 200,
+        "minReusableHeightMm": 200
+      }
+    ],
+    "stockItems": [],
+    "job": {
+      "id": "JOB-NO-INV",
+      "title": "Pedestal drawer carcasses",
+      "parts": [
+        { "id": "P1", "label": "Pedestal side", "materialId": "mdf-16", "widthMm": 600, "heightMm": 500, "quantity": 6, "allowRotation": true, "requiredGrainAxis": "none" },
+        { "id": "P2", "label": "Top/Bottom", "materialId": "mdf-16", "widthMm": 500, "heightMm": 450, "quantity": 6, "allowRotation": true, "requiredGrainAxis": "none" }
+      ]
+    },
+    "benchmarkPolicy": {
+      "baseline": "new-sheet-only first-fit decreasing guillotine",
+      "optimized": "remnant-first cost-prioritized guillotine heuristic",
+      "seed": 42,
+      "note": "Zero savings expected on purchase count when no owned stock exists."
+    }
+  },
+  {
+    "fixtureId": "poor-remnants-no-savings-v1",
+    "title": "Small unusable remnants — honest zero purchase-reduction scenario",
+    "currency": "INR",
+    "materials": [
+      {
+        "id": "plywood-18",
+        "name": "Birch plywood 18 mm",
+        "category": "Plywood",
+        "thicknessMm": 18,
+        "standardWidthMm": 2440,
+        "standardHeightMm": 1220,
+        "pricePerSheetMinor": 180000,
+        "kerfMm": 3,
+        "grainAxis": "none",
+        "minReusableWidthMm": 150,
+        "minReusableHeightMm": 150
+      }
+    ],
+    "stockItems": [
+      { "id": "TINY-1", "label": "Narrow strip 1", "materialId": "plywood-18", "origin": "remnant", "state": "available", "widthMm": 400, "heightMm": 180 },
+      { "id": "TINY-2", "label": "Narrow strip 2", "materialId": "plywood-18", "origin": "remnant", "state": "available", "widthMm": 350, "heightMm": 200 }
+    ],
+    "job": {
+      "id": "JOB-LARGE-PANELS",
+      "title": "Conference table modesty panels",
+      "parts": [
+        { "id": "PANEL-L", "label": "Modesty panel", "materialId": "plywood-18", "widthMm": 1600, "heightMm": 600, "quantity": 2, "allowRotation": false, "requiredGrainAxis": "none" },
+        { "id": "CLEAT", "label": "Mounting cleat", "materialId": "plywood-18", "widthMm": 320, "heightMm": 150, "quantity": 1, "allowRotation": true, "requiredGrainAxis": "none" }
+      ]
+    },
+    "benchmarkPolicy": {
+      "baseline": "new-sheet-only first-fit decreasing guillotine",
+      "optimized": "remnant-first cost-prioritized guillotine heuristic",
+      "seed": 42,
+      "note": "Tests consolidation and honest zero purchase reduction when 1 new sheet is unavoidable and already fits the small cleat."
+    }
+  },
+  {
+    "fixtureId": "grain-locked-veneer-v1",
+    "title": "Oak veneer 18 mm with X-axis grain and mixed remnants",
+    "currency": "INR",
+    "materials": [
+      {
+        "id": "oak-veneer-18",
+        "name": "Oak Veneer Plywood 18 mm",
+        "category": "Veneer Plywood",
+        "thicknessMm": 18,
+        "standardWidthMm": 2440,
+        "standardHeightMm": 1220,
+        "pricePerSheetMinor": 320000,
+        "kerfMm": 3,
+        "grainAxis": "x",
+        "minReusableWidthMm": 200,
+        "minReusableHeightMm": 150
+      }
+    ],
+    "stockItems": [
+      { "id": "OAK-REM-1", "label": "Oak offcut 1200×650", "materialId": "oak-veneer-18", "origin": "remnant", "state": "available", "widthMm": 1200, "heightMm": 650 },
+      { "id": "OAK-REM-2", "label": "Oak offcut 900×500", "materialId": "oak-veneer-18", "origin": "remnant", "state": "available", "widthMm": 900, "heightMm": 500 }
+    ],
+    "job": {
+      "id": "JOB-OAK-DOORS",
+      "title": "Grain-matched credenza doors",
+      "parts": [
+        { "id": "DOOR", "label": "Credenza door", "materialId": "oak-veneer-18", "widthMm": 580, "heightMm": 620, "quantity": 2, "allowRotation": true, "requiredGrainAxis": "x" },
+        { "id": "DRAWER-F", "label": "Drawer front", "materialId": "oak-veneer-18", "widthMm": 850, "heightMm": 220, "quantity": 2, "allowRotation": false, "requiredGrainAxis": "x" }
+      ]
+    },
+    "benchmarkPolicy": {
+      "baseline": "new-sheet-only first-fit decreasing guillotine",
+      "optimized": "remnant-first cost-prioritized guillotine heuristic",
+      "seed": 42,
+      "note": "Grain locked along X prevents rotating 580×620 doors even though allowRotation=true."
+    }
+  },
+  {
+    "fixtureId": "zero-kerf-acrylic-v1",
+    "title": "Zero-kerf score-and-snap 4 mm acrylic signage",
+    "currency": "INR",
+    "materials": [
+      {
+        "id": "acrylic-4",
+        "name": "Clear Cast Acrylic 4 mm",
+        "category": "Acrylic",
+        "thicknessMm": 4,
+        "standardWidthMm": 1830,
+        "standardHeightMm": 1220,
+        "pricePerSheetMinor": 210000,
+        "kerfMm": 0,
+        "grainAxis": "none",
+        "minReusableWidthMm": 150,
+        "minReusableHeightMm": 150
+      }
+    ],
+    "stockItems": [
+      { "id": "ACR-REM-1", "label": "Acrylic offcut 900×600", "materialId": "acrylic-4", "origin": "remnant", "state": "available", "widthMm": 900, "heightMm": 600 }
+    ],
+    "job": {
+      "id": "JOB-SIGNAGE",
+      "title": "Exact-grid signage plaques",
+      "parts": [
+        { "id": "PLAQUE", "label": "Signage plaque", "materialId": "acrylic-4", "widthMm": 450, "heightMm": 300, "quantity": 4, "allowRotation": false, "requiredGrainAxis": "none" }
+      ]
+    },
+    "benchmarkPolicy": {
+      "baseline": "new-sheet-only first-fit decreasing guillotine",
+      "optimized": "remnant-first cost-prioritized guillotine heuristic",
+      "seed": 42,
+      "note": "Exact 2×2 tiling inside 900×600 remnant with 0 mm kerf."
+    }
+  },
+  {
+    "fixtureId": "impossible-oversized-part-v1",
+    "title": "Infeasible job — part exceeds standard sheet without rotation allowed",
+    "currency": "INR",
+    "materials": [
+      {
+        "id": "plywood-18",
+        "name": "Birch plywood 18 mm",
+        "category": "Plywood",
+        "thicknessMm": 18,
+        "standardWidthMm": 2440,
+        "standardHeightMm": 1220,
+        "pricePerSheetMinor": 180000,
+        "kerfMm": 3,
+        "grainAxis": "none",
+        "minReusableWidthMm": 150,
+        "minReusableHeightMm": 150
+      }
+    ],
+    "stockItems": [],
+    "job": {
+      "id": "JOB-IMPOSSIBLE",
+      "title": "Oversized reception counter top",
+      "parts": [
+        { "id": "COUNTER", "label": "Seamless reception top", "materialId": "plywood-18", "widthMm": 2800, "heightMm": 900, "quantity": 1, "allowRotation": true, "requiredGrainAxis": "none" }
+      ]
+    },
+    "benchmarkPolicy": {
+      "baseline": "new-sheet-only first-fit decreasing guillotine",
+      "optimized": "remnant-first cost-prioritized guillotine heuristic",
+      "seed": 42,
+      "note": "Both baseline and ReCut must report structured infeasibility rather than dropping the part."
+    }
+  }
+]
