@@ -78,10 +78,14 @@ export default async function WorkshopOverviewPage() {
     materials.length === 0 && stockItems.length === 0 && jobs.length === 0;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      {/* Module Header (DESIGN.md headline-lg 1.5rem / 700) */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-2xl font-bold tracking-tight text-fg">
+          <p className="cc-kicker text-accent-text">
+            Operations Telemetry · Tenant Isolated
+          </p>
+          <h1 className="text-2xl font-bold leading-8 tracking-tight text-fg">
             Workshop Recovery Console
           </h1>
           <p className="text-sm text-fg-muted">
@@ -119,9 +123,11 @@ export default async function WorkshopOverviewPage() {
               aria-hidden="true"
             />
             <div className="space-y-0.5 text-sm">
-              <p className="font-semibold text-fg">
+              <p className="font-bold text-fg">
                 {pendingRemnants.length} offcut{' '}
-                {pendingRemnants.length === 1 ? 'remnant requires' : 'remnants require'}{' '}
+                {pendingRemnants.length === 1
+                  ? 'remnant requires'
+                  : 'remnants require'}{' '}
                 physical shop measurement
               </p>
               <p className="text-xs text-amber-text">
@@ -141,7 +147,7 @@ export default async function WorkshopOverviewPage() {
 
       {/* First-run onboarding when workshop has zero materials */}
       {isEmptyWorkshop && (
-        <Card className="border-accent-border bg-bg-subtle">
+        <Card className="border-accent-border bg-bg-card">
           <CardHeader>
             <Badge variant="default" className="w-fit">
               First-Run Workshop Setup
@@ -168,21 +174,22 @@ export default async function WorkshopOverviewPage() {
         </Card>
       )}
 
-      {/* KPI summary cards */}
+      {/* Command Telemetry KPI summary cards (16px gap per DESIGN.md) */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Card>
-          <CardContent className="space-y-1 p-5">
-            <div className="flex items-center justify-between text-xs font-medium text-fg-muted">
-              <span>Material Catalog</span>
+        <Card className="relative overflow-hidden">
+          <div className="h-1 w-full bg-accent/80" aria-hidden="true" />
+          <CardContent className="space-y-1.5 p-5">
+            <div className="flex items-center justify-between">
+              <span className="cc-kicker text-fg-subtle">Material Catalog</span>
               <Layers className="h-4 w-4 text-accent-text" aria-hidden="true" />
             </div>
-            <div className="text-2xl font-bold tabular-nums text-fg">
+            <div className="text-3xl font-bold tracking-tight tabular-nums text-fg">
               {materials.length}
             </div>
             <p className="text-xs text-fg-muted">
               <Link
                 href="/app/materials"
-                className="text-accent-text hover:underline"
+                className="font-semibold text-accent-text hover:underline"
               >
                 Manage sheet specs & kerf
               </Link>
@@ -190,40 +197,49 @@ export default async function WorkshopOverviewPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="space-y-1 p-5">
-            <div className="flex items-center justify-between text-xs font-medium text-fg-muted">
-              <span>Available Owned Stock</span>
+        <Card className="relative overflow-hidden">
+          <div className="h-1 w-full bg-[#00c758]/80" aria-hidden="true" />
+          <CardContent className="space-y-1.5 p-5">
+            <div className="flex items-center justify-between">
+              <span className="cc-kicker text-fg-subtle">
+                Available Owned Stock
+              </span>
               <Boxes className="h-4 w-4 text-accent-text" aria-hidden="true" />
             </div>
             <div className="flex items-baseline gap-2 tabular-nums">
-              <span className="text-2xl font-bold text-fg">
+              <span className="text-3xl font-bold tracking-tight text-fg">
                 {availableStock.length}
               </span>
-              <span className="text-xs text-fg-muted">
+              <span className="text-xs font-medium text-fg-muted">
                 ({availableRemnants.length} remnants)
               </span>
             </div>
-            <p className="text-xs tabular-nums text-fg-muted">
+            <p className="text-xs font-mono tabular-nums text-fg-muted">
               {formatAreaM2(availableAreaMm2)} ready for allocation
             </p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="space-y-1 p-5">
-            <div className="flex items-center justify-between text-xs font-medium text-fg-muted">
-              <span>Pending Remnant Checks</span>
-              <AlertCircle className="h-4 w-4 text-amber-text" aria-hidden="true" />
+        <Card className="relative overflow-hidden">
+          <div className="h-1 w-full bg-amber/80" aria-hidden="true" />
+          <CardContent className="space-y-1.5 p-5">
+            <div className="flex items-center justify-between">
+              <span className="cc-kicker text-fg-subtle">
+                Pending Remnant Checks
+              </span>
+              <AlertCircle
+                className="h-4 w-4 text-amber-text"
+                aria-hidden="true"
+              />
             </div>
-            <div className="text-2xl font-bold tabular-nums text-fg">
+            <div className="text-3xl font-bold tracking-tight tabular-nums text-fg">
               {pendingRemnants.length}
             </div>
             <p className="text-xs text-fg-muted">
               {pendingRemnants.length > 0 ? (
                 <Link
                   href="/app/inventory?state=pending_confirmation"
-                  className="text-amber-text hover:underline"
+                  className="font-semibold text-amber-text hover:underline"
                 >
                   Confirm measured dimensions
                 </Link>
@@ -234,22 +250,31 @@ export default async function WorkshopOverviewPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="space-y-1 p-5">
-            <div className="flex items-center justify-between text-xs font-medium text-fg-muted">
-              <span>Jobs & Committed Plans</span>
-              <FileCheck2 className="h-4 w-4 text-accent-text" aria-hidden="true" />
+        <Card className="relative overflow-hidden">
+          <div className="h-1 w-full bg-[#3080ff]/80" aria-hidden="true" />
+          <CardContent className="space-y-1.5 p-5">
+            <div className="flex items-center justify-between">
+              <span className="cc-kicker text-fg-subtle">
+                Jobs & Committed Plans
+              </span>
+              <FileCheck2
+                className="h-4 w-4 text-accent-text"
+                aria-hidden="true"
+              />
             </div>
             <div className="flex items-baseline gap-2 tabular-nums">
-              <span className="text-2xl font-bold text-fg">
+              <span className="text-3xl font-bold tracking-tight text-fg">
                 {jobs.length}
               </span>
-              <span className="text-xs text-fg-muted">
+              <span className="text-xs font-medium text-fg-muted">
                 ({committedPlanCount} committed)
               </span>
             </div>
             <p className="text-xs text-fg-muted">
-              <Link href="/app/jobs" className="text-accent-text hover:underline">
+              <Link
+                href="/app/jobs"
+                className="font-semibold text-accent-text hover:underline"
+              >
                 View cutting jobs
               </Link>
             </p>
@@ -258,7 +283,7 @@ export default async function WorkshopOverviewPage() {
       </div>
 
       {/* Recent jobs & available rack preview */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
@@ -274,7 +299,7 @@ export default async function WorkshopOverviewPage() {
           </CardHeader>
           <CardContent>
             {jobs.length === 0 ? (
-              <div className="rounded-lg border border-dashed border-border-subtle p-6 text-center text-sm text-fg-muted">
+              <div className="rounded-lg border border-dashed border-border-subtle bg-bg-subtle/60 p-6 text-center text-sm text-fg-muted">
                 <ClipboardList
                   className="mx-auto mb-2 h-6 w-6 text-fg-subtle"
                   aria-hidden="true"
@@ -285,7 +310,7 @@ export default async function WorkshopOverviewPage() {
                 </Button>
               </div>
             ) : (
-              <ul className="divide-y divide-border-subtle/70">
+              <ul className="divide-y divide-border-subtle">
                 {jobs.map((job) => (
                   <li
                     key={job.id}
@@ -294,7 +319,7 @@ export default async function WorkshopOverviewPage() {
                     <div className="min-w-0">
                       <Link
                         href={`/app/jobs/${job.id}`}
-                        className="block truncate font-medium text-fg hover:text-accent-text"
+                        className="block truncate font-semibold text-fg hover:text-accent-text"
                       >
                         {job.title}
                       </Link>
@@ -303,16 +328,17 @@ export default async function WorkshopOverviewPage() {
                         {new Date(job.updated_at).toLocaleDateString('en-US', {
                           month: 'short',
                           day: 'numeric',
+                          timeZone: 'UTC',
                         })}
                       </p>
                     </div>
                     <Badge
                       variant={
                         job.status === 'committed'
-                          ? 'default'
+                          ? 'production'
                           : job.status === 'planned'
                             ? 'amber'
-                            : 'muted'
+                            : 'neutral'
                       }
                     >
                       {job.status}
@@ -339,7 +365,7 @@ export default async function WorkshopOverviewPage() {
           </CardHeader>
           <CardContent>
             {availableStock.length === 0 ? (
-              <div className="rounded-lg border border-dashed border-border-subtle p-6 text-center text-sm text-fg-muted">
+              <div className="rounded-lg border border-dashed border-border-subtle bg-bg-subtle/60 p-6 text-center text-sm text-fg-muted">
                 <Boxes
                   className="mx-auto mb-2 h-6 w-6 text-fg-subtle"
                   aria-hidden="true"
@@ -350,14 +376,14 @@ export default async function WorkshopOverviewPage() {
                 </Button>
               </div>
             ) : (
-              <ul className="divide-y divide-border-subtle/70">
+              <ul className="divide-y divide-border-subtle">
                 {availableStock.slice(0, 6).map((item) => (
                   <li
                     key={item.id}
                     className="flex items-center justify-between gap-3 py-3 text-sm"
                   >
                     <div className="min-w-0">
-                      <p className="truncate font-medium text-fg">
+                      <p className="truncate font-semibold text-fg">
                         {item.label}
                       </p>
                       <p className="font-mono text-xs tabular-nums text-fg-muted">
@@ -366,7 +392,9 @@ export default async function WorkshopOverviewPage() {
                       </p>
                     </div>
                     <Badge
-                      variant={item.origin === 'remnant' ? 'default' : 'neutral'}
+                      variant={
+                        item.origin === 'remnant' ? 'production' : 'development'
+                      }
                     >
                       {item.origin === 'remnant' ? 'Remnant' : 'Full sheet'}
                     </Badge>
@@ -389,56 +417,59 @@ export default async function WorkshopOverviewPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto rounded-lg border border-border-subtle">
               <table className="w-full border-collapse text-left text-xs">
                 <caption className="sr-only">Recent saved cutting plans</caption>
                 <thead>
-                  <tr className="border-b border-border-subtle text-fg-muted">
-                    <th scope="col" className="py-2 pr-4 font-medium">
+                  <tr className="cc-table-head h-12 border-b border-border-subtle">
+                    <th scope="col" className="cc-kicker px-4">
                       Plan ID
                     </th>
-                    <th scope="col" className="py-2 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Engine
                     </th>
-                    <th scope="col" className="py-2 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Created
                     </th>
-                    <th scope="col" className="py-2 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Status
                     </th>
-                    <th scope="col" className="py-2 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Action
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border-subtle/70 tabular-nums">
+                <tbody className="divide-y divide-border-subtle tabular-nums">
                   {plans.map((p) => (
                     <tr key={p.id}>
-                      <td className="py-2.5 pr-4 font-mono text-fg">
+                      <td className="px-4 py-3 font-mono font-semibold text-fg">
                         {p.id.slice(0, 8)}
                       </td>
-                      <td className="py-2.5 pr-4 font-mono text-fg-muted">
+                      <td className="px-4 py-3 font-mono text-fg-muted">
                         {p.algorithm_version}
                       </td>
-                      <td className="py-2.5 pr-4 text-fg-muted">
+                      <td className="px-4 py-3 text-fg-muted">
                         {new Date(p.created_at).toLocaleString('en-US', {
                           month: 'short',
                           day: 'numeric',
                           hour: '2-digit',
                           minute: '2-digit',
+                          timeZone: 'UTC',
                         })}
                       </td>
-                      <td className="py-2.5 pr-4">
+                      <td className="px-4 py-3">
                         <Badge
-                          variant={p.status === 'committed' ? 'default' : 'amber'}
+                          variant={
+                            p.status === 'committed' ? 'production' : 'amber'
+                          }
                         >
                           {p.status}
                         </Badge>
                       </td>
-                      <td className="py-2.5">
+                      <td className="px-4 py-3">
                         <Link
                           href={`/app/plans/${p.id}`}
-                          className="font-medium text-accent-text hover:underline"
+                          className="font-semibold text-accent-text hover:underline"
                         >
                           Open Layout
                         </Link>

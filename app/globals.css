@@ -1,111 +1,204 @@
 @import "tailwindcss";
 
+/*
+ * Design System: Evreghen Command Center (https://designmd.ai/frknaykc/command-center)
+ * Default presentation: Light warm stone workspace (#fcfaf7) framed by a dark frosted
+ * application shell (rgba(0,0,0,0.75) + 12px blur) and concentrated orange telemetry (#fe6e00).
+ * Dark mode: Warm umber workspace (#413830 / #4a423a) preserving the dark frosted shell.
+ */
+
 :root,
 [data-theme="light"] {
-  --bg-page: #f6f8f7;
-  --bg-shell: #ecefee;
-  --bg-subtle: #f0f4f3;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Core warm stone workspace surfaces */
+  --bg-page: #fcfaf7;
+  --bg-shell: #f3f4f6;
+  --bg-subtle: #edebe9;
   --bg-card: #ffffff;
-  --bg-elevated: #e2e8e6;
-  --bg-elevated-hover: #d4ddd9;
-  --border-subtle: #cfd9d6;
-  --border-strong: #94a6a1;
-  --text-primary: #0f181b;
-  --text-muted: #44545a;
-  --text-subtle: #586970;
+  --bg-elevated: #f3f4f6;
+  --bg-elevated-hover: #e5e1dc;
+  --border-subtle: #e3e0dd;
+  --border-strong: #c8c3bd;
+  --text-primary: #423d38;
+  --text-muted: #6e655d;
+  --text-subtle: #797067;
 
-  --accent-primary: #0f766e;
-  --accent-primary-hover: #0d635c;
+  /* Dark frosted application shell (Evreghen Command Center signature) */
+  --shell-bg: rgba(10, 9, 8, 0.78);
+  --shell-bg-solid: #141210;
+  --shell-fg: #ffffff;
+  --shell-fg-muted: rgba(255, 255, 255, 0.72);
+  --shell-border: rgba(255, 255, 255, 0.12);
+  --shell-surface: rgba(255, 255, 255, 0.09);
+  --shell-surface-hover: rgba(255, 255, 255, 0.16);
+
+  /* Concentrated Command Orange family */
+  --accent-primary: #fe6e00;
+  --accent-primary-hover: #e55e00;
+  --accent-primary-strong: #ff6b00;
+  --accent-warm: #ffb74d;
+  --accent-focus: #f97015;
   --accent-primary-fg: #ffffff;
-  --accent-text: #0d655e;
-  --accent-soft: rgba(15, 118, 110, 0.1);
-  --accent-soft-hover: rgba(15, 118, 110, 0.18);
-  --accent-border: rgba(15, 118, 110, 0.36);
+  --accent-text: #b84b00;
+  --accent-soft: rgba(254, 110, 0, 0.09);
+  --accent-soft-hover: rgba(254, 110, 0, 0.16);
+  --accent-border: rgba(254, 110, 0, 0.34);
+  --chart-bar: rgba(254, 110, 0, 0.6);
+  --table-head-bg: rgba(254, 110, 0, 0.055);
+  --table-head-fg: #b84b00;
 
-  --amber-solid: #d97706;
-  --amber-text: #92400e;
-  --amber-soft: rgba(217, 119, 6, 0.11);
-  --amber-soft-hover: rgba(217, 119, 6, 0.2);
-  --amber-border: rgba(180, 83, 9, 0.38);
+  /* Semantic status palette from DESIGN.md */
+  --amber-solid: #edb200;
+  --amber-text: #874b00;
+  --amber-soft: #fef9c2;
+  --amber-soft-hover: #fef08a;
+  --amber-border: rgba(135, 75, 0, 0.32);
 
-  --danger-solid: #dc2626;
+  --danger-solid: #fb2c36;
   --danger-text: #991b1b;
-  --danger-soft: rgba(220, 38, 38, 0.09);
-  --danger-soft-hover: rgba(220, 38, 38, 0.16);
-  --danger-border: rgba(220, 38, 38, 0.38);
+  --danger-soft: rgba(251, 44, 54, 0.09);
+  --danger-soft-hover: rgba(251, 44, 54, 0.16);
+  --danger-border: rgba(251, 44, 54, 0.36);
 
-  --svg-canvas-bg: #edf2f1;
+  --status-prod-bg: #dcfce7;
+  --status-prod-fg: #016630;
+  --status-prod-border: rgba(1, 102, 48, 0.28);
+
+  --status-dev-bg: #dbeafe;
+  --status-dev-fg: #1447e6;
+  --status-dev-border: rgba(20, 71, 230, 0.25);
+
+  --status-int-bg: #f3e8ff;
+  --status-int-fg: #8200da;
+  --status-int-border: rgba(130, 0, 218, 0.25);
+
+  --status-plan-bg: #f3f4f6;
+  --status-plan-fg: #364153;
+  --status-plan-border: #d1d5dc;
+
+  /* Elevation shadows */
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-raised: 0 4px 12px rgba(0, 0, 0, 0.11);
+  --shadow-dialog: 0 20px 25px rgba(0, 0, 0, 0.12), 0 8px 10px rgba(0, 0, 0, 0.05);
+
+  /* CAD Guillotine SVG Blueprint tokens */
+  --svg-canvas-bg: #f3efe9;
   --svg-sheet-bg: #ffffff;
-  --svg-sheet-stroke: #52656c;
-  --svg-part-fill: #d3efea;
-  --svg-part-fill-selected: #aee2d9;
-  --svg-part-stroke: #0f766e;
-  --svg-part-stroke-selected: #0f181b;
-  --svg-part-label: #0b2225;
-  --svg-part-sublabel: #0d5650;
-  --svg-remnant-bg: #eaf6f4;
-  --svg-scrap-bg: #e9eeed;
-  --svg-scrap-dot: #7d9096;
-  --svg-kerf-fill: #d97706;
+  --svg-sheet-stroke: #575049;
+  --svg-part-fill: #fff2e6;
+  --svg-part-fill-selected: #ffdcb8;
+  --svg-part-stroke: #fe6e00;
+  --svg-part-stroke-selected: #423d38;
+  --svg-part-label: #332e2a;
+  --svg-part-sublabel: #9e3f00;
+  --svg-remnant-bg: #edf9f1;
+  --svg-remnant-stroke: #016630;
+  --svg-scrap-bg: #e9e5e0;
+  --svg-scrap-dot: #797067;
+  --svg-kerf-fill: #fb2c36;
   --svg-badge-bg: #ffffff;
-  --svg-cut-line: #b45309;
+  --svg-cut-line: #b84b00;
 
   color-scheme: light;
 }
 
 [data-theme="dark"] {
-  --bg-page: #0b1013;
-  --bg-shell: #11171b;
-  --bg-subtle: #141b1f;
-  --bg-card: #1c2529;
-  --bg-elevated: #232e33;
-  --bg-elevated-hover: #2b3940;
-  --border-subtle: #2a363c;
-  --border-strong: #394950;
-  --text-primary: #f2f0e9;
-  --text-muted: #a9b4b4;
-  --text-subtle: #88989d;
+  /* Evreghen Command Center warm umber dark workspace */
+  --bg-page: #413830;
+  --bg-shell: #383029;
+  --bg-subtle: #352d26;
+  --bg-card: #4a423a;
+  --bg-elevated: #574e45;
+  --bg-elevated-hover: #645a50;
+  --border-subtle: #5f554b;
+  --border-strong: #7d7165;
+  --text-primary: #fafaf9;
+  --text-muted: #ded9d3;
+  --text-subtle: #b9b3ac;
 
-  --accent-primary: #29b49b;
-  --accent-primary-hover: #229a84;
-  --accent-primary-fg: #0b1013;
-  --accent-text: #5ce1c9;
-  --accent-soft: rgba(41, 180, 155, 0.15);
-  --accent-soft-hover: rgba(41, 180, 155, 0.25);
-  --accent-border: rgba(41, 180, 155, 0.42);
+  /* Dark frosted application shell remains dark glass */
+  --shell-bg: rgba(0, 0, 0, 0.72);
+  --shell-bg-solid: #12100e;
+  --shell-fg: #ffffff;
+  --shell-fg-muted: rgba(255, 255, 255, 0.72);
+  --shell-border: rgba(255, 255, 255, 0.12);
+  --shell-surface: rgba(255, 255, 255, 0.1);
+  --shell-surface-hover: rgba(255, 255, 255, 0.17);
 
-  --amber-solid: #e8aa65;
-  --amber-text: #f0c28d;
-  --amber-soft: rgba(232, 170, 101, 0.14);
-  --amber-soft-hover: rgba(232, 170, 101, 0.24);
-  --amber-border: rgba(232, 170, 101, 0.45);
+  /* Command Orange family in dark mode */
+  --accent-primary: #fe6e00;
+  --accent-primary-hover: #ff7e1a;
+  --accent-primary-strong: #ff6b00;
+  --accent-warm: #ffb74d;
+  --accent-focus: #f97015;
+  --accent-primary-fg: #ffffff;
+  --accent-text: #ffb74d;
+  --accent-soft: rgba(254, 110, 0, 0.2);
+  --accent-soft-hover: rgba(254, 110, 0, 0.3);
+  --accent-border: rgba(255, 183, 77, 0.45);
+  --chart-bar: rgba(254, 110, 0, 0.72);
+  --table-head-bg: rgba(254, 110, 0, 0.14);
+  --table-head-fg: #ffb74d;
 
-  --danger-solid: #e05a5a;
-  --danger-text: #ff9999;
-  --danger-soft: rgba(224, 90, 90, 0.15);
-  --danger-soft-hover: rgba(224, 90, 90, 0.25);
-  --danger-border: rgba(224, 90, 90, 0.5);
+  /* Semantic status palette adapted for dark contrast */
+  --amber-solid: #edb200;
+  --amber-text: #fde047;
+  --amber-soft: rgba(237, 178, 0, 0.18);
+  --amber-soft-hover: rgba(237, 178, 0, 0.28);
+  --amber-border: rgba(253, 224, 71, 0.42);
 
-  --svg-canvas-bg: #0b1013;
-  --svg-sheet-bg: #141b1f;
-  --svg-sheet-stroke: #63767d;
-  --svg-part-fill: #163532;
-  --svg-part-fill-selected: #1f4b46;
-  --svg-part-stroke: #29b49b;
-  --svg-part-stroke-selected: #f2f0e9;
-  --svg-part-label: #f2f0e9;
-  --svg-part-sublabel: #9cece0;
-  --svg-remnant-bg: #122324;
-  --svg-scrap-bg: #11171b;
-  --svg-scrap-dot: #5a696e;
-  --svg-kerf-fill: #e8aa65;
-  --svg-badge-bg: #0b1013;
-  --svg-cut-line: #e8aa65;
+  --danger-solid: #fb2c36;
+  --danger-text: #ff9ea3;
+  --danger-soft: rgba(251, 44, 54, 0.2);
+  --danger-soft-hover: rgba(251, 44, 54, 0.3);
+  --danger-border: rgba(255, 158, 163, 0.45);
+
+  --status-prod-bg: rgba(0, 199, 88, 0.18);
+  --status-prod-fg: #86efac;
+  --status-prod-border: rgba(134, 239, 172, 0.38);
+
+  --status-dev-bg: rgba(48, 128, 255, 0.22);
+  --status-dev-fg: #93c5fd;
+  --status-dev-border: rgba(147, 197, 253, 0.38);
+
+  --status-int-bg: rgba(168, 85, 247, 0.22);
+  --status-int-fg: #d8b4fe;
+  --status-int-border: rgba(216, 180, 254, 0.38);
+
+  --status-plan-bg: rgba(255, 255, 255, 0.1);
+  --status-plan-fg: #e7e5e4;
+  --status-plan-border: rgba(255, 255, 255, 0.22);
+
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.28), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-raised: 0 6px 16px rgba(0, 0, 0, 0.32);
+  --shadow-dialog: 0 20px 28px rgba(0, 0, 0, 0.42);
+
+  /* CAD Guillotine SVG Blueprint tokens (Dark mode) */
+  --svg-canvas-bg: #2f2822;
+  --svg-sheet-bg: #3b332c;
+  --svg-sheet-stroke: #a69b8f;
+  --svg-part-fill: #5a381e;
+  --svg-part-fill-selected: #784820;
+  --svg-part-stroke: #ff8c33;
+  --svg-part-stroke-selected: #fafaf9;
+  --svg-part-label: #fafaf9;
+  --svg-part-sublabel: #ffcc80;
+  --svg-remnant-bg: #263b2d;
+  --svg-remnant-stroke: #4ade80;
+  --svg-scrap-bg: #332b25;
+  --svg-scrap-dot: #8c8277;
+  --svg-kerf-fill: #ff6b6b;
+  --svg-badge-bg: #26201b;
+  --svg-cut-line: #ffb74d;
 
   color-scheme: dark;
 }
 
 @theme inline {
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
   --color-bg-page: var(--bg-page);
   --color-bg-shell: var(--bg-shell);
   --color-bg-subtle: var(--bg-subtle);
@@ -119,6 +212,8 @@
   --color-fg-subtle: var(--text-subtle);
   --color-accent: var(--accent-primary);
   --color-accent-hover: var(--accent-primary-hover);
+  --color-accent-strong: var(--accent-primary-strong);
+  --color-accent-warm: var(--accent-warm);
   --color-accent-fg: var(--accent-primary-fg);
   --color-accent-text: var(--accent-text);
   --color-accent-soft: var(--accent-soft);
@@ -144,19 +239,65 @@
   html {
     background-color: var(--bg-page);
     color: var(--text-primary);
+    font-family: var(--font-sans);
   }
 
   body {
     background-color: var(--bg-page);
     color: var(--text-primary);
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
 
   :focus-visible {
-    outline: 2px solid var(--accent-primary);
+    outline: 2px solid var(--accent-focus);
     outline-offset: 2px;
   }
+}
+
+/* Evreghen Command Center shell & surface utilities */
+.cc-shell-glass {
+  background-color: var(--shell-bg);
+  color: var(--shell-fg);
+  border-color: var(--shell-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.cc-shell-drawer {
+  background-color: var(--shell-bg-solid);
+  color: var(--shell-fg);
+  border-color: var(--shell-border);
+}
+
+.cc-card {
+  box-shadow: var(--shadow-subtle);
+}
+
+.cc-card-raised {
+  box-shadow: var(--shadow-raised);
+}
+
+.cc-grid-canvas {
+  background-image: radial-gradient(var(--border-subtle) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.cc-kicker {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.cc-table-head {
+  background-color: var(--table-head-bg);
+  color: var(--table-head-fg);
+}
+
+.cc-telemetry-bar {
+  background-color: var(--chart-bar);
 }
 
 .tabular-nums {
@@ -194,29 +335,30 @@
   html,
   [data-theme="dark"] {
     --bg-page: #ffffff;
-    --bg-shell: #f3f5f4;
-    --bg-subtle: #f6f8f7;
+    --bg-shell: #f3f4f6;
+    --bg-subtle: #f7f6f4;
     --bg-card: #ffffff;
-    --border-subtle: #cfd9d6;
-    --border-strong: #94a6a1;
-    --text-primary: #0f181b;
-    --text-muted: #44545a;
+    --border-subtle: #d1d5dc;
+    --border-strong: #9ca3af;
+    --text-primary: #1f1c19;
+    --text-muted: #575049;
     --svg-canvas-bg: #ffffff;
     --svg-sheet-bg: #ffffff;
-    --svg-sheet-stroke: #3f4f55;
-    --svg-part-fill: #dff3ef;
-    --svg-part-stroke: #0f766e;
-    --svg-part-label: #0b2225;
-    --svg-part-sublabel: #0d5650;
-    --svg-remnant-bg: #eff8f6;
-    --svg-scrap-bg: #f1f4f3;
+    --svg-sheet-stroke: #332e2a;
+    --svg-part-fill: #fff2e6;
+    --svg-part-stroke: #c2410c;
+    --svg-part-label: #1f1c19;
+    --svg-part-sublabel: #9a3412;
+    --svg-remnant-bg: #f0fdf4;
+    --svg-remnant-stroke: #166534;
+    --svg-scrap-bg: #f3f4f6;
     --svg-badge-bg: #ffffff;
     color-scheme: light;
   }
 
   body {
     background: #ffffff !important;
-    color: #0f181b !important;
+    color: #1f1c19 !important;
   }
 
   .no-print {

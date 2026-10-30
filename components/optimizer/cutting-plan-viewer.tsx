@@ -29,10 +29,16 @@ interface CuttingPlanViewerProps {
   planTitle?: string;
 }
 
-function ProvenanceBadge({ sheet, currencyCode }: { sheet: SheetPlan; currencyCode: string }) {
+function ProvenanceBadge({
+  sheet,
+  currencyCode,
+}: {
+  sheet: SheetPlan;
+  currencyCode: string;
+}) {
   if (sheet.sourceType === 'available_remnant') {
     return (
-      <Badge variant="default">
+      <Badge variant="production">
         <Recycle className="h-3.5 w-3.5" aria-hidden="true" />
         Available remnant
       </Badge>
@@ -40,7 +46,7 @@ function ProvenanceBadge({ sheet, currencyCode }: { sheet: SheetPlan; currencyCo
   }
   if (sheet.sourceType === 'available_full_sheet') {
     return (
-      <Badge variant="neutral">
+      <Badge variant="development">
         <Layers className="h-3.5 w-3.5" aria-hidden="true" />
         Available full sheet
       </Badge>
@@ -49,7 +55,8 @@ function ProvenanceBadge({ sheet, currencyCode }: { sheet: SheetPlan; currencyCo
   return (
     <Badge variant="amber">
       <ShoppingCart className="h-3.5 w-3.5" aria-hidden="true" />
-      New standard sheet ({formatMinorCurrency(sheet.estimatedNewSheetCostMinor, currencyCode)})
+      New standard sheet (
+      {formatMinorCurrency(sheet.estimatedNewSheetCostMinor, currencyCode)})
     </Badge>
   );
 }
@@ -60,12 +67,14 @@ export function CuttingPlanViewer({
   planTitle = 'Executable Guillotine Cutting Plan',
 }: CuttingPlanViewerProps) {
   const [activeSheetIdx, setActiveSheetIdx] = React.useState(0);
-  const [selectedPartId, setSelectedPartId] = React.useState<string | null>(null);
+  const [selectedPartId, setSelectedPartId] = React.useState<string | null>(
+    null
+  );
   const [showCutSteps, setShowCutSteps] = React.useState(true);
   const [zoomScale, setZoomScale] = React.useState<1 | 1.35 | 1.7>(1);
-  const [detailTab, setDetailTab] = React.useState<'cuts' | 'parts' | 'residuals'>(
-    'cuts'
-  );
+  const [detailTab, setDetailTab] = React.useState<
+    'cuts' | 'parts' | 'residuals'
+  >('cuts');
 
   const safeIdx =
     plan.sheets.length === 0
@@ -89,7 +98,6 @@ export function CuttingPlanViewer({
     sheet.placements[0] ??
     null;
 
-  // Padding in SVG logical units (scaled proportionally to sheet size so small remnants and full sheets both read crisply)
   const padLeft = Math.max(90, Math.round(sheet.widthMm * 0.065));
   const padTop = Math.max(75, Math.round(sheet.heightMm * 0.08));
   const padRight = Math.max(45, Math.round(sheet.widthMm * 0.035));
@@ -97,11 +105,24 @@ export function CuttingPlanViewer({
 
   const vbWidth = sheet.widthMm + padLeft + padRight;
   const vbHeight = sheet.heightMm + padTop + padBottom;
-  const baseFont = Math.max(16, Math.round(Math.max(sheet.widthMm, sheet.heightMm) * 0.017));
+  const baseFont = Math.max(
+    16,
+    Math.round(Math.max(sheet.widthMm, sheet.heightMm) * 0.017)
+  );
+
+  const initialArea = Math.max(1, sheet.sheetMetrics.initialAreaMm2);
+  const partPct = Math.min(
+    100,
+    (sheet.sheetMetrics.partAreaMm2 / initialArea) * 100
+  );
+  const remPct = Math.min(
+    100 - partPct,
+    (sheet.sheetMetrics.recoverableRemnantAreaMm2 / initialArea) * 100
+  );
 
   return (
     <div className="space-y-4">
-      {/* Sheet selector bar */}
+      {/* Sheet selector bar + CAD viewport controls */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div
           role="tablist"
@@ -121,17 +142,29 @@ export function CuttingPlanViewer({
                   setSelectedPartId(null);
                 }}
                 className={cn(
-                  'flex items-center gap-2 rounded-lg border px-3.5 py-2 text-left text-xs transition-colors cursor-pointer',
+                  'flex items-center gap-2 rounded-lg border px-3.5 py-2 text-left text-xs transition-all cursor-pointer',
                   isActive
-                    ? 'border-accent bg-accent-soft text-fg'
-                    : 'border-border-subtle bg-bg-subtle text-fg-muted hover:border-border-strong hover:text-fg'
+                    ? 'border-accent bg-accent text-white font-semibold shadow-xs'
+                    : 'border-border-subtle bg-bg-card text-fg-muted hover:border-border-strong hover:text-fg'
                 )}
               >
-                <span className="font-mono font-semibold text-accent-text">
+                <span
+                  className={cn(
+                    'rounded px-1.5 py-0.5 font-mono text-[11px] font-bold',
+                    isActive
+                      ? 'bg-white/20 text-white'
+                      : 'bg-bg-subtle text-accent-text'
+                  )}
+                >
                   S{s.sheetIndex}
                 </span>
-                <span className="font-medium">{s.sourceLabel}</span>
-                <span className="tabular-nums text-[11px] text-fg-muted">
+                <span>{s.sourceLabel}</span>
+                <span
+                  className={cn(
+                    'tabular-nums text-[11px]',
+                    isActive ? 'text-white/85' : 'text-fg-muted'
+                  )}
+                >
                   {s.widthMm}×{s.heightMm}
                 </span>
               </button>
@@ -178,7 +211,7 @@ export function CuttingPlanViewer({
         </div>
       </div>
 
-      {/* Main sheet card */}
+      {/* Main CAD Sheet Card */}
       <Card>
         <CardHeader className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
           <div>
@@ -189,29 +222,33 @@ export function CuttingPlanViewer({
               <ProvenanceBadge sheet={sheet} currencyCode={currencyCode} />
             </div>
             <p className="mt-1 text-xs text-fg-muted tabular-nums">
-              {sheet.materialName} · Stock {formatDimensionsMm(sheet.widthMm, sheet.heightMm)} ·
-              Saw kerf {sheet.kerfMm} mm · {sheet.placements.length} placed{' '}
+              {sheet.materialName} · Stock{' '}
+              {formatDimensionsMm(sheet.widthMm, sheet.heightMm)} · Saw kerf{' '}
+              {sheet.kerfMm} mm · {sheet.placements.length} placed{' '}
               {sheet.placements.length === 1 ? 'part' : 'parts'} ·{' '}
               {sheet.sheetMetrics.cutCount} guillotine{' '}
               {sheet.sheetMetrics.cutCount === 1 ? 'cut' : 'cuts'} ·{' '}
               {sheet.sheetMetrics.utilizationPct}% area utilized
             </p>
           </div>
-          <div className="flex items-center gap-2 text-xs text-accent-text">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-accent-text">
             <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />
             <span>Cut-tree verified ({planTitle})</span>
           </div>
         </CardHeader>
 
         <CardContent className="space-y-4">
-          {/* Scroll-safe SVG container */}
+          {/* Scroll-safe CAD SVG container */}
           <div
             className="overflow-x-auto rounded-lg border border-border-subtle p-3"
             style={{ backgroundColor: 'var(--svg-canvas-bg)' }}
           >
             <div
               style={{
-                width: zoomScale === 1 ? '100%' : `${Math.round(zoomScale * 100)}%`,
+                width:
+                  zoomScale === 1
+                    ? '100%'
+                    : `${Math.round(zoomScale * 100)}%`,
                 minWidth: '320px',
               }}
             >
@@ -226,11 +263,11 @@ export function CuttingPlanViewer({
                   {sheet.widthMm} by {sheet.heightMm} millimeters)
                 </title>
                 <desc id={`svg-desc-${uid}`}>
-                  Guillotine cutting diagram containing {sheet.placements.length} parts,{' '}
-                  {sheet.residuals.filter((r) => r.reusable).length} recoverable remnant
-                  zones, and {sheet.sheetMetrics.cutCount} straight edge-to-edge saw cuts
-                  with {sheet.kerfMm} millimeter kerf. Full tabular cut list follows
-                  immediately below.
+                  Guillotine cutting diagram containing {sheet.placements.length}{' '}
+                  parts, {sheet.residuals.filter((r) => r.reusable).length}{' '}
+                  recoverable remnant zones, and {sheet.sheetMetrics.cutCount}{' '}
+                  straight edge-to-edge saw cuts with {sheet.kerfMm} millimeter
+                  kerf. Full tabular cut list follows immediately below.
                 </desc>
 
                 <defs>
@@ -252,8 +289,8 @@ export function CuttingPlanViewer({
                       y1="0"
                       x2="0"
                       y2={Math.max(18, Math.round(baseFont * 1.1))}
-                      style={{ stroke: 'var(--svg-part-stroke)' }}
-                      strokeOpacity="0.42"
+                      style={{ stroke: 'var(--svg-remnant-stroke)' }}
+                      strokeOpacity="0.45"
                       strokeWidth={Math.max(2, Math.round(baseFont * 0.14))}
                     />
                   </pattern>
@@ -398,7 +435,7 @@ export function CuttingPlanViewer({
                           }
                           style={{
                             stroke: res.reusable
-                              ? 'var(--svg-part-stroke)'
+                              ? 'var(--svg-remnant-stroke)'
                               : 'var(--border-strong)',
                           }}
                           strokeDasharray={
@@ -425,17 +462,17 @@ export function CuttingPlanViewer({
                                 fill: 'var(--svg-badge-bg)',
                                 stroke: 'var(--border-subtle)',
                               }}
-                              fillOpacity="0.92"
+                              fillOpacity="0.94"
                               strokeWidth={Math.max(1, baseFont * 0.06)}
                             />
                             <text
                               textAnchor="middle"
                               y={-baseFont * 0.15}
                               fontSize={baseFont * 0.72}
-                              fontWeight={600}
+                              fontWeight={700}
                               style={{
                                 fill: res.reusable
-                                  ? 'var(--accent-text)'
+                                  ? 'var(--status-prod-fg)'
                                   : 'var(--text-muted)',
                               }}
                             >
@@ -461,7 +498,8 @@ export function CuttingPlanViewer({
                     const isSelected =
                       selectedPlacement?.partInstanceId === p.partInstanceId;
                     const showFullText =
-                      p.widthMm >= baseFont * 4.2 && p.heightMm >= baseFont * 2.4;
+                      p.widthMm >= baseFont * 4.2 &&
+                      p.heightMm >= baseFont * 2.4;
                     const showCompactText =
                       !showFullText &&
                       p.widthMm >= baseFont * 2.2 &&
@@ -564,9 +602,17 @@ export function CuttingPlanViewer({
 
                     const badgeX = isVert
                       ? cut.cutCoordinateMm + cut.kerfMm / 2
-                      : cut.spanStartMm + Math.min(cut.spanLengthMm * 0.5, Math.max(baseFont * 1.4, cut.spanLengthMm * 0.22));
+                      : cut.spanStartMm +
+                        Math.min(
+                          cut.spanLengthMm * 0.5,
+                          Math.max(baseFont * 1.4, cut.spanLengthMm * 0.22)
+                        );
                     const badgeY = isVert
-                      ? cut.spanStartMm + Math.min(cut.spanLengthMm * 0.5, Math.max(baseFont * 1.4, cut.spanLengthMm * 0.22))
+                      ? cut.spanStartMm +
+                        Math.min(
+                          cut.spanLengthMm * 0.5,
+                          Math.max(baseFont * 1.4, cut.spanLengthMm * 0.22)
+                        )
                       : cut.cutCoordinateMm + cut.kerfMm / 2;
 
                     return (
@@ -595,7 +641,7 @@ export function CuttingPlanViewer({
                               fontSize={baseFont * 0.68}
                               fontWeight={700}
                               fontFamily="var(--font-mono), monospace"
-                              style={{ fill: 'var(--amber-text)' }}
+                              style={{ fill: 'var(--accent-text)' }}
                             >
                               {cut.stepOrder}
                             </text>
@@ -611,10 +657,8 @@ export function CuttingPlanViewer({
 
           {/* Non-color-only legend + Selected Piece Inspector */}
           <div className="grid gap-3 lg:grid-cols-12">
-            <div className="flex flex-wrap items-center gap-4 rounded-lg border border-border-subtle bg-bg-subtle px-4 py-3 text-xs text-fg-muted lg:col-span-7">
-              <span className="font-semibold uppercase tracking-wider text-fg">
-                Legend:
-              </span>
+            <div className="flex min-w-0 flex-wrap items-center gap-4 rounded-lg border border-border-subtle bg-bg-subtle px-4 py-3 text-xs text-fg-muted lg:col-span-7">
+              <span className="cc-kicker text-fg">Legend:</span>
               <span className="inline-flex items-center gap-2">
                 <span
                   aria-hidden="true"
@@ -631,9 +675,9 @@ export function CuttingPlanViewer({
                   aria-hidden="true"
                   className="inline-block h-3.5 w-5 rounded-xs border border-dashed"
                   style={{
-                    borderColor: 'var(--svg-part-stroke)',
+                    borderColor: 'var(--svg-remnant-stroke)',
                     backgroundImage:
-                      'repeating-linear-gradient(45deg, var(--svg-remnant-bg), var(--svg-remnant-bg) 3px, var(--svg-part-stroke) 3px, var(--svg-part-stroke) 4px)',
+                      'repeating-linear-gradient(45deg, var(--svg-remnant-bg), var(--svg-remnant-bg) 3px, var(--svg-remnant-stroke) 3px, var(--svg-remnant-stroke) 4px)',
                   }}
                 />
                 Recoverable remnant (hatched)
@@ -659,76 +703,93 @@ export function CuttingPlanViewer({
               </span>
             </div>
 
-            <div className="flex items-center justify-between gap-3 rounded-lg border border-border-subtle bg-bg-subtle px-4 py-3 text-xs lg:col-span-5">
+            <div className="flex min-w-0 items-center justify-between gap-3 rounded-lg border border-border-subtle bg-bg-subtle px-4 py-3 text-xs lg:col-span-5">
               {selectedPlacement ? (
                 <div className="space-y-0.5">
-                  <div className="flex items-center gap-2 font-semibold text-fg">
+                  <div className="flex flex-wrap items-center gap-2 font-bold text-fg">
                     <span>{selectedPlacement.label}</span>
                     <span className="font-mono text-[11px] text-accent-text">
                       [{selectedPlacement.partInstanceId}]
                     </span>
                     {selectedPlacement.rotated && (
-                      <span className="inline-flex items-center gap-1 rounded bg-accent-soft px-1.5 py-0.5 text-[10px] text-accent-text">
+                      <span className="inline-flex items-center gap-1 rounded bg-accent-soft px-1.5 py-0.5 text-[10px] font-semibold text-accent-text">
                         <RotateCw className="h-2.5 w-2.5" aria-hidden="true" />
                         Rotated 90°
                       </span>
                     )}
                   </div>
                   <p className="tabular-nums text-fg-muted">
-                    Origin ({selectedPlacement.xMm}, {selectedPlacement.yMm}) mm · Cut size{' '}
-                    {selectedPlacement.widthMm}×{selectedPlacement.heightMm} mm · Area{' '}
-                    {formatAreaM2(selectedPlacement.widthMm * selectedPlacement.heightMm)}
+                    Origin ({selectedPlacement.xMm}, {selectedPlacement.yMm}) mm
+                    · Cut size {selectedPlacement.widthMm}×
+                    {selectedPlacement.heightMm} mm · Area{' '}
+                    {formatAreaM2(
+                      selectedPlacement.widthMm * selectedPlacement.heightMm
+                    )}
                   </p>
                 </div>
               ) : (
                 <span className="text-fg-muted">
-                  Select any part in the diagram or table to inspect coordinates.
+                  Select any part in the diagram or table to inspect
+                  coordinates.
                 </span>
               )}
             </div>
           </div>
 
-          {/* Per-sheet area conservation strip */}
-          <div className="grid grid-cols-2 gap-2.5 rounded-lg border border-border-subtle bg-bg-subtle p-3 text-xs sm:grid-cols-5">
-            <div>
-              <span className="text-fg-muted">Initial Sheet Area</span>
-              <p className="mt-0.5 font-mono font-semibold tabular-nums text-fg">
-                {formatAreaM2(sheet.sheetMetrics.initialAreaMm2)}
-              </p>
+          {/* Per-sheet area conservation strip + DESIGN.md orange telemetry bar */}
+          <div className="space-y-2.5 rounded-lg border border-border-subtle bg-bg-subtle p-3.5 text-xs">
+            <div className="flex h-2 w-full overflow-hidden rounded-xs bg-bg-card">
+              <div
+                className="cc-telemetry-bar h-full"
+                style={{ width: `${partPct.toFixed(1)}%` }}
+              />
+              <div
+                className="h-full bg-[#00c758]/60"
+                style={{ width: `${remPct.toFixed(1)}%` }}
+              />
             </div>
-            <div>
-              <span className="text-fg-muted">Placed Parts</span>
-              <p className="mt-0.5 font-mono font-semibold tabular-nums text-accent-text">
-                {formatAreaM2(sheet.sheetMetrics.partAreaMm2)}
-              </p>
-            </div>
-            <div>
-              <span className="text-fg-muted">Recoverable Leftover</span>
-              <p className="mt-0.5 font-mono font-semibold tabular-nums text-fg">
-                {formatAreaM2(sheet.sheetMetrics.recoverableRemnantAreaMm2)}
-              </p>
-            </div>
-            <div>
-              <span className="text-fg-muted">Below-Threshold Scrap</span>
-              <p className="mt-0.5 font-mono font-semibold tabular-nums text-fg-muted">
-                {formatAreaM2(sheet.sheetMetrics.unusableScrapAreaMm2)}
-              </p>
-            </div>
-            <div>
-              <span className="text-fg-muted">Saw Kerf Removed</span>
-              <p className="mt-0.5 font-mono font-semibold tabular-nums text-amber-text">
-                {formatAreaM2(sheet.sheetMetrics.kerfLossAreaMm2)}
-              </p>
+
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-5">
+              <div>
+                <span className="text-fg-muted">Initial Sheet Area</span>
+                <p className="mt-0.5 font-mono font-bold tabular-nums text-fg">
+                  {formatAreaM2(sheet.sheetMetrics.initialAreaMm2)}
+                </p>
+              </div>
+              <div>
+                <span className="text-fg-muted">Placed Parts</span>
+                <p className="mt-0.5 font-mono font-bold tabular-nums text-accent-text">
+                  {formatAreaM2(sheet.sheetMetrics.partAreaMm2)}
+                </p>
+              </div>
+              <div>
+                <span className="text-fg-muted">Recoverable Leftover</span>
+                <p className="mt-0.5 font-mono font-bold tabular-nums text-fg">
+                  {formatAreaM2(sheet.sheetMetrics.recoverableRemnantAreaMm2)}
+                </p>
+              </div>
+              <div>
+                <span className="text-fg-muted">Below-Threshold Scrap</span>
+                <p className="mt-0.5 font-mono font-bold tabular-nums text-fg-muted">
+                  {formatAreaM2(sheet.sheetMetrics.unusableScrapAreaMm2)}
+                </p>
+              </div>
+              <div>
+                <span className="text-fg-muted">Saw Kerf Removed</span>
+                <p className="mt-0.5 font-mono font-bold tabular-nums text-danger-text">
+                  {formatAreaM2(sheet.sheetMetrics.kerfLossAreaMm2)}
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Accessible textual cut list / parts / residuals tables */}
           <div className="space-y-3 pt-1">
-            <div className="flex flex-wrap gap-2 border-b border-border-subtle pb-2">
+            <div className="flex flex-wrap gap-2 border-b border-border-subtle pb-2.5">
               <Button
                 type="button"
                 size="sm"
-                variant={detailTab === 'cuts' ? 'secondary' : 'ghost'}
+                variant={detailTab === 'cuts' ? 'default' : 'ghost'}
                 onClick={() => setDetailTab('cuts')}
               >
                 Textual Cut Sequence ({sheet.cuts.length})
@@ -736,7 +797,7 @@ export function CuttingPlanViewer({
               <Button
                 type="button"
                 size="sm"
-                variant={detailTab === 'parts' ? 'secondary' : 'ghost'}
+                variant={detailTab === 'parts' ? 'default' : 'ghost'}
                 onClick={() => setDetailTab('parts')}
               >
                 Placed Parts ({sheet.placements.length})
@@ -744,7 +805,7 @@ export function CuttingPlanViewer({
               <Button
                 type="button"
                 size="sm"
-                variant={detailTab === 'residuals' ? 'secondary' : 'ghost'}
+                variant={detailTab === 'residuals' ? 'default' : 'ghost'}
                 onClick={() => setDetailTab('residuals')}
               >
                 Residual Zones ({sheet.residuals.length})
@@ -752,11 +813,11 @@ export function CuttingPlanViewer({
             </div>
 
             {detailTab === 'cuts' && (
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto rounded-lg border border-border-subtle">
                 {sheet.cuts.length === 0 ? (
-                  <p className="py-3 text-xs text-fg-muted">
-                    Zero saw cuts required — part matches stock rectangle dimensions
-                    exactly.
+                  <p className="p-4 text-xs text-fg-muted">
+                    Zero saw cuts required — part matches stock rectangle
+                    dimensions exactly.
                   </p>
                 ) : (
                   <table className="w-full border-collapse text-left text-xs">
@@ -764,51 +825,51 @@ export function CuttingPlanViewer({
                       Ordered guillotine saw cuts for Sheet {sheet.sheetIndex}
                     </caption>
                     <thead>
-                      <tr className="border-b border-border-subtle text-fg-muted">
-                        <th scope="col" className="py-2 pr-4 font-medium">
+                      <tr className="cc-table-head h-11 border-b border-border-subtle">
+                        <th scope="col" className="cc-kicker px-3.5">
                           Step
                         </th>
-                        <th scope="col" className="py-2 pr-4 font-medium">
+                        <th scope="col" className="cc-kicker px-3">
                           Cut Direction
                         </th>
-                        <th scope="col" className="py-2 pr-4 font-medium">
+                        <th scope="col" className="cc-kicker px-3">
                           Blade Offset
                         </th>
-                        <th scope="col" className="py-2 pr-4 font-medium">
+                        <th scope="col" className="cc-kicker px-3">
                           Sub-Rectangle Split
                         </th>
-                        <th scope="col" className="py-2 pr-4 font-medium">
+                        <th scope="col" className="cc-kicker px-3">
                           Cut Length
                         </th>
-                        <th scope="col" className="py-2 font-medium">
+                        <th scope="col" className="cc-kicker px-3.5">
                           Kerf Area
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-border-subtle/70 tabular-nums">
+                    <tbody className="divide-y divide-border-subtle tabular-nums">
                       {sheet.cuts.map((c) => (
                         <tr key={c.nodeId}>
-                          <td className="py-2 pr-4 font-mono font-semibold text-amber-text">
+                          <td className="px-3.5 py-2.5 font-mono font-bold text-accent-text">
                             #{c.stepOrder}
                           </td>
-                          <td className="py-2 pr-4 text-fg">
+                          <td className="px-3 py-2.5 font-medium text-fg">
                             {c.orientation === 'vertical'
                               ? 'Vertical rip (along Y)'
                               : 'Horizontal crosscut (along X)'}
                           </td>
-                          <td className="py-2 pr-4 font-mono text-fg">
+                          <td className="px-3 py-2.5 font-mono text-fg">
                             {c.orientation === 'vertical'
                               ? `X = ${c.cutCoordinateMm} mm`
                               : `Y = ${c.cutCoordinateMm} mm`}
                           </td>
-                          <td className="py-2 pr-4 font-mono text-fg-muted">
+                          <td className="px-3 py-2.5 font-mono text-fg-muted">
                             ({c.parentRect.xMm}, {c.parentRect.yMm}){' '}
                             {c.parentRect.widthMm}×{c.parentRect.heightMm} mm
                           </td>
-                          <td className="py-2 pr-4 font-mono text-fg">
+                          <td className="px-3 py-2.5 font-mono text-fg">
                             {c.spanLengthMm} mm
                           </td>
-                          <td className="py-2 font-mono text-fg-muted">
+                          <td className="px-3.5 py-2.5 font-mono text-fg-muted">
                             {c.kerfAreaMm2.toLocaleString('en-US')} mm²
                           </td>
                         </tr>
@@ -820,50 +881,50 @@ export function CuttingPlanViewer({
             )}
 
             {detailTab === 'parts' && (
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto rounded-lg border border-border-subtle">
                 <table className="w-full border-collapse text-left text-xs">
                   <caption className="sr-only">
                     Placed parts on Sheet {sheet.sheetIndex}
                   </caption>
                   <thead>
-                    <tr className="border-b border-border-subtle text-fg-muted">
-                      <th scope="col" className="py-2 pr-4 font-medium">
+                    <tr className="cc-table-head h-11 border-b border-border-subtle">
+                      <th scope="col" className="cc-kicker px-3.5">
                         Instance ID
                       </th>
-                      <th scope="col" className="py-2 pr-4 font-medium">
+                      <th scope="col" className="cc-kicker px-3">
                         Label
                       </th>
-                      <th scope="col" className="py-2 pr-4 font-medium">
+                      <th scope="col" className="cc-kicker px-3">
                         Origin (X, Y)
                       </th>
-                      <th scope="col" className="py-2 pr-4 font-medium">
+                      <th scope="col" className="cc-kicker px-3">
                         Oriented Size
                       </th>
-                      <th scope="col" className="py-2 font-medium">
+                      <th scope="col" className="cc-kicker px-3.5">
                         Rotation
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-border-subtle/70 tabular-nums">
+                  <tbody className="divide-y divide-border-subtle tabular-nums">
                     {sheet.placements.map((p) => (
                       <tr
                         key={p.partInstanceId}
                         onClick={() => setSelectedPartId(p.partInstanceId)}
-                        className="cursor-pointer hover:bg-bg-elevated/60"
+                        className="cursor-pointer transition-colors hover:bg-bg-elevated/70"
                       >
-                        <td className="py-2 pr-4 font-mono text-accent-text">
+                        <td className="px-3.5 py-2.5 font-mono font-semibold text-accent-text">
                           {p.partInstanceId}
                         </td>
-                        <td className="py-2 pr-4 font-medium text-fg">
+                        <td className="px-3 py-2.5 font-semibold text-fg">
                           {p.label}
                         </td>
-                        <td className="py-2 pr-4 font-mono text-fg-muted">
+                        <td className="px-3 py-2.5 font-mono text-fg-muted">
                           ({p.xMm}, {p.yMm}) mm
                         </td>
-                        <td className="py-2 pr-4 font-mono text-fg">
+                        <td className="px-3 py-2.5 font-mono text-fg">
                           {p.widthMm} × {p.heightMm} mm
                         </td>
-                        <td className="py-2 text-fg-muted">
+                        <td className="px-3.5 py-2.5 text-fg-muted">
                           {p.rotated ? 'Rotated 90°' : 'As entered (0°)'}
                         </td>
                       </tr>
@@ -874,51 +935,54 @@ export function CuttingPlanViewer({
             )}
 
             {detailTab === 'residuals' && (
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto rounded-lg border border-border-subtle">
                 {sheet.residuals.length === 0 ? (
-                  <p className="py-3 text-xs text-fg-muted">
+                  <p className="p-4 text-xs text-fg-muted">
                     Zero residual regions on this sheet.
                   </p>
                 ) : (
                   <table className="w-full border-collapse text-left text-xs">
                     <caption className="sr-only">
-                      Residual offcuts and scrap regions on Sheet {sheet.sheetIndex}
+                      Residual offcuts and scrap regions on Sheet{' '}
+                      {sheet.sheetIndex}
                     </caption>
                     <thead>
-                      <tr className="border-b border-border-subtle text-fg-muted">
-                        <th scope="col" className="py-2 pr-4 font-medium">
+                      <tr className="cc-table-head h-11 border-b border-border-subtle">
+                        <th scope="col" className="cc-kicker px-3.5">
                           Origin (X, Y)
                         </th>
-                        <th scope="col" className="py-2 pr-4 font-medium">
+                        <th scope="col" className="cc-kicker px-3">
                           Dimensions
                         </th>
-                        <th scope="col" className="py-2 pr-4 font-medium">
+                        <th scope="col" className="cc-kicker px-3">
                           Area
                         </th>
-                        <th scope="col" className="py-2 font-medium">
+                        <th scope="col" className="cc-kicker px-3.5">
                           Classification
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-border-subtle/70 tabular-nums">
+                    <tbody className="divide-y divide-border-subtle tabular-nums">
                       {sheet.residuals.map((r) => (
                         <tr key={r.id}>
-                          <td className="py-2 pr-4 font-mono text-fg-muted">
+                          <td className="px-3.5 py-2.5 font-mono text-fg-muted">
                             ({r.xMm}, {r.yMm}) mm
                           </td>
-                          <td className="py-2 pr-4 font-mono text-fg">
+                          <td className="px-3 py-2.5 font-mono text-fg">
                             {r.widthMm} × {r.heightMm} mm
                           </td>
-                          <td className="py-2 pr-4 font-mono text-fg-muted">
+                          <td className="px-3 py-2.5 font-mono text-fg-muted">
                             {formatAreaM2(r.areaMm2)}
                           </td>
-                          <td className="py-2">
+                          <td className="px-3.5 py-2.5">
                             {r.reusable ? (
-                              <Badge variant="default">
+                              <Badge variant="production">
                                 Recoverable (pending confirmation)
                               </Badge>
                             ) : (
-                              <Badge variant="muted">Below-threshold scrap</Badge>
+                              <Badge variant="muted">
+                                Below-threshold scrap
+                              </Badge>
                             )}
                           </td>
                         </tr>

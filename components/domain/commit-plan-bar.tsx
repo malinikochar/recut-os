@@ -110,10 +110,18 @@ export function CommitPlanBar({
       <Card
         className={
           effectiveCommitted
-            ? 'border-accent-border bg-bg-subtle'
-            : 'border-amber-border bg-bg-subtle'
+            ? 'relative overflow-hidden border-[color:var(--status-prod-border)]'
+            : 'relative overflow-hidden border-amber-border'
         }
       >
+        <div
+          className={
+            effectiveCommitted
+              ? 'h-1 w-full bg-[#00c758]'
+              : 'h-1 w-full bg-accent'
+          }
+          aria-hidden="true"
+        />
         <CardHeader className="pb-4">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="space-y-1">
@@ -123,7 +131,7 @@ export function CommitPlanBar({
                     ? 'Committed Production Plan'
                     : 'Draft Cutting Plan — Ready for Shop Commit'}
                 </CardTitle>
-                <Badge variant={effectiveCommitted ? 'default' : 'amber'}>
+                <Badge variant={effectiveCommitted ? 'production' : 'amber'}>
                   {effectiveCommitted ? 'committed' : 'draft'}
                 </Badge>
               </div>
@@ -131,9 +139,7 @@ export function CommitPlanBar({
                 {effectiveCommitted ? (
                   <>
                     Inventory transaction executed for{' '}
-                    <span className="font-medium text-fg">
-                      {jobTitle}
-                    </span>
+                    <span className="font-semibold text-fg">{jobTitle}</span>
                     {committedAt && (
                       <>
                         {' '}
@@ -155,7 +161,7 @@ export function CommitPlanBar({
                 ) : (
                   <>
                     Committing executes an atomic row-locked transaction: marks{' '}
-                    <span className="font-mono text-fg">
+                    <span className="font-mono font-semibold text-fg">
                       {ownedStockCount}
                     </span>{' '}
                     allocated owned stock{' '}
@@ -163,7 +169,7 @@ export function CommitPlanBar({
                     {newSheetCount > 0 && (
                       <>
                         , logs{' '}
-                        <span className="font-mono text-fg">
+                        <span className="font-mono font-semibold text-fg">
                           {newSheetCount}
                         </span>{' '}
                         modeled new standard{' '}
@@ -171,7 +177,7 @@ export function CommitPlanBar({
                       </>
                     )}
                     , and creates{' '}
-                    <span className="font-mono text-fg">
+                    <span className="font-mono font-semibold text-fg">
                       {recoverableRemnantCount}
                     </span>{' '}
                     `pending_confirmation` offcut{' '}
@@ -217,7 +223,7 @@ export function CommitPlanBar({
                 </>
               ) : (
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded-lg border border-accent-border bg-accent-soft px-3 py-1.5 text-xs font-medium text-accent-text">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-[color:var(--status-prod-border)] bg-[color:var(--status-prod-bg)] px-3 py-1 text-xs font-semibold text-[color:var(--status-prod-fg)]">
                     <Lock className="h-3.5 w-3.5" aria-hidden="true" />
                     Audit Locked
                   </span>
@@ -241,7 +247,7 @@ export function CommitPlanBar({
             {commitReceipt && (
               <div
                 role="status"
-                className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-accent-border bg-accent-soft p-3.5 text-xs text-accent-text"
+                className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[color:var(--status-prod-border)] bg-[color:var(--status-prod-bg)] p-3.5 text-xs font-medium text-[color:var(--status-prod-fg)]"
               >
                 <div className="flex items-center gap-2">
                   <CheckCircle2
@@ -268,7 +274,7 @@ export function CommitPlanBar({
                 role="alert"
                 className="space-y-3 rounded-xl border border-danger-border bg-danger-soft p-4 text-xs text-danger-text"
               >
-                <div className="flex items-center gap-2 font-semibold text-fg">
+                <div className="flex items-center gap-2 font-bold text-fg">
                   <AlertTriangle
                     className="h-4 w-4 text-danger-text"
                     aria-hidden="true"

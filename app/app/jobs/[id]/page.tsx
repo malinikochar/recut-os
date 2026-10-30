@@ -111,18 +111,21 @@ export default async function JobDetailPage({
   }));
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div className="space-y-2">
         <Link
           href="/app/jobs"
-          className="inline-flex items-center gap-1.5 text-xs text-fg-muted hover:text-fg"
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-fg-muted hover:text-fg"
         >
           <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
           Back to Cutting Jobs
         </Link>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-fg">
+            <p className="cc-kicker text-accent-text">
+              Job Specification & Optimizer
+            </p>
+            <h1 className="text-2xl font-bold leading-8 tracking-tight text-fg">
               {jobRow.title}
             </h1>
             {jobRow.notes && (
@@ -132,10 +135,10 @@ export default async function JobDetailPage({
           <Badge
             variant={
               jobRow.status === 'committed'
-                ? 'default'
+                ? 'production'
                 : jobRow.status === 'planned'
                   ? 'amber'
-                  : 'muted'
+                  : 'neutral'
             }
           >
             {jobRow.status}
@@ -162,34 +165,34 @@ export default async function JobDetailPage({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto rounded-lg border border-border-subtle">
               <table className="w-full border-collapse text-left text-xs">
                 <caption className="sr-only">
                   Saved cutting plans for {jobRow.title}
                 </caption>
                 <thead>
-                  <tr className="border-b border-border-subtle text-fg-muted">
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                  <tr className="cc-table-head h-12 border-b border-border-subtle">
+                    <th scope="col" className="cc-kicker px-4">
                       Plan ID
                     </th>
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Created
                     </th>
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Owned Stock Used
                     </th>
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       New Sheets / Spend
                     </th>
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Status
                     </th>
-                    <th scope="col" className="py-2.5 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Inspect
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border-subtle/70 tabular-nums">
+                <tbody className="divide-y divide-border-subtle tabular-nums">
                   {planRows.map((pl) => {
                     const summaryObj = (pl.optimized_summary ?? {}) as {
                       metrics?: PlanMetrics;
@@ -201,7 +204,7 @@ export default async function JobDetailPage({
                       : 0;
                     return (
                       <tr key={pl.id}>
-                        <td className="py-3 pr-4 font-mono text-fg">
+                        <td className="px-4 py-3 font-mono font-semibold text-fg">
                           <div className="flex items-center gap-1.5">
                             <FileSpreadsheet
                               className="h-3.5 w-3.5 text-accent-text"
@@ -210,18 +213,19 @@ export default async function JobDetailPage({
                             <span>{pl.id.slice(0, 8)}</span>
                           </div>
                         </td>
-                        <td className="py-3 pr-4 text-fg-muted">
+                        <td className="px-4 py-3 text-fg-muted">
                           {new Date(pl.created_at).toLocaleString('en-US', {
                             month: 'short',
                             day: 'numeric',
                             hour: '2-digit',
                             minute: '2-digit',
+                            timeZone: 'UTC',
                           })}
                         </td>
-                        <td className="py-3 pr-4 font-mono text-fg">
+                        <td className="px-4 py-3 font-mono text-fg">
                           {ownedCount}
                         </td>
-                        <td className="py-3 pr-4 font-mono text-accent-text">
+                        <td className="px-4 py-3 font-mono font-semibold text-accent-text">
                           {metrics ? (
                             <>
                               {metrics.newSheetCount} (
@@ -235,19 +239,19 @@ export default async function JobDetailPage({
                             '—'
                           )}
                         </td>
-                        <td className="py-3 pr-4">
+                        <td className="px-4 py-3">
                           <Badge
                             variant={
-                              pl.status === 'committed' ? 'default' : 'amber'
+                              pl.status === 'committed' ? 'production' : 'amber'
                             }
                           >
                             {pl.status}
                           </Badge>
                         </td>
-                        <td className="py-3">
+                        <td className="px-4 py-3">
                           <Link
                             href={`/app/plans/${pl.id}`}
-                            className="inline-flex items-center gap-1 font-medium text-accent-text hover:underline"
+                            className="inline-flex items-center gap-1 font-semibold text-accent-text hover:underline"
                           >
                             <span>
                               {pl.status === 'committed'

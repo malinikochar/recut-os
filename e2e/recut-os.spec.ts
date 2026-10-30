@@ -25,19 +25,19 @@ test.describe('ReCut OS — End-to-End Verification Suite', () => {
     test.setTimeout(60_000);
     await page.goto('/');
 
-    // 1. Default theme must be 'light' when no localStorage preference exists
+    // 1. Default theme must be 'light' (#fcfaf7 warm stone canvas) when no localStorage preference exists
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
     const lightBg = await page.evaluate(
       () => getComputedStyle(document.body).backgroundColor
     );
-    expect(lightBg).toBe('rgb(246, 248, 247)');
+    expect(lightBg).toBe('rgb(252, 250, 247)');
 
     const switchToDark = page.getByRole('button', {
       name: 'Switch to dark theme',
     });
     await expect(switchToDark).toBeVisible();
 
-    // 2. Toggle to dark theme
+    // 2. Toggle to dark theme (#413830 Evreghen Command Center dark canvas)
     await switchToDark.click();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
     await expect(
@@ -47,7 +47,7 @@ test.describe('ReCut OS — End-to-End Verification Suite', () => {
     const darkBg = await page.evaluate(
       () => getComputedStyle(document.body).backgroundColor
     );
-    expect(darkBg).toBe('rgb(11, 16, 19)');
+    expect(darkBg).toBe('rgb(65, 56, 48)');
 
     const storedDark = await page.evaluate(() =>
       window.localStorage.getItem('recut-theme')

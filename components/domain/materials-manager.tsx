@@ -179,12 +179,15 @@ export function MaterialsManager({ materials }: MaterialsManagerProps) {
   const previewMinor = parseMajorToMinor(form.priceMajor);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <Card>
         <CardHeader>
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
-              <CardTitle>
+              <p className="cc-kicker text-accent-text">
+                {isEditing ? 'Editing Specification' : 'New Specification'}
+              </p>
+              <CardTitle className="mt-0.5">
                 {isEditing
                   ? 'Edit Material Specification'
                   : 'Add Sheet Material Specification'}
@@ -220,7 +223,7 @@ export function MaterialsManager({ materials }: MaterialsManagerProps) {
             {statusMessage && (
               <div
                 role="status"
-                className="flex items-center gap-2 rounded-lg border border-accent-border bg-accent-soft p-3 text-xs text-accent-text"
+                className="flex items-center gap-2 rounded-lg border border-accent-border bg-accent-soft p-3 text-xs font-medium text-accent-text"
               >
                 <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />
                 <span>{statusMessage}</span>
@@ -415,7 +418,10 @@ export function MaterialsManager({ materials }: MaterialsManagerProps) {
               <Button type="submit" disabled={submitting}>
                 {submitting ? (
                   <>
-                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                    <Loader2
+                      className="h-4 w-4 animate-spin"
+                      aria-hidden="true"
+                    />
                     Saving...
                   </>
                 ) : (
@@ -440,7 +446,7 @@ export function MaterialsManager({ materials }: MaterialsManagerProps) {
         </CardHeader>
         <CardContent>
           {materials.length === 0 ? (
-            <div className="rounded-lg border border-dashed border-border-subtle p-8 text-center text-sm text-fg-muted">
+            <div className="rounded-lg border border-dashed border-border-subtle bg-bg-subtle/60 p-8 text-center text-sm text-fg-muted">
               <Layers
                 className="mx-auto mb-2 h-6 w-6 text-fg-subtle"
                 aria-hidden="true"
@@ -448,55 +454,57 @@ export function MaterialsManager({ materials }: MaterialsManagerProps) {
               <p>No materials defined yet. Use the form above to add one.</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto rounded-lg border border-border-subtle">
               <table className="w-full border-collapse text-left text-xs">
-                <caption className="sr-only">Material catalog specifications</caption>
+                <caption className="sr-only">
+                  Material catalog specifications
+                </caption>
                 <thead>
-                  <tr className="border-b border-border-subtle text-fg-muted">
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                  <tr className="cc-table-head h-12 border-b border-border-subtle">
+                    <th scope="col" className="cc-kicker px-4">
                       Material
                     </th>
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Standard Sheet
                     </th>
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Price / Sheet
                     </th>
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Kerf & Grain
                     </th>
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Min Reusable Offcut
                     </th>
-                    <th scope="col" className="py-2.5 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border-subtle/70 tabular-nums">
+                <tbody className="divide-y divide-border-subtle tabular-nums">
                   {materials.map((mat) => (
                     <tr key={mat.id}>
-                      <td className="py-3 pr-4">
-                        <p className="font-medium text-fg">{mat.name}</p>
+                      <td className="px-4 py-3">
+                        <p className="font-semibold text-fg">{mat.name}</p>
                         <p className="text-[11px] text-fg-subtle">
                           {mat.category} · {mat.thicknessMm} mm thick
                         </p>
                       </td>
-                      <td className="py-3 pr-4 font-mono text-fg">
+                      <td className="px-4 py-3 font-mono text-fg">
                         {formatDimensionsMm(
                           mat.standardWidthMm,
                           mat.standardHeightMm
                         )}
                       </td>
-                      <td className="py-3 pr-4 font-mono text-accent-text">
+                      <td className="px-4 py-3 font-mono font-bold text-accent-text">
                         {formatMinorCurrency(
                           mat.pricePerSheetMinor,
                           mat.currencyCode
                         )}
                       </td>
-                      <td className="py-3 pr-4">
+                      <td className="px-4 py-3">
                         <div className="flex flex-wrap items-center gap-1.5">
-                          <Badge variant="muted">{mat.kerfMm} mm kerf</Badge>
+                          <Badge variant="neutral">{mat.kerfMm} mm kerf</Badge>
                           <Badge
                             variant={
                               mat.grainAxis === 'none' ? 'muted' : 'amber'
@@ -508,13 +516,13 @@ export function MaterialsManager({ materials }: MaterialsManagerProps) {
                           </Badge>
                         </div>
                       </td>
-                      <td className="py-3 pr-4 font-mono text-fg-muted">
+                      <td className="px-4 py-3 font-mono text-fg-muted">
                         {formatDimensionsMm(
                           mat.minReusableWidthMm,
                           mat.minReusableHeightMm
                         )}
                       </td>
-                      <td className="py-3">
+                      <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
                           <Button
                             type="button"

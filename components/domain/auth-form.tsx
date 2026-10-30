@@ -51,12 +51,12 @@ export function AuthForm({
   };
 
   return (
-    <Card className="w-full max-w-md border-border-strong">
-      <CardHeader className="space-y-3">
+    <Card className="w-full max-w-md rounded-lg border-border-strong bg-bg-card shadow-2xl">
+      <CardHeader className="space-y-3.5">
         <div
           role="tablist"
           aria-label="Authentication mode"
-          className="grid grid-cols-2 rounded-lg border border-border-subtle bg-bg-shell p-1"
+          className="grid grid-cols-2 rounded-lg border border-border-subtle bg-bg-subtle p-1"
         >
           <button
             type="button"
@@ -67,9 +67,9 @@ export function AuthForm({
               setError(null);
               setNotice(null);
             }}
-            className={`rounded-md py-2 text-xs font-semibold transition-colors cursor-pointer ${
+            className={`rounded-md py-2 text-xs font-bold transition-colors cursor-pointer ${
               mode === 'signin'
-                ? 'bg-accent text-accent-fg'
+                ? 'bg-accent text-accent-fg shadow-xs'
                 : 'text-fg-muted hover:text-fg'
             }`}
           >
@@ -84,9 +84,9 @@ export function AuthForm({
               setError(null);
               setNotice(null);
             }}
-            className={`rounded-md py-2 text-xs font-semibold transition-colors cursor-pointer ${
+            className={`rounded-md py-2 text-xs font-bold transition-colors cursor-pointer ${
               mode === 'signup'
-                ? 'bg-accent text-accent-fg'
+                ? 'bg-accent text-accent-fg shadow-xs'
                 : 'text-fg-muted hover:text-fg'
             }`}
           >
@@ -178,7 +178,7 @@ export function AuthForm({
         <div className="border-t border-border-subtle pt-4 text-center">
           <Link
             href="/demo"
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-accent-text hover:underline"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent-text hover:underline"
           >
             <FlaskConical className="h-3.5 w-3.5" aria-hidden="true" />
             Evaluating for Arbiter Hacks? Explore the 1-click public /demo without

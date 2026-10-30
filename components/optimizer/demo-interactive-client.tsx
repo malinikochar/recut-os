@@ -27,7 +27,7 @@ import type {
   OptimizationProblemInput,
 } from '@/lib/domain/types';
 import { evaluateOptimization } from '@/lib/optimizer';
-import { formatDimensionsMm, formatMinorCurrency } from '@/lib/utils';
+import { formatAreaM2, formatDimensionsMm, formatMinorCurrency } from '@/lib/utils';
 
 export interface DemoPreset {
   fixtureId: string;
@@ -56,11 +56,7 @@ export function DemoInteractiveClient({
     React.useState<OptimizationEvaluation>(initialEvaluation);
 
   const runPlanner = React.useCallback(
-    (
-      preset: DemoPreset,
-      stockSet: Set<string>,
-      kerfMm: number
-    ) => {
+    (preset: DemoPreset, stockSet: Set<string>, kerfMm: number) => {
       const modifiedProblem: OptimizationProblemInput = {
         ...preset.problem,
         materials: preset.problem.materials.map((m, i) =>
@@ -103,62 +99,71 @@ export function DemoInteractiveClient({
 
   return (
     <div className="min-h-screen bg-bg-page text-fg">
-      {/* Top bar */}
-      <header className="no-print border-b border-border-subtle bg-bg-shell">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3.5 sm:px-6 lg:px-8">
+      {/* Sticky 64px Dark Frosted Command Header (DESIGN.md shell-header) */}
+      <header className="no-print cc-shell-glass sticky top-0 z-30 border-b">
+        <div className="mx-auto flex min-h-16 max-w-[1400px] flex-wrap items-center justify-between gap-3 px-4 py-2.5 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-xs text-fg-muted hover:text-fg"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-white/72 transition-colors hover:text-white"
             >
               <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
               Home
             </Link>
-            <span className="text-border-strong">/</span>
-            <div className="flex items-center gap-2 font-semibold text-fg">
-              <Scissors className="h-4 w-4 text-accent-text" aria-hidden="true" />
+            <span className="text-white/25">/</span>
+            <div className="flex items-center gap-2 text-sm font-bold text-white">
+              <span className="flex h-7 w-7 items-center justify-center rounded-md bg-accent text-white">
+                <Scissors className="h-3.5 w-3.5" aria-hidden="true" />
+              </span>
               <span>ReCut OS Interactive Demo</span>
             </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="amber">Read-only public sandbox</Badge>
+            <span className="hidden rounded-full border border-amber-border bg-amber-soft px-2.5 py-0.5 text-[11px] font-semibold tracking-[0.04em] uppercase text-amber-text md:inline-flex">
+              Read-only public sandbox
+            </span>
             <Button asChild size="sm">
               <Link href="/login">Sign in for persistent workspace</Link>
             </Button>
-            <ThemeToggle />
+            <ThemeToggle variant="shell" />
           </div>
         </div>
       </header>
 
       <main
         id="main-content"
-        className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:px-8"
+        className="mx-auto max-w-[1400px] space-y-6 px-4 py-6 sm:px-6 lg:px-8"
       >
         {/* Mandatory illustrative demo banner */}
         <div
           role="status"
           className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-border bg-amber-soft px-4 py-3 text-xs text-amber-text"
         >
-          <div className="flex items-center gap-2.5 font-medium">
+          <div className="flex items-center gap-2.5 font-semibold">
             <FlaskConical className="h-4 w-4 shrink-0" aria-hidden="true" />
             <span>
               Illustrative workshop example — results are computed from sample
               inputs.
             </span>
           </div>
-          <span className="font-mono text-[11px] text-fg-muted">
+          <span className="rounded-md border border-amber-border/60 bg-bg-card/80 px-2.5 py-1 font-mono text-[11px] text-fg">
             Input hash: {evaluation.inputHash} · Seed:{' '}
             {activePreset.problem.seed ?? 42}
           </span>
         </div>
 
-        {/* Scenario presets bar */}
+        {/* Scenario presets & live parameter control deck */}
         <Card>
-          <CardHeader className="pb-4">
+          <CardHeader>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <CardTitle>1. Select Deterministic Workshop Scenario</CardTitle>
+                <p className="cc-kicker text-accent-text">
+                  Step 01 · Deterministic Scenario Matrix
+                </p>
+                <CardTitle className="mt-0.5">
+                  1. Select Deterministic Workshop Scenario
+                </CardTitle>
                 <CardDescription>
                   Every scenario executes the real TypeScript guillotine optimizer
                   and independent cut-tree verifier—including zero-savings and
@@ -188,40 +193,61 @@ export function DemoInteractiveClient({
               </div>
             </div>
           </CardHeader>
-          <CardContent className="space-y-4">
+
+          <CardContent className="space-y-5">
             <div
               role="group"
               aria-label="Sample benchmark fixtures"
-              className="flex flex-wrap gap-2"
+              className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-5"
             >
-              {presets.map((p, idx) => (
-                <button
-                  key={p.fixtureId}
-                  type="button"
-                  onClick={() => handlePresetChange(idx)}
-                  aria-pressed={idx === selectedPresetIdx}
-                  className={`rounded-lg border px-3 py-2 text-left text-xs transition-colors cursor-pointer ${
-                    idx === selectedPresetIdx
-                      ? 'border-accent bg-accent-soft text-fg'
-                      : 'border-border-subtle bg-bg-subtle text-fg-muted hover:border-border-strong hover:text-fg'
-                  }`}
-                >
-                  <span className="block font-semibold">{p.problem.job.title}</span>
-                  <span className="font-mono text-[11px] text-fg-muted">
-                    {p.fixtureId}
-                  </span>
-                </button>
-              ))}
+              {presets.map((p, idx) => {
+                const selected = idx === selectedPresetIdx;
+                const pieces = p.problem.job.parts.reduce(
+                  (sum, row) => sum + row.quantity,
+                  0
+                );
+                return (
+                  <button
+                    key={p.fixtureId}
+                    type="button"
+                    onClick={() => handlePresetChange(idx)}
+                    aria-pressed={selected}
+                    className={`relative min-w-0 overflow-hidden rounded-lg border p-3 text-left text-xs transition-all cursor-pointer ${
+                      selected
+                        ? 'border-accent bg-accent-soft text-fg shadow-xs'
+                        : 'border-border-subtle bg-bg-subtle text-fg-muted hover:border-border-strong hover:bg-bg-elevated hover:text-fg'
+                    }`}
+                  >
+                    {selected && (
+                      <span
+                        className="absolute inset-x-0 top-0 h-1 bg-accent"
+                        aria-hidden="true"
+                      />
+                    )}
+                    <span className="line-clamp-1 block font-bold text-fg">
+                      {p.problem.job.title}
+                    </span>
+                    <span className="mt-1 block truncate font-mono text-[11px] text-fg-muted">
+                      {p.fixtureId}
+                    </span>
+                    <span className="mt-2 inline-block rounded bg-bg-card px-1.5 py-0.5 font-mono text-[10px] font-semibold text-accent-text">
+                      {pieces} {pieces === 1 ? 'piece' : 'pieces'} ·{' '}
+                      {p.problem.stockItems.length} rack{' '}
+                      {p.problem.stockItems.length === 1 ? 'offcut' : 'offcuts'}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
 
             {/* Interactive inputs overview: Material + Remnant toggles + Job parts */}
             <div className="grid gap-4 lg:grid-cols-12">
-              <div className="space-y-3 rounded-lg border border-border-subtle bg-bg-subtle p-4 lg:col-span-5">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-fg-muted">
+              <div className="min-w-0 space-y-3 rounded-xl border border-border-subtle bg-bg-subtle p-4 lg:col-span-5">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="cc-kicker text-fg-muted">
                     Material & Available Offcuts
                   </h3>
-                  <label className="flex items-center gap-2 text-xs text-fg">
+                  <label className="flex items-center gap-2 text-xs font-medium text-fg">
                     <span>Saw kerf (mm):</span>
                     <select
                       aria-label="Saw kerf width in millimeters"
@@ -231,7 +257,7 @@ export function DemoInteractiveClient({
                         setKerfOverrideMm(nextKerf);
                         runPlanner(activePreset, enabledStockIds, nextKerf);
                       }}
-                      className="rounded border border-border-strong bg-bg-page px-2 py-1 font-mono text-xs text-fg"
+                      className="rounded-md border border-border-strong bg-bg-card px-2.5 py-1 font-mono text-xs font-semibold text-fg"
                     >
                       <option value={0}>0 mm</option>
                       <option value={3}>3 mm</option>
@@ -241,41 +267,47 @@ export function DemoInteractiveClient({
                   </label>
                 </div>
 
-                <div className="rounded border border-border-subtle bg-bg-card p-2.5 text-xs tabular-nums">
-                  <div className="font-medium text-fg">
-                    {primaryMaterial.name}
-                  </div>
-                  <div className="mt-0.5 text-fg-muted">
+                <div className="rounded-lg border border-border-subtle bg-bg-card p-3 text-xs tabular-nums">
+                  <div className="font-bold text-fg">{primaryMaterial.name}</div>
+                  <div className="mt-1 text-fg-muted">
                     Standard sheet:{' '}
-                    {formatDimensionsMm(
-                      primaryMaterial.standardWidthMm,
-                      primaryMaterial.standardHeightMm
-                    )}{' '}
+                    <span className="font-mono text-fg">
+                      {formatDimensionsMm(
+                        primaryMaterial.standardWidthMm,
+                        primaryMaterial.standardHeightMm
+                      )}
+                    </span>{' '}
                     ·{' '}
-                    {formatMinorCurrency(
-                      primaryMaterial.pricePerSheetMinor,
-                      primaryMaterial.currencyCode
-                    )}{' '}
+                    <span className="font-mono font-semibold text-accent-text">
+                      {formatMinorCurrency(
+                        primaryMaterial.pricePerSheetMinor,
+                        primaryMaterial.currencyCode
+                      )}
+                    </span>{' '}
                     · Grain: {primaryMaterial.grainAxis.toUpperCase()}
                   </div>
                 </div>
 
                 {activePreset.problem.stockItems.length === 0 ? (
-                  <p className="text-xs text-fg-muted">
+                  <div className="rounded-lg border border-dashed border-border-strong bg-bg-card/60 p-3 text-xs text-fg-muted">
                     Zero remnants in rack for this fixture — planner must purchase
                     standard sheets.
-                  </p>
+                  </div>
                 ) : (
                   <div className="space-y-2">
-                    <p className="text-[11px] text-fg-muted">
-                      Toggle remnants below to test live replanning:
+                    <p className="text-[11px] font-medium text-fg-muted">
+                      Toggle owned remnants below to test live replanning:
                     </p>
                     {activePreset.problem.stockItems.map((s) => {
                       const checked = enabledStockIds.has(s.id);
                       return (
                         <label
                           key={s.id}
-                          className="flex cursor-pointer items-center justify-between rounded border border-border-subtle bg-bg-card px-3 py-2 text-xs hover:border-border-strong"
+                          className={`flex cursor-pointer items-center justify-between gap-2 rounded-lg border px-3 py-2.5 text-xs transition-colors ${
+                            checked
+                              ? 'border-accent-border bg-bg-card'
+                              : 'border-border-subtle bg-bg-card/50 opacity-75'
+                          }`}
                         >
                           <span className="flex items-center gap-2.5">
                             <input
@@ -284,12 +316,13 @@ export function DemoInteractiveClient({
                               onChange={() => toggleRemnant(s.id)}
                               className="h-4 w-4 accent-accent"
                             />
-                            <span className="font-medium text-fg">
+                            <span className="font-semibold text-fg">
                               {s.label}
                             </span>
                           </span>
                           <span className="font-mono tabular-nums text-fg-muted">
-                            {s.widthMm}×{s.heightMm} mm
+                            {s.widthMm}×{s.heightMm} mm (
+                            {formatAreaM2(s.widthMm * s.heightMm)})
                           </span>
                         </label>
                       );
@@ -298,12 +331,12 @@ export function DemoInteractiveClient({
                 )}
               </div>
 
-              <div className="space-y-3 rounded-lg border border-border-subtle bg-bg-subtle p-4 lg:col-span-7">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-fg-muted">
+              <div className="min-w-0 space-y-3 rounded-xl border border-border-subtle bg-bg-subtle p-4 lg:col-span-7">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="cc-kicker text-fg-muted">
                     Job Order: {activePreset.problem.job.title}
                   </h3>
-                  <Badge variant="neutral">
+                  <Badge variant="default">
                     {activePreset.problem.job.parts.reduce(
                       (acc, p) => acc + p.quantity,
                       0
@@ -312,44 +345,46 @@ export function DemoInteractiveClient({
                   </Badge>
                 </div>
 
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto rounded-lg border border-border-subtle bg-bg-card">
                   <table className="w-full border-collapse text-left text-xs">
                     <caption className="sr-only">
                       Requested rectangular parts in sample job
                     </caption>
                     <thead>
-                      <tr className="border-b border-border-subtle text-fg-muted">
-                        <th scope="col" className="py-2 pr-3 font-medium">
+                      <tr className="cc-table-head h-11 border-b border-border-subtle">
+                        <th scope="col" className="cc-kicker px-3.5">
                           Part
                         </th>
-                        <th scope="col" className="py-2 pr-3 font-medium">
+                        <th scope="col" className="cc-kicker px-3">
                           Dimensions
                         </th>
-                        <th scope="col" className="py-2 pr-3 font-medium">
+                        <th scope="col" className="cc-kicker px-3">
                           Qty
                         </th>
-                        <th scope="col" className="py-2 pr-3 font-medium">
+                        <th scope="col" className="cc-kicker px-3">
                           Rotation
                         </th>
-                        <th scope="col" className="py-2 font-medium">
+                        <th scope="col" className="cc-kicker px-3.5">
                           Grain
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-border-subtle/70 tabular-nums">
+                    <tbody className="divide-y divide-border-subtle tabular-nums">
                       {activePreset.problem.job.parts.map((part) => (
                         <tr key={part.id}>
-                          <td className="py-2 pr-3 font-medium text-fg">
+                          <td className="px-3.5 py-2.5 font-semibold text-fg">
                             {part.label}
                           </td>
-                          <td className="py-2 pr-3 font-mono text-fg">
+                          <td className="px-3 py-2.5 font-mono text-fg">
                             {part.widthMm} × {part.heightMm} mm
                           </td>
-                          <td className="py-2 pr-3 font-mono">{part.quantity}</td>
-                          <td className="py-2 pr-3 text-fg-muted">
+                          <td className="px-3 py-2.5 font-mono font-bold text-accent-text">
+                            {part.quantity}
+                          </td>
+                          <td className="px-3 py-2.5 text-fg-muted">
                             {part.allowRotation ? 'Allowed' : 'Locked'}
                           </td>
-                          <td className="py-2 font-mono uppercase text-fg-muted">
+                          <td className="px-3.5 py-2.5 font-mono uppercase text-fg-muted">
                             {part.requiredGrainAxis}
                           </td>
                         </tr>
@@ -383,7 +418,7 @@ export function DemoInteractiveClient({
                   key={idx}
                   className="rounded-lg border border-danger-border bg-danger-soft p-3 text-fg"
                 >
-                  <span className="mr-2 font-mono uppercase text-danger-text">
+                  <span className="mr-2 font-mono font-bold uppercase text-danger-text">
                     [{d.code}]
                   </span>
                   {d.message}
@@ -394,16 +429,18 @@ export function DemoInteractiveClient({
         ) : (
           <div className="space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <h2 className="text-lg font-bold tracking-tight text-fg">
-                2. Verified Cutting Plan & Baseline Comparison
-              </h2>
-              <div className="flex items-center gap-2 text-xs text-accent-text">
-                <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
-                <span>
-                  Independent cut-tree & conservation verifier passed in{' '}
-                  {evaluation.optimized.durationMs} ms
-                </span>
+              <div>
+                <p className="cc-kicker text-accent-text">
+                  Step 02 · Audited Output & CAD Blueprint
+                </p>
+                <h2 className="text-xl font-bold tracking-tight text-fg">
+                  2. Verified Cutting Plan & Baseline Comparison
+                </h2>
               </div>
+              <Badge variant="production">
+                <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
+                Independent verifier passed ({evaluation.optimized.durationMs} ms)
+              </Badge>
             </div>
 
             <PlanComparisonWorkspace

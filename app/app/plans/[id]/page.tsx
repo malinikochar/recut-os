@@ -135,7 +135,7 @@ export default async function PlanDetailPage({
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <div className="flex flex-wrap items-center gap-2 text-xs text-fg-muted">
+        <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-fg-muted">
           <Link
             href={`/app/jobs/${planRow.job_id}`}
             className="inline-flex items-center gap-1.5 hover:text-fg"
@@ -147,11 +147,17 @@ export default async function PlanDetailPage({
 
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-fg">
+            <p className="cc-kicker text-accent-text">
+              Verified Guillotine Saw Layout
+            </p>
+            <h1 className="text-2xl font-bold leading-8 tracking-tight text-fg">
               Cutting Plan — {jobTitle}
             </h1>
             <p className="mt-1 flex flex-wrap items-center gap-2 font-mono text-xs text-fg-muted">
-              <Cpu className="h-3.5 w-3.5 text-accent-text" aria-hidden="true" />
+              <Cpu
+                className="h-3.5 w-3.5 text-accent-text"
+                aria-hidden="true"
+              />
               <span>Plan {planRow.id.slice(0, 8)}</span>
               <span>·</span>
               <span>{planRow.algorithm_version}</span>
@@ -168,7 +174,7 @@ export default async function PlanDetailPage({
 
           <div className="flex flex-wrap gap-1.5">
             {(constraints.materials ?? []).map((m) => (
-              <Badge key={m.id} variant="muted">
+              <Badge key={m.id} variant="neutral">
                 {m.name}: {m.kerfMm}mm kerf · min {m.minReusableWidthMm}×
                 {m.minReusableHeightMm}mm
               </Badge>

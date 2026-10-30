@@ -2,12 +2,7 @@
 
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  AlertTriangle,
-  Loader2,
-  Play,
-  Trash2,
-} from 'lucide-react';
+import { AlertTriangle, Loader2, Play, Trash2 } from 'lucide-react';
 import {
   deleteJobAction,
   generateAndSavePlanAction,
@@ -89,7 +84,8 @@ export function JobOptimizePanel({
 
   return (
     <div className="space-y-4">
-      <Card className="border-accent-border bg-bg-subtle">
+      <Card className="relative overflow-hidden border-accent-border">
+        <div className="h-1 w-full bg-accent" aria-hidden="true" />
         <CardHeader className="pb-4">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="space-y-1">
@@ -98,10 +94,10 @@ export function JobOptimizePanel({
                 <Badge
                   variant={
                     jobStatus === 'committed'
-                      ? 'default'
+                      ? 'production'
                       : jobStatus === 'planned'
                         ? 'amber'
-                        : 'muted'
+                        : 'neutral'
                   }
                 >
                   Job {jobStatus}
@@ -109,7 +105,7 @@ export function JobOptimizePanel({
               </div>
               <CardDescription>
                 Evaluates{' '}
-                <span className="font-mono text-fg">
+                <span className="font-mono font-semibold text-fg">
                   {availableOwnedStockCount}
                 </span>{' '}
                 available owned stock{' '}
@@ -117,7 +113,7 @@ export function JobOptimizePanel({
                 before opening new standard sheets, verifies every cut tree
                 independently, and saves an auditable draft plan.
                 {pendingStockCount > 0 && (
-                  <span className="ml-1 text-amber-text">
+                  <span className="ml-1 font-medium text-amber-text">
                     ({pendingStockCount} pending-confirmation{' '}
                     {pendingStockCount === 1 ? 'remnant is' : 'remnants are'}{' '}
                     withheld until shop measurement.)
@@ -171,7 +167,7 @@ export function JobOptimizePanel({
               role="alert"
               className="space-y-3 rounded-xl border border-danger-border bg-danger-soft p-4 text-xs text-danger-text"
             >
-              <div className="flex items-center gap-2 font-semibold text-fg">
+              <div className="flex items-center gap-2 font-bold text-fg">
                 <AlertTriangle
                   className="h-4 w-4 text-danger-text"
                   aria-hidden="true"
@@ -183,14 +179,14 @@ export function JobOptimizePanel({
               {infeasibleEval &&
                 infeasibleEval.optimized.diagnostics.length > 0 && (
                   <div className="space-y-1.5 border-t border-danger-border pt-2.5">
-                    <p className="font-medium text-fg">
+                    <p className="font-semibold text-fg">
                       Constraint Diagnostics (
                       {infeasibleEval.optimized.diagnostics.length}):
                     </p>
                     <ul className="list-disc space-y-1 pl-5 text-fg">
                       {infeasibleEval.optimized.diagnostics.map((d, idx) => (
                         <li key={idx}>
-                          <span className="font-mono font-semibold uppercase">
+                          <span className="font-mono font-bold uppercase">
                             [{d.code}]
                           </span>{' '}
                           {d.message}

@@ -60,7 +60,8 @@ export default async function JobsListPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-2xl font-bold tracking-tight text-fg">
+          <p className="cc-kicker text-accent-text">Production Queue</p>
+          <h1 className="text-2xl font-bold leading-8 tracking-tight text-fg">
             Cutting Jobs
           </h1>
           <p className="text-sm text-fg-muted">
@@ -87,7 +88,7 @@ export default async function JobsListPage() {
         </CardHeader>
         <CardContent>
           {jobs.length === 0 ? (
-            <div className="rounded-lg border border-dashed border-border-subtle p-10 text-center text-sm text-fg-muted">
+            <div className="rounded-lg border border-dashed border-border-subtle bg-bg-subtle/60 p-10 text-center text-sm text-fg-muted">
               <ClipboardList
                 className="mx-auto mb-2 h-7 w-7 text-fg-subtle"
                 aria-hidden="true"
@@ -98,32 +99,32 @@ export default async function JobsListPage() {
               </Button>
             </div>
           ) : (
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto rounded-lg border border-border-subtle">
               <table className="w-full border-collapse text-left text-xs">
                 <caption className="sr-only">Cutting jobs list</caption>
                 <thead>
-                  <tr className="border-b border-border-subtle text-fg-muted">
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                  <tr className="cc-table-head h-12 border-b border-border-subtle">
+                    <th scope="col" className="cc-kicker px-4">
                       Job Title
                     </th>
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Part Demand
                     </th>
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Saved Plans
                     </th>
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Status
                     </th>
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Updated
                     </th>
-                    <th scope="col" className="py-2.5 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Action
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border-subtle/70 tabular-nums">
+                <tbody className="divide-y divide-border-subtle tabular-nums">
                   {jobs.map((job) => {
                     const demand = piecesByJob.get(job.id) ?? {
                       rows: 0,
@@ -132,10 +133,10 @@ export default async function JobsListPage() {
                     const planCount = plansByJob.get(job.id) ?? 0;
                     return (
                       <tr key={job.id}>
-                        <td className="py-3 pr-4">
+                        <td className="px-4 py-3">
                           <Link
                             href={`/app/jobs/${job.id}`}
-                            className="font-medium text-fg hover:text-accent-text"
+                            className="font-semibold text-fg hover:text-accent-text"
                           >
                             {job.title}
                           </Link>
@@ -145,40 +146,41 @@ export default async function JobsListPage() {
                             </p>
                           )}
                         </td>
-                        <td className="py-3 pr-4 font-mono text-fg">
+                        <td className="px-4 py-3 font-mono text-fg">
                           {demand.pieces} pieces ({demand.rows}{' '}
                           {demand.rows === 1 ? 'row' : 'rows'})
                         </td>
-                        <td className="py-3 pr-4 font-mono text-fg-muted">
+                        <td className="px-4 py-3 font-mono text-fg-muted">
                           {planCount}
                         </td>
-                        <td className="py-3 pr-4">
+                        <td className="px-4 py-3">
                           <Badge
                             variant={
                               job.status === 'committed'
-                                ? 'default'
+                                ? 'production'
                                 : job.status === 'planned'
                                   ? 'amber'
-                                  : 'muted'
+                                  : 'neutral'
                             }
                           >
                             {job.status}
                           </Badge>
                         </td>
-                        <td className="py-3 pr-4 text-fg-muted">
+                        <td className="px-4 py-3 text-fg-muted">
                           {new Date(job.updated_at).toLocaleDateString(
                             'en-US',
                             {
                               month: 'short',
                               day: 'numeric',
                               year: 'numeric',
+                              timeZone: 'UTC',
                             }
                           )}
                         </td>
-                        <td className="py-3">
+                        <td className="px-4 py-3">
                           <Link
                             href={`/app/jobs/${job.id}`}
-                            className="font-medium text-accent-text hover:underline"
+                            className="font-semibold text-accent-text hover:underline"
                           >
                             Open Job
                           </Link>

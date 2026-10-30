@@ -82,9 +82,12 @@ function PendingRemnantRowControls({
   }
 
   return (
-    <div className="mt-2 flex flex-wrap items-end gap-2 rounded-lg border border-amber-border bg-amber-soft p-2.5">
+    <div className="mt-2.5 flex flex-wrap items-end gap-2 rounded-lg border border-amber-border bg-amber-soft p-3">
       <div className="space-y-1">
-        <Label htmlFor={`rem-w-${item.id}`} className="text-[11px] text-amber-text">
+        <Label
+          htmlFor={`rem-w-${item.id}`}
+          className="text-[11px] text-amber-text"
+        >
           Measured W (mm)
         </Label>
         <Input
@@ -98,7 +101,10 @@ function PendingRemnantRowControls({
         />
       </div>
       <div className="space-y-1">
-        <Label htmlFor={`rem-h-${item.id}`} className="text-[11px] text-amber-text">
+        <Label
+          htmlFor={`rem-h-${item.id}`}
+          className="text-[11px] text-amber-text"
+        >
           Measured H (mm)
         </Label>
         <Input
@@ -160,10 +166,11 @@ export function InventoryManager({
   const [error, setError] = React.useState<string | null>(null);
   const [statusMessage, setStatusMessage] = React.useState<string | null>(null);
 
-  // Filters
   const [filterMaterial, setFilterMaterial] = React.useState<string>('all');
   const [filterState, setFilterState] = React.useState<string>(
-    ['available', 'pending_confirmation', 'consumed'].includes(initialStateFilter)
+    ['available', 'pending_confirmation', 'consumed'].includes(
+      initialStateFilter
+    )
       ? initialStateFilter
       : 'all'
   );
@@ -256,6 +263,18 @@ export function InventoryManager({
     }
   }
 
+  const counts = React.useMemo(() => {
+    let available = 0;
+    let pending = 0;
+    let consumed = 0;
+    for (const s of stockItems) {
+      if (s.state === 'available') available += 1;
+      else if (s.state === 'pending_confirmation') pending += 1;
+      else consumed += 1;
+    }
+    return { available, pending, consumed };
+  }, [stockItems]);
+
   const filteredItems = React.useMemo(() => {
     const minW = minWidthFilter.trim() ? Number(minWidthFilter) : 0;
     const minH = minHeightFilter.trim() ? Number(minHeightFilter) : 0;
@@ -307,11 +326,14 @@ export function InventoryManager({
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Record new stock form */}
       <Card>
         <CardHeader>
-          <CardTitle>Record Owned Sheet or Remnant Offcut</CardTitle>
+          <p className="cc-kicker text-accent-text">Rack Intake</p>
+          <CardTitle className="mt-0.5">
+            Record Owned Sheet or Remnant Offcut
+          </CardTitle>
           <CardDescription>
             Each physical rectangle is tracked individually (`quantity = 1` per
             record) so cutting layouts map 1-to-1 to real shop pieces.
@@ -330,7 +352,7 @@ export function InventoryManager({
             {statusMessage && (
               <div
                 role="status"
-                className="flex items-center gap-2 rounded-lg border border-accent-border bg-accent-soft p-3 text-xs text-accent-text"
+                className="flex items-center gap-2 rounded-lg border border-accent-border bg-accent-soft p-3 text-xs font-medium text-accent-text"
               >
                 <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />
                 <span>{statusMessage}</span>
@@ -469,14 +491,28 @@ export function InventoryManager({
                 `pending_confirmation` offcuts after measuring on the saw.
               </CardDescription>
             </div>
+
+            <div className="flex flex-wrap gap-1.5">
+              <Badge variant="production">
+                {counts.available} Available
+              </Badge>
+              <Badge variant="amber">{counts.pending} Pending Check</Badge>
+              <Badge variant="neutral">{counts.consumed} Consumed</Badge>
+            </div>
           </div>
         </CardHeader>
         <CardContent className="space-y-5">
           {/* Filter controls */}
           <div className="grid gap-3 rounded-xl border border-border-subtle bg-bg-subtle p-4 sm:grid-cols-2 lg:grid-cols-5">
             <div className="space-y-1">
-              <Label htmlFor="flt-material" className="flex items-center gap-1.5">
-                <Filter className="h-3 w-3 text-accent-text" aria-hidden="true" />
+              <Label
+                htmlFor="flt-material"
+                className="flex items-center gap-1.5"
+              >
+                <Filter
+                  className="h-3 w-3 text-accent-text"
+                  aria-hidden="true"
+                />
                 Material
               </Label>
               <SelectNative
@@ -548,7 +584,7 @@ export function InventoryManager({
           </div>
 
           {filteredItems.length === 0 ? (
-            <div className="rounded-lg border border-dashed border-border-subtle p-8 text-center text-sm text-fg-muted">
+            <div className="rounded-lg border border-dashed border-border-subtle bg-bg-subtle/60 p-8 text-center text-sm text-fg-muted">
               <Boxes
                 className="mx-auto mb-2 h-6 w-6 text-fg-subtle"
                 aria-hidden="true"
@@ -556,39 +592,37 @@ export function InventoryManager({
               <p>No physical stock records match the selected filters.</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto rounded-lg border border-border-subtle">
               <table className="w-full border-collapse text-left text-xs">
                 <caption className="sr-only">
                   Physical sheet and remnant stock items
                 </caption>
                 <thead>
-                  <tr className="border-b border-border-subtle text-fg-muted">
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                  <tr className="cc-table-head h-12 border-b border-border-subtle">
+                    <th scope="col" className="cc-kicker px-4">
                       Label & Provenance
                     </th>
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Material
                     </th>
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Dimensions & Area
                     </th>
-                    <th scope="col" className="py-2.5 pr-4 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Origin & State
                     </th>
-                    <th scope="col" className="py-2.5 font-medium">
+                    <th scope="col" className="cc-kicker px-4">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border-subtle/70 tabular-nums">
+                <tbody className="divide-y divide-border-subtle tabular-nums">
                   {filteredItems.map((item) => {
                     const mat = materialById.get(item.materialId);
                     return (
                       <tr key={item.id} className="align-top">
-                        <td className="py-3 pr-4">
-                          <p className="font-medium text-fg">
-                            {item.label}
-                          </p>
+                        <td className="px-4 py-3">
+                          <p className="font-semibold text-fg">{item.label}</p>
                           {item.notes && (
                             <p className="mt-0.5 text-[11px] text-fg-subtle">
                               {item.notes}
@@ -598,9 +632,10 @@ export function InventoryManager({
                             {item.createdFromPlanId && (
                               <Link
                                 href={`/app/plans/${item.createdFromPlanId}`}
-                                className="text-accent-text hover:underline"
+                                className="font-semibold text-accent-text hover:underline"
                               >
-                                Created from Plan {item.createdFromPlanId.slice(0, 8)}
+                                Created from Plan{' '}
+                                {item.createdFromPlanId.slice(0, 8)}
                               </Link>
                             )}
                             {item.consumedByPlanId && (
@@ -608,7 +643,8 @@ export function InventoryManager({
                                 href={`/app/plans/${item.consumedByPlanId}`}
                                 className="text-fg-muted hover:underline"
                               >
-                                Consumed by Plan {item.consumedByPlanId.slice(0, 8)}
+                                Consumed by Plan{' '}
+                                {item.consumedByPlanId.slice(0, 8)}
                               </Link>
                             )}
                           </div>
@@ -627,22 +663,24 @@ export function InventoryManager({
                             />
                           )}
                         </td>
-                        <td className="py-3 pr-4 text-fg-muted">
+                        <td className="px-4 py-3 text-fg-muted">
                           {mat ? mat.name : 'Unknown material'}
                         </td>
-                        <td className="py-3 pr-4 font-mono text-fg">
-                          <div>
+                        <td className="px-4 py-3 font-mono text-fg">
+                          <div className="font-semibold">
                             {formatDimensionsMm(item.widthMm, item.heightMm)}
                           </div>
                           <div className="text-[11px] text-fg-subtle">
                             {formatAreaM2(item.widthMm * item.heightMm)}
                           </div>
                         </td>
-                        <td className="py-3 pr-4">
+                        <td className="px-4 py-3">
                           <div className="flex flex-wrap gap-1.5">
                             <Badge
                               variant={
-                                item.origin === 'remnant' ? 'neutral' : 'muted'
+                                item.origin === 'remnant'
+                                  ? 'integrated'
+                                  : 'development'
                               }
                             >
                               {item.origin === 'remnant'
@@ -652,17 +690,17 @@ export function InventoryManager({
                             <Badge
                               variant={
                                 item.state === 'available'
-                                  ? 'default'
+                                  ? 'production'
                                   : item.state === 'pending_confirmation'
                                     ? 'amber'
-                                    : 'muted'
+                                    : 'neutral'
                               }
                             >
                               {item.state}
                             </Badge>
                           </div>
                         </td>
-                        <td className="py-3">
+                        <td className="px-4 py-3">
                           {item.state !== 'consumed' ? (
                             <Button
                               type="button"
@@ -678,7 +716,7 @@ export function InventoryManager({
                               Remove
                             </Button>
                           ) : (
-                            <span className="text-[11px] text-fg-subtle">
+                            <span className="font-mono text-[11px] text-fg-subtle">
                               Audit locked
                             </span>
                           )}

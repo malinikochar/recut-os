@@ -66,7 +66,10 @@ export default async function InventoryPage({
   return (
     <div className="space-y-6">
       <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight text-fg">
+        <p className="cc-kicker text-accent-text">
+          Physical Provenance & Remnant Bank
+        </p>
+        <h1 className="text-2xl font-bold leading-8 tracking-tight text-fg">
           Sheet & Remnant Stock
         </h1>
         <p className="text-sm text-fg-muted">

@@ -165,7 +165,9 @@ export function JobEditorForm({
   }
 
   function removeRow(index: number) {
-    setRows((prev) => (prev.length <= 1 ? prev : prev.filter((_, i) => i !== index)));
+    setRows((prev) =>
+      prev.length <= 1 ? prev : prev.filter((_, i) => i !== index)
+    );
   }
 
   function updateRow(index: number, patch: Partial<EditablePartRow>) {
@@ -249,7 +251,10 @@ export function JobEditorForm({
       <CardHeader>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <CardTitle>
+            <p className="cc-kicker text-accent-text">
+              {readOnly ? 'Audit Locked Manifest' : 'Part Demand Specification'}
+            </p>
+            <CardTitle className="mt-0.5">
               {readOnly
                 ? 'Committed Part Manifest (Locked)'
                 : mode === 'create'
@@ -266,12 +271,12 @@ export function JobEditorForm({
               variant={
                 summary.totalPieces > MAX_EXPANDED_PARTS_PER_JOB
                   ? 'error'
-                  : 'neutral'
+                  : 'default'
               }
             >
               {summary.totalPieces} / {MAX_EXPANDED_PARTS_PER_JOB} pieces
             </Badge>
-            <Badge variant="muted">
+            <Badge variant="neutral">
               Net area: {formatAreaM2(summary.totalAreaMm2)}
             </Badge>
           </div>
@@ -290,7 +295,7 @@ export function JobEditorForm({
           {statusMessage && (
             <div
               role="status"
-              className="flex items-center gap-2 rounded-lg border border-accent-border bg-accent-soft p-3 text-xs text-accent-text"
+              className="flex items-center gap-2 rounded-lg border border-accent-border bg-accent-soft p-3 text-xs font-medium text-accent-text"
             >
               <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />
               <span>{statusMessage}</span>
@@ -322,8 +327,8 @@ export function JobEditorForm({
           </div>
 
           <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-fg">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h3 className="text-sm font-bold text-fg">
                 Required Rectangular Parts ({rows.length}{' '}
                 {rows.length === 1 ? 'row' : 'rows'})
               </h3>
@@ -348,6 +353,19 @@ export function JobEditorForm({
                     key={row.rowKey}
                     className="rounded-xl border border-border-subtle bg-bg-subtle p-4"
                   >
+                    <div className="mb-2.5 flex items-center justify-between text-xs">
+                      <span className="cc-kicker text-accent-text">
+                        Part Row #{String(idx + 1).padStart(2, '0')}
+                      </span>
+                      {selectedMat && (
+                        <span className="font-mono text-[11px] text-fg-subtle">
+                          Envelope: {selectedMat.standardWidthMm}×
+                          {selectedMat.standardHeightMm} mm · Kerf{' '}
+                          {selectedMat.kerfMm} mm
+                        </span>
+                      )}
+                    </div>
+
                     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-12">
                       <div className="space-y-1 lg:col-span-3">
                         <Label htmlFor={`part-label-${row.rowKey}`}>
@@ -443,11 +461,11 @@ export function JobEditorForm({
                       </div>
                     </div>
 
-                    <div className="mt-3 flex flex-wrap items-center justify-between gap-3 border-t border-border-subtle/80 pt-3">
+                    <div className="mt-3 flex flex-wrap items-center justify-between gap-3 border-t border-border-subtle pt-3">
                       <div className="flex flex-wrap items-center gap-4">
                         <label
                           htmlFor={`part-rot-${row.rowKey}`}
-                          className="inline-flex cursor-pointer items-center gap-2 text-xs text-fg"
+                          className="inline-flex cursor-pointer items-center gap-2 text-xs font-medium text-fg"
                         >
                           <input
                             id={`part-rot-${row.rowKey}`}
@@ -459,7 +477,7 @@ export function JobEditorForm({
                                 allowRotation: e.target.checked,
                               })
                             }
-                            className="h-4 w-4 rounded border-border-strong bg-bg-page accent-accent"
+                            className="h-4 w-4 rounded border-border-strong bg-bg-card accent-accent"
                           />
                           <span>Allow 90° rotation</span>
                         </label>
@@ -487,14 +505,6 @@ export function JobEditorForm({
                             <option value="y">Along part height (Y)</option>
                           </SelectNative>
                         </div>
-
-                        {selectedMat && (
-                          <span className="font-mono text-[11px] text-fg-subtle">
-                            Envelope: {selectedMat.standardWidthMm}×
-                            {selectedMat.standardHeightMm} mm · Kerf{' '}
-                            {selectedMat.kerfMm} mm
-                          </span>
-                        )}
                       </div>
 
                       {!readOnly && (
@@ -549,7 +559,9 @@ export function JobEditorForm({
                 ) : (
                   <>
                     <Save className="h-4 w-4" aria-hidden="true" />
-                    {mode === 'create' ? 'Save Cutting Job' : 'Save Part Changes'}
+                    {mode === 'create'
+                      ? 'Save Cutting Job'
+                      : 'Save Part Changes'}
                   </>
                 )}
               </Button>

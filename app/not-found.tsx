@@ -7,20 +7,18 @@ export default function NotFoundPage() {
   return (
     <main
       id="main-content"
-      className="relative flex min-h-screen flex-col items-center justify-center bg-bg-page px-4 text-center text-fg"
+      className="cc-grid-canvas relative flex min-h-screen flex-col items-center justify-center bg-bg-page px-4 text-center text-fg"
     >
       <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
         <ThemeToggle />
       </div>
 
-      <div className="max-w-md space-y-5 rounded-2xl border border-border-subtle bg-bg-card p-8 shadow-sm">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl border border-accent-border bg-accent-soft text-accent-text">
+      <div className="cc-card-raised max-w-md space-y-5 overflow-hidden rounded-xl border border-border-subtle bg-bg-card p-8">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-accent text-white shadow-xs">
           <Scissors className="h-6 w-6" aria-hidden="true" />
         </div>
         <div className="space-y-2">
-          <p className="font-mono text-xs uppercase tracking-wider text-accent-text">
-            HTTP 404
-          </p>
+          <p className="cc-kicker text-accent-text">HTTP 404 · Route Missing</p>
           <h1 className="text-2xl font-bold tracking-tight">
             Requested Sheet or Route Not Found
           </h1>
