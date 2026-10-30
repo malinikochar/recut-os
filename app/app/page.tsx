@@ -81,10 +81,10 @@ export default async function WorkshopOverviewPage() {
     <div className="space-y-8">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-2xl font-bold tracking-tight text-[#F2F0E9]">
+          <h1 className="text-2xl font-bold tracking-tight text-fg">
             Workshop Recovery Console
           </h1>
-          <p className="text-sm text-[#A9B4B4]">
+          <p className="text-sm text-fg-muted">
             Manage physical sheet & remnant stock, generate verified guillotine
             cutting trees, and commit inventory-safe shop plans.
           </p>
@@ -111,20 +111,20 @@ export default async function WorkshopOverviewPage() {
         <div
           role="region"
           aria-label="Pending remnant verification notice"
-          className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-[#E8AA65]/45 bg-[#E8AA65]/10 p-4"
+          className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-amber-border bg-amber-soft p-4"
         >
           <div className="flex items-start gap-3">
             <AlertCircle
-              className="mt-0.5 h-5 w-5 shrink-0 text-[#E8AA65]"
+              className="mt-0.5 h-5 w-5 shrink-0 text-amber-text"
               aria-hidden="true"
             />
             <div className="space-y-0.5 text-sm">
-              <p className="font-semibold text-[#F2F0E9]">
+              <p className="font-semibold text-fg">
                 {pendingRemnants.length} offcut{' '}
                 {pendingRemnants.length === 1 ? 'remnant requires' : 'remnants require'}{' '}
                 physical shop measurement
               </p>
-              <p className="text-xs text-[#F0C28D]">
+              <p className="text-xs text-amber-text">
                 Pending remnants from committed plans are excluded from future
                 cutting optimization until measured and confirmed on the rack.
               </p>
@@ -141,7 +141,7 @@ export default async function WorkshopOverviewPage() {
 
       {/* First-run onboarding when workshop has zero materials */}
       {isEmptyWorkshop && (
-        <Card className="border-[#29B49B]/40 bg-[#141B1F]">
+        <Card className="border-accent-border bg-bg-subtle">
           <CardHeader>
             <Badge variant="default" className="w-fit">
               First-Run Workshop Setup
@@ -172,17 +172,17 @@ export default async function WorkshopOverviewPage() {
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Card>
           <CardContent className="space-y-1 p-5">
-            <div className="flex items-center justify-between text-xs font-medium text-[#A9B4B4]">
+            <div className="flex items-center justify-between text-xs font-medium text-fg-muted">
               <span>Material Catalog</span>
-              <Layers className="h-4 w-4 text-[#29B49B]" aria-hidden="true" />
+              <Layers className="h-4 w-4 text-accent-text" aria-hidden="true" />
             </div>
-            <div className="text-2xl font-bold tabular-nums text-[#F2F0E9]">
+            <div className="text-2xl font-bold tabular-nums text-fg">
               {materials.length}
             </div>
-            <p className="text-xs text-[#A9B4B4]">
+            <p className="text-xs text-fg-muted">
               <Link
                 href="/app/materials"
-                className="text-[#5CE1C9] hover:underline"
+                className="text-accent-text hover:underline"
               >
                 Manage sheet specs & kerf
               </Link>
@@ -192,19 +192,19 @@ export default async function WorkshopOverviewPage() {
 
         <Card>
           <CardContent className="space-y-1 p-5">
-            <div className="flex items-center justify-between text-xs font-medium text-[#A9B4B4]">
+            <div className="flex items-center justify-between text-xs font-medium text-fg-muted">
               <span>Available Owned Stock</span>
-              <Boxes className="h-4 w-4 text-[#29B49B]" aria-hidden="true" />
+              <Boxes className="h-4 w-4 text-accent-text" aria-hidden="true" />
             </div>
             <div className="flex items-baseline gap-2 tabular-nums">
-              <span className="text-2xl font-bold text-[#F2F0E9]">
+              <span className="text-2xl font-bold text-fg">
                 {availableStock.length}
               </span>
-              <span className="text-xs text-[#A9B4B4]">
+              <span className="text-xs text-fg-muted">
                 ({availableRemnants.length} remnants)
               </span>
             </div>
-            <p className="text-xs tabular-nums text-[#A9B4B4]">
+            <p className="text-xs tabular-nums text-fg-muted">
               {formatAreaM2(availableAreaMm2)} ready for allocation
             </p>
           </CardContent>
@@ -212,18 +212,18 @@ export default async function WorkshopOverviewPage() {
 
         <Card>
           <CardContent className="space-y-1 p-5">
-            <div className="flex items-center justify-between text-xs font-medium text-[#A9B4B4]">
+            <div className="flex items-center justify-between text-xs font-medium text-fg-muted">
               <span>Pending Remnant Checks</span>
-              <AlertCircle className="h-4 w-4 text-[#E8AA65]" aria-hidden="true" />
+              <AlertCircle className="h-4 w-4 text-amber-text" aria-hidden="true" />
             </div>
-            <div className="text-2xl font-bold tabular-nums text-[#F2F0E9]">
+            <div className="text-2xl font-bold tabular-nums text-fg">
               {pendingRemnants.length}
             </div>
-            <p className="text-xs text-[#A9B4B4]">
+            <p className="text-xs text-fg-muted">
               {pendingRemnants.length > 0 ? (
                 <Link
                   href="/app/inventory?state=pending_confirmation"
-                  className="text-[#F0C28D] hover:underline"
+                  className="text-amber-text hover:underline"
                 >
                   Confirm measured dimensions
                 </Link>
@@ -236,20 +236,20 @@ export default async function WorkshopOverviewPage() {
 
         <Card>
           <CardContent className="space-y-1 p-5">
-            <div className="flex items-center justify-between text-xs font-medium text-[#A9B4B4]">
+            <div className="flex items-center justify-between text-xs font-medium text-fg-muted">
               <span>Jobs & Committed Plans</span>
-              <FileCheck2 className="h-4 w-4 text-[#29B49B]" aria-hidden="true" />
+              <FileCheck2 className="h-4 w-4 text-accent-text" aria-hidden="true" />
             </div>
             <div className="flex items-baseline gap-2 tabular-nums">
-              <span className="text-2xl font-bold text-[#F2F0E9]">
+              <span className="text-2xl font-bold text-fg">
                 {jobs.length}
               </span>
-              <span className="text-xs text-[#A9B4B4]">
+              <span className="text-xs text-fg-muted">
                 ({committedPlanCount} committed)
               </span>
             </div>
-            <p className="text-xs text-[#A9B4B4]">
-              <Link href="/app/jobs" className="text-[#5CE1C9] hover:underline">
+            <p className="text-xs text-fg-muted">
+              <Link href="/app/jobs" className="text-accent-text hover:underline">
                 View cutting jobs
               </Link>
             </p>
@@ -274,9 +274,9 @@ export default async function WorkshopOverviewPage() {
           </CardHeader>
           <CardContent>
             {jobs.length === 0 ? (
-              <div className="rounded-lg border border-dashed border-[#2A363C] p-6 text-center text-sm text-[#A9B4B4]">
+              <div className="rounded-lg border border-dashed border-border-subtle p-6 text-center text-sm text-fg-muted">
                 <ClipboardList
-                  className="mx-auto mb-2 h-6 w-6 text-[#738287]"
+                  className="mx-auto mb-2 h-6 w-6 text-fg-subtle"
                   aria-hidden="true"
                 />
                 <p>No cutting jobs recorded yet.</p>
@@ -285,7 +285,7 @@ export default async function WorkshopOverviewPage() {
                 </Button>
               </div>
             ) : (
-              <ul className="divide-y divide-[#2A363C]/70">
+              <ul className="divide-y divide-border-subtle/70">
                 {jobs.map((job) => (
                   <li
                     key={job.id}
@@ -294,11 +294,11 @@ export default async function WorkshopOverviewPage() {
                     <div className="min-w-0">
                       <Link
                         href={`/app/jobs/${job.id}`}
-                        className="block truncate font-medium text-[#F2F0E9] hover:text-[#5CE1C9]"
+                        className="block truncate font-medium text-fg hover:text-accent-text"
                       >
                         {job.title}
                       </Link>
-                      <p className="text-xs tabular-nums text-[#738287]">
+                      <p className="text-xs tabular-nums text-fg-subtle">
                         Updated{' '}
                         {new Date(job.updated_at).toLocaleDateString('en-US', {
                           month: 'short',
@@ -339,9 +339,9 @@ export default async function WorkshopOverviewPage() {
           </CardHeader>
           <CardContent>
             {availableStock.length === 0 ? (
-              <div className="rounded-lg border border-dashed border-[#2A363C] p-6 text-center text-sm text-[#A9B4B4]">
+              <div className="rounded-lg border border-dashed border-border-subtle p-6 text-center text-sm text-fg-muted">
                 <Boxes
-                  className="mx-auto mb-2 h-6 w-6 text-[#738287]"
+                  className="mx-auto mb-2 h-6 w-6 text-fg-subtle"
                   aria-hidden="true"
                 />
                 <p>No available physical remnants or sheets on rack.</p>
@@ -350,17 +350,17 @@ export default async function WorkshopOverviewPage() {
                 </Button>
               </div>
             ) : (
-              <ul className="divide-y divide-[#2A363C]/70">
+              <ul className="divide-y divide-border-subtle/70">
                 {availableStock.slice(0, 6).map((item) => (
                   <li
                     key={item.id}
                     className="flex items-center justify-between gap-3 py-3 text-sm"
                   >
                     <div className="min-w-0">
-                      <p className="truncate font-medium text-[#F2F0E9]">
+                      <p className="truncate font-medium text-fg">
                         {item.label}
                       </p>
-                      <p className="font-mono text-xs tabular-nums text-[#A9B4B4]">
+                      <p className="font-mono text-xs tabular-nums text-fg-muted">
                         {formatDimensionsMm(item.width_mm, item.height_mm)} (
                         {formatAreaM2(item.width_mm * item.height_mm)})
                       </p>
@@ -393,7 +393,7 @@ export default async function WorkshopOverviewPage() {
               <table className="w-full border-collapse text-left text-xs">
                 <caption className="sr-only">Recent saved cutting plans</caption>
                 <thead>
-                  <tr className="border-b border-[#2A363C] text-[#A9B4B4]">
+                  <tr className="border-b border-border-subtle text-fg-muted">
                     <th scope="col" className="py-2 pr-4 font-medium">
                       Plan ID
                     </th>
@@ -411,16 +411,16 @@ export default async function WorkshopOverviewPage() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#2A363C]/60 tabular-nums">
+                <tbody className="divide-y divide-border-subtle/70 tabular-nums">
                   {plans.map((p) => (
                     <tr key={p.id}>
-                      <td className="py-2.5 pr-4 font-mono text-[#F2F0E9]">
+                      <td className="py-2.5 pr-4 font-mono text-fg">
                         {p.id.slice(0, 8)}
                       </td>
-                      <td className="py-2.5 pr-4 font-mono text-[#A9B4B4]">
+                      <td className="py-2.5 pr-4 font-mono text-fg-muted">
                         {p.algorithm_version}
                       </td>
-                      <td className="py-2.5 pr-4 text-[#A9B4B4]">
+                      <td className="py-2.5 pr-4 text-fg-muted">
                         {new Date(p.created_at).toLocaleString('en-US', {
                           month: 'short',
                           day: 'numeric',
@@ -438,7 +438,7 @@ export default async function WorkshopOverviewPage() {
                       <td className="py-2.5">
                         <Link
                           href={`/app/plans/${p.id}`}
-                          className="font-medium text-[#5CE1C9] hover:underline"
+                          className="font-medium text-accent-text hover:underline"
                         >
                           Open Layout
                         </Link>

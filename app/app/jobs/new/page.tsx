@@ -51,12 +51,12 @@ export default async function NewJobPage() {
       <div className="space-y-2">
         <Link
           href="/app/jobs"
-          className="inline-flex items-center gap-1.5 text-xs text-[#A9B4B4] hover:text-[#F2F0E9]"
+          className="inline-flex items-center gap-1.5 text-xs text-fg-muted hover:text-fg"
         >
           <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
           Back to Cutting Jobs
         </Link>
-        <h1 className="text-2xl font-bold tracking-tight text-[#F2F0E9]">
+        <h1 className="text-2xl font-bold tracking-tight text-fg">
           Create Cutting Job
         </h1>
       </div>

@@ -135,10 +135,10 @@ export default async function PlanDetailPage({
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <div className="flex flex-wrap items-center gap-2 text-xs text-[#A9B4B4]">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-fg-muted">
           <Link
             href={`/app/jobs/${planRow.job_id}`}
-            className="inline-flex items-center gap-1.5 hover:text-[#F2F0E9]"
+            className="inline-flex items-center gap-1.5 hover:text-fg"
           >
             <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
             Back to {jobTitle}
@@ -147,11 +147,11 @@ export default async function PlanDetailPage({
 
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-[#F2F0E9]">
+            <h1 className="text-2xl font-bold tracking-tight text-fg">
               Cutting Plan — {jobTitle}
             </h1>
-            <p className="mt-1 flex flex-wrap items-center gap-2 font-mono text-xs text-[#A9B4B4]">
-              <Cpu className="h-3.5 w-3.5 text-[#29B49B]" aria-hidden="true" />
+            <p className="mt-1 flex flex-wrap items-center gap-2 font-mono text-xs text-fg-muted">
+              <Cpu className="h-3.5 w-3.5 text-accent-text" aria-hidden="true" />
               <span>Plan {planRow.id.slice(0, 8)}</span>
               <span>·</span>
               <span>{planRow.algorithm_version}</span>

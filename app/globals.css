@@ -1,18 +1,139 @@
 @import "tailwindcss";
 
-:root {
+:root,
+[data-theme="light"] {
+  --bg-page: #f6f8f7;
+  --bg-shell: #ecefee;
+  --bg-subtle: #f0f4f3;
+  --bg-card: #ffffff;
+  --bg-elevated: #e2e8e6;
+  --bg-elevated-hover: #d4ddd9;
+  --border-subtle: #cfd9d6;
+  --border-strong: #94a6a1;
+  --text-primary: #0f181b;
+  --text-muted: #44545a;
+  --text-subtle: #586970;
+
+  --accent-primary: #0f766e;
+  --accent-primary-hover: #0d635c;
+  --accent-primary-fg: #ffffff;
+  --accent-text: #0d655e;
+  --accent-soft: rgba(15, 118, 110, 0.1);
+  --accent-soft-hover: rgba(15, 118, 110, 0.18);
+  --accent-border: rgba(15, 118, 110, 0.36);
+
+  --amber-solid: #d97706;
+  --amber-text: #92400e;
+  --amber-soft: rgba(217, 119, 6, 0.11);
+  --amber-soft-hover: rgba(217, 119, 6, 0.2);
+  --amber-border: rgba(180, 83, 9, 0.38);
+
+  --danger-solid: #dc2626;
+  --danger-text: #991b1b;
+  --danger-soft: rgba(220, 38, 38, 0.09);
+  --danger-soft-hover: rgba(220, 38, 38, 0.16);
+  --danger-border: rgba(220, 38, 38, 0.38);
+
+  --svg-canvas-bg: #edf2f1;
+  --svg-sheet-bg: #ffffff;
+  --svg-sheet-stroke: #52656c;
+  --svg-part-fill: #d3efea;
+  --svg-part-fill-selected: #aee2d9;
+  --svg-part-stroke: #0f766e;
+  --svg-part-stroke-selected: #0f181b;
+  --svg-part-label: #0b2225;
+  --svg-part-sublabel: #0d5650;
+  --svg-remnant-bg: #eaf6f4;
+  --svg-scrap-bg: #e9eeed;
+  --svg-scrap-dot: #7d9096;
+  --svg-kerf-fill: #d97706;
+  --svg-badge-bg: #ffffff;
+  --svg-cut-line: #b45309;
+
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
   --bg-page: #0b1013;
   --bg-shell: #11171b;
+  --bg-subtle: #141b1f;
   --bg-card: #1c2529;
   --bg-elevated: #232e33;
+  --bg-elevated-hover: #2b3940;
   --border-subtle: #2a363c;
   --border-strong: #394950;
   --text-primary: #f2f0e9;
   --text-muted: #a9b4b4;
-  --accent-teal: #29b49b;
-  --accent-teal-hover: #229a84;
-  --accent-amber: #e8aa65;
-  --status-error: #e05a5a;
+  --text-subtle: #88989d;
+
+  --accent-primary: #29b49b;
+  --accent-primary-hover: #229a84;
+  --accent-primary-fg: #0b1013;
+  --accent-text: #5ce1c9;
+  --accent-soft: rgba(41, 180, 155, 0.15);
+  --accent-soft-hover: rgba(41, 180, 155, 0.25);
+  --accent-border: rgba(41, 180, 155, 0.42);
+
+  --amber-solid: #e8aa65;
+  --amber-text: #f0c28d;
+  --amber-soft: rgba(232, 170, 101, 0.14);
+  --amber-soft-hover: rgba(232, 170, 101, 0.24);
+  --amber-border: rgba(232, 170, 101, 0.45);
+
+  --danger-solid: #e05a5a;
+  --danger-text: #ff9999;
+  --danger-soft: rgba(224, 90, 90, 0.15);
+  --danger-soft-hover: rgba(224, 90, 90, 0.25);
+  --danger-border: rgba(224, 90, 90, 0.5);
+
+  --svg-canvas-bg: #0b1013;
+  --svg-sheet-bg: #141b1f;
+  --svg-sheet-stroke: #63767d;
+  --svg-part-fill: #163532;
+  --svg-part-fill-selected: #1f4b46;
+  --svg-part-stroke: #29b49b;
+  --svg-part-stroke-selected: #f2f0e9;
+  --svg-part-label: #f2f0e9;
+  --svg-part-sublabel: #9cece0;
+  --svg-remnant-bg: #122324;
+  --svg-scrap-bg: #11171b;
+  --svg-scrap-dot: #5a696e;
+  --svg-kerf-fill: #e8aa65;
+  --svg-badge-bg: #0b1013;
+  --svg-cut-line: #e8aa65;
+
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg-page: var(--bg-page);
+  --color-bg-shell: var(--bg-shell);
+  --color-bg-subtle: var(--bg-subtle);
+  --color-bg-card: var(--bg-card);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-bg-elevated-hover: var(--bg-elevated-hover);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+  --color-fg: var(--text-primary);
+  --color-fg-muted: var(--text-muted);
+  --color-fg-subtle: var(--text-subtle);
+  --color-accent: var(--accent-primary);
+  --color-accent-hover: var(--accent-primary-hover);
+  --color-accent-fg: var(--accent-primary-fg);
+  --color-accent-text: var(--accent-text);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-soft-hover: var(--accent-soft-hover);
+  --color-accent-border: var(--accent-border);
+  --color-amber: var(--amber-solid);
+  --color-amber-text: var(--amber-text);
+  --color-amber-soft: var(--amber-soft);
+  --color-amber-soft-hover: var(--amber-soft-hover);
+  --color-amber-border: var(--amber-border);
+  --color-danger: var(--danger-solid);
+  --color-danger-text: var(--danger-text);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-soft-hover: var(--danger-soft-hover);
+  --color-danger-border: var(--danger-border);
 }
 
 @layer base {
@@ -23,7 +144,6 @@
   html {
     background-color: var(--bg-page);
     color: var(--text-primary);
-    color-scheme: dark;
   }
 
   body {
@@ -34,13 +154,29 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--accent-teal);
+    outline: 2px solid var(--accent-primary);
     outline-offset: 2px;
   }
 }
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;
+}
+
+.theme-icon-sun {
+  display: none;
+}
+
+.theme-icon-moon {
+  display: inline-block;
+}
+
+[data-theme="dark"] .theme-icon-sun {
+  display: inline-block;
+}
+
+[data-theme="dark"] .theme-icon-moon {
+  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -55,9 +191,32 @@
 }
 
 @media print {
+  html,
+  [data-theme="dark"] {
+    --bg-page: #ffffff;
+    --bg-shell: #f3f5f4;
+    --bg-subtle: #f6f8f7;
+    --bg-card: #ffffff;
+    --border-subtle: #cfd9d6;
+    --border-strong: #94a6a1;
+    --text-primary: #0f181b;
+    --text-muted: #44545a;
+    --svg-canvas-bg: #ffffff;
+    --svg-sheet-bg: #ffffff;
+    --svg-sheet-stroke: #3f4f55;
+    --svg-part-fill: #dff3ef;
+    --svg-part-stroke: #0f766e;
+    --svg-part-label: #0b2225;
+    --svg-part-sublabel: #0d5650;
+    --svg-remnant-bg: #eff8f6;
+    --svg-scrap-bg: #f1f4f3;
+    --svg-badge-bg: #ffffff;
+    color-scheme: light;
+  }
+
   body {
     background: #ffffff !important;
-    color: #11171b !important;
+    color: #0f181b !important;
   }
 
   .no-print {

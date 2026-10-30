@@ -12,6 +12,7 @@ import {
   Scissors,
 } from 'lucide-react';
 import { PlanComparisonWorkspace } from '@/components/optimizer/comparison-panel';
+import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -101,30 +102,31 @@ export function DemoInteractiveClient({
   const primaryMaterial = activePreset.problem.materials[0]!;
 
   return (
-    <div className="min-h-screen bg-[#0B1013] text-[#F2F0E9]">
+    <div className="min-h-screen bg-bg-page text-fg">
       {/* Top bar */}
-      <header className="no-print border-b border-[#2A363C] bg-[#11171B]">
+      <header className="no-print border-b border-border-subtle bg-bg-shell">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3.5 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-xs text-[#A9B4B4] hover:text-[#F2F0E9]"
+              className="inline-flex items-center gap-1.5 text-xs text-fg-muted hover:text-fg"
             >
               <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
               Home
             </Link>
-            <span className="text-[#394950]">/</span>
-            <div className="flex items-center gap-2 font-semibold text-[#F2F0E9]">
-              <Scissors className="h-4 w-4 text-[#29B49B]" aria-hidden="true" />
+            <span className="text-border-strong">/</span>
+            <div className="flex items-center gap-2 font-semibold text-fg">
+              <Scissors className="h-4 w-4 text-accent-text" aria-hidden="true" />
               <span>ReCut OS Interactive Demo</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2">
             <Badge variant="amber">Read-only public sandbox</Badge>
             <Button asChild size="sm">
               <Link href="/login">Sign in for persistent workspace</Link>
             </Button>
+            <ThemeToggle />
           </div>
         </div>
       </header>
@@ -136,7 +138,7 @@ export function DemoInteractiveClient({
         {/* Mandatory illustrative demo banner */}
         <div
           role="status"
-          className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#E8AA65]/45 bg-[#E8AA65]/10 px-4 py-3 text-xs text-[#F0C28D]"
+          className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-border bg-amber-soft px-4 py-3 text-xs text-amber-text"
         >
           <div className="flex items-center gap-2.5 font-medium">
             <FlaskConical className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -145,7 +147,7 @@ export function DemoInteractiveClient({
               inputs.
             </span>
           </div>
-          <span className="font-mono text-[11px] text-[#A9B4B4]">
+          <span className="font-mono text-[11px] text-fg-muted">
             Input hash: {evaluation.inputHash} · Seed:{' '}
             {activePreset.problem.seed ?? 42}
           </span>
@@ -200,12 +202,12 @@ export function DemoInteractiveClient({
                   aria-pressed={idx === selectedPresetIdx}
                   className={`rounded-lg border px-3 py-2 text-left text-xs transition-colors cursor-pointer ${
                     idx === selectedPresetIdx
-                      ? 'border-[#29B49B] bg-[#29B49B]/15 text-[#F2F0E9]'
-                      : 'border-[#2A363C] bg-[#11171B] text-[#A9B4B4] hover:border-[#394950] hover:text-[#F2F0E9]'
+                      ? 'border-accent bg-accent-soft text-fg'
+                      : 'border-border-subtle bg-bg-subtle text-fg-muted hover:border-border-strong hover:text-fg'
                   }`}
                 >
                   <span className="block font-semibold">{p.problem.job.title}</span>
-                  <span className="font-mono text-[11px] text-[#A9B4B4]">
+                  <span className="font-mono text-[11px] text-fg-muted">
                     {p.fixtureId}
                   </span>
                 </button>
@@ -214,12 +216,12 @@ export function DemoInteractiveClient({
 
             {/* Interactive inputs overview: Material + Remnant toggles + Job parts */}
             <div className="grid gap-4 lg:grid-cols-12">
-              <div className="space-y-3 rounded-lg border border-[#2A363C] bg-[#11171B] p-4 lg:col-span-5">
+              <div className="space-y-3 rounded-lg border border-border-subtle bg-bg-subtle p-4 lg:col-span-5">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-[#A9B4B4]">
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-fg-muted">
                     Material & Available Offcuts
                   </h3>
-                  <label className="flex items-center gap-2 text-xs text-[#F2F0E9]">
+                  <label className="flex items-center gap-2 text-xs text-fg">
                     <span>Saw kerf (mm):</span>
                     <select
                       aria-label="Saw kerf width in millimeters"
@@ -229,7 +231,7 @@ export function DemoInteractiveClient({
                         setKerfOverrideMm(nextKerf);
                         runPlanner(activePreset, enabledStockIds, nextKerf);
                       }}
-                      className="rounded border border-[#394950] bg-[#0B1013] px-2 py-1 font-mono text-xs text-[#F2F0E9]"
+                      className="rounded border border-border-strong bg-bg-page px-2 py-1 font-mono text-xs text-fg"
                     >
                       <option value={0}>0 mm</option>
                       <option value={3}>3 mm</option>
@@ -239,11 +241,11 @@ export function DemoInteractiveClient({
                   </label>
                 </div>
 
-                <div className="rounded border border-[#2A363C] bg-[#1C2529]/60 p-2.5 text-xs tabular-nums">
-                  <div className="font-medium text-[#F2F0E9]">
+                <div className="rounded border border-border-subtle bg-bg-card p-2.5 text-xs tabular-nums">
+                  <div className="font-medium text-fg">
                     {primaryMaterial.name}
                   </div>
-                  <div className="mt-0.5 text-[#A9B4B4]">
+                  <div className="mt-0.5 text-fg-muted">
                     Standard sheet:{' '}
                     {formatDimensionsMm(
                       primaryMaterial.standardWidthMm,
@@ -259,13 +261,13 @@ export function DemoInteractiveClient({
                 </div>
 
                 {activePreset.problem.stockItems.length === 0 ? (
-                  <p className="text-xs text-[#A9B4B4]">
+                  <p className="text-xs text-fg-muted">
                     Zero remnants in rack for this fixture — planner must purchase
                     standard sheets.
                   </p>
                 ) : (
                   <div className="space-y-2">
-                    <p className="text-[11px] text-[#A9B4B4]">
+                    <p className="text-[11px] text-fg-muted">
                       Toggle remnants below to test live replanning:
                     </p>
                     {activePreset.problem.stockItems.map((s) => {
@@ -273,20 +275,20 @@ export function DemoInteractiveClient({
                       return (
                         <label
                           key={s.id}
-                          className="flex cursor-pointer items-center justify-between rounded border border-[#2A363C] bg-[#0B1013] px-3 py-2 text-xs hover:border-[#394950]"
+                          className="flex cursor-pointer items-center justify-between rounded border border-border-subtle bg-bg-card px-3 py-2 text-xs hover:border-border-strong"
                         >
                           <span className="flex items-center gap-2.5">
                             <input
                               type="checkbox"
                               checked={checked}
                               onChange={() => toggleRemnant(s.id)}
-                              className="h-4 w-4 accent-[#29B49B]"
+                              className="h-4 w-4 accent-accent"
                             />
-                            <span className="font-medium text-[#F2F0E9]">
+                            <span className="font-medium text-fg">
                               {s.label}
                             </span>
                           </span>
-                          <span className="font-mono tabular-nums text-[#A9B4B4]">
+                          <span className="font-mono tabular-nums text-fg-muted">
                             {s.widthMm}×{s.heightMm} mm
                           </span>
                         </label>
@@ -296,9 +298,9 @@ export function DemoInteractiveClient({
                 )}
               </div>
 
-              <div className="space-y-3 rounded-lg border border-[#2A363C] bg-[#11171B] p-4 lg:col-span-7">
+              <div className="space-y-3 rounded-lg border border-border-subtle bg-bg-subtle p-4 lg:col-span-7">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-[#A9B4B4]">
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-fg-muted">
                     Job Order: {activePreset.problem.job.title}
                   </h3>
                   <Badge variant="neutral">
@@ -316,7 +318,7 @@ export function DemoInteractiveClient({
                       Requested rectangular parts in sample job
                     </caption>
                     <thead>
-                      <tr className="border-b border-[#2A363C] text-[#A9B4B4]">
+                      <tr className="border-b border-border-subtle text-fg-muted">
                         <th scope="col" className="py-2 pr-3 font-medium">
                           Part
                         </th>
@@ -334,20 +336,20 @@ export function DemoInteractiveClient({
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#2A363C]/60 tabular-nums">
+                    <tbody className="divide-y divide-border-subtle/70 tabular-nums">
                       {activePreset.problem.job.parts.map((part) => (
                         <tr key={part.id}>
-                          <td className="py-2 pr-3 font-medium text-[#F2F0E9]">
+                          <td className="py-2 pr-3 font-medium text-fg">
                             {part.label}
                           </td>
-                          <td className="py-2 pr-3 font-mono text-[#F2F0E9]">
+                          <td className="py-2 pr-3 font-mono text-fg">
                             {part.widthMm} × {part.heightMm} mm
                           </td>
                           <td className="py-2 pr-3 font-mono">{part.quantity}</td>
-                          <td className="py-2 pr-3 text-[#A9B4B4]">
+                          <td className="py-2 pr-3 text-fg-muted">
                             {part.allowRotation ? 'Allowed' : 'Locked'}
                           </td>
-                          <td className="py-2 font-mono uppercase text-[#A9B4B4]">
+                          <td className="py-2 font-mono uppercase text-fg-muted">
                             {part.requiredGrainAxis}
                           </td>
                         </tr>
@@ -362,11 +364,11 @@ export function DemoInteractiveClient({
 
         {/* Results: either structured infeasibility or verified cutting plan + baseline */}
         {evaluation.optimized.status !== 'feasible' ? (
-          <Card className="border-[#E05A5A]/50 bg-[#1C2529]">
+          <Card className="border-danger-border bg-bg-card">
             <CardHeader>
-              <div className="flex items-center gap-2 text-[#FF9999]">
+              <div className="flex items-center gap-2 text-danger-text">
                 <AlertCircle className="h-5 w-5" aria-hidden="true" />
-                <CardTitle className="text-[#FF9999]">
+                <CardTitle className="text-danger-text">
                   Job Infeasible Under Current Constraints
                 </CardTitle>
               </div>
@@ -379,9 +381,9 @@ export function DemoInteractiveClient({
               {evaluation.optimized.diagnostics.map((d, idx) => (
                 <div
                   key={idx}
-                  className="rounded-lg border border-[#E05A5A]/40 bg-[#0B1013] p-3 text-[#F2F0E9]"
+                  className="rounded-lg border border-danger-border bg-danger-soft p-3 text-fg"
                 >
-                  <span className="mr-2 font-mono uppercase text-[#FF9999]">
+                  <span className="mr-2 font-mono uppercase text-danger-text">
                     [{d.code}]
                   </span>
                   {d.message}
@@ -392,10 +394,10 @@ export function DemoInteractiveClient({
         ) : (
           <div className="space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <h2 className="text-lg font-bold tracking-tight text-[#F2F0E9]">
+              <h2 className="text-lg font-bold tracking-tight text-fg">
                 2. Verified Cutting Plan & Baseline Comparison
               </h2>
-              <div className="flex items-center gap-2 text-xs text-[#5CE1C9]">
+              <div className="flex items-center gap-2 text-xs text-accent-text">
                 <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
                 <span>
                   Independent cut-tree & conservation verifier passed in{' '}

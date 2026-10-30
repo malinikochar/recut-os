@@ -82,9 +82,9 @@ function PendingRemnantRowControls({
   }
 
   return (
-    <div className="mt-2 flex flex-wrap items-end gap-2 rounded-lg border border-[#E8AA65]/35 bg-[#E8AA65]/10 p-2.5">
+    <div className="mt-2 flex flex-wrap items-end gap-2 rounded-lg border border-amber-border bg-amber-soft p-2.5">
       <div className="space-y-1">
-        <Label htmlFor={`rem-w-${item.id}`} className="text-[11px] text-[#F0C28D]">
+        <Label htmlFor={`rem-w-${item.id}`} className="text-[11px] text-amber-text">
           Measured W (mm)
         </Label>
         <Input
@@ -98,7 +98,7 @@ function PendingRemnantRowControls({
         />
       </div>
       <div className="space-y-1">
-        <Label htmlFor={`rem-h-${item.id}`} className="text-[11px] text-[#F0C28D]">
+        <Label htmlFor={`rem-h-${item.id}`} className="text-[11px] text-amber-text">
           Measured H (mm)
         </Label>
         <Input
@@ -322,7 +322,7 @@ export function InventoryManager({
             {error && (
               <div
                 role="alert"
-                className="rounded-lg border border-[#E05A5A]/50 bg-[#E05A5A]/15 p-3 text-xs text-[#FF9999]"
+                className="rounded-lg border border-danger-border bg-danger-soft p-3 text-xs text-danger-text"
               >
                 {error}
               </div>
@@ -330,7 +330,7 @@ export function InventoryManager({
             {statusMessage && (
               <div
                 role="status"
-                className="flex items-center gap-2 rounded-lg border border-[#29B49B]/40 bg-[#29B49B]/10 p-3 text-xs text-[#5CE1C9]"
+                className="flex items-center gap-2 rounded-lg border border-accent-border bg-accent-soft p-3 text-xs text-accent-text"
               >
                 <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />
                 <span>{statusMessage}</span>
@@ -473,10 +473,10 @@ export function InventoryManager({
         </CardHeader>
         <CardContent className="space-y-5">
           {/* Filter controls */}
-          <div className="grid gap-3 rounded-xl border border-[#2A363C] bg-[#11171B] p-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="grid gap-3 rounded-xl border border-border-subtle bg-bg-subtle p-4 sm:grid-cols-2 lg:grid-cols-5">
             <div className="space-y-1">
               <Label htmlFor="flt-material" className="flex items-center gap-1.5">
-                <Filter className="h-3 w-3 text-[#29B49B]" aria-hidden="true" />
+                <Filter className="h-3 w-3 text-accent-text" aria-hidden="true" />
                 Material
               </Label>
               <SelectNative
@@ -548,9 +548,9 @@ export function InventoryManager({
           </div>
 
           {filteredItems.length === 0 ? (
-            <div className="rounded-lg border border-dashed border-[#2A363C] p-8 text-center text-sm text-[#A9B4B4]">
+            <div className="rounded-lg border border-dashed border-border-subtle p-8 text-center text-sm text-fg-muted">
               <Boxes
-                className="mx-auto mb-2 h-6 w-6 text-[#738287]"
+                className="mx-auto mb-2 h-6 w-6 text-fg-subtle"
                 aria-hidden="true"
               />
               <p>No physical stock records match the selected filters.</p>
@@ -562,7 +562,7 @@ export function InventoryManager({
                   Physical sheet and remnant stock items
                 </caption>
                 <thead>
-                  <tr className="border-b border-[#2A363C] text-[#A9B4B4]">
+                  <tr className="border-b border-border-subtle text-fg-muted">
                     <th scope="col" className="py-2.5 pr-4 font-medium">
                       Label & Provenance
                     </th>
@@ -580,17 +580,17 @@ export function InventoryManager({
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#2A363C]/60 tabular-nums">
+                <tbody className="divide-y divide-border-subtle/70 tabular-nums">
                   {filteredItems.map((item) => {
                     const mat = materialById.get(item.materialId);
                     return (
                       <tr key={item.id} className="align-top">
                         <td className="py-3 pr-4">
-                          <p className="font-medium text-[#F2F0E9]">
+                          <p className="font-medium text-fg">
                             {item.label}
                           </p>
                           {item.notes && (
-                            <p className="mt-0.5 text-[11px] text-[#738287]">
+                            <p className="mt-0.5 text-[11px] text-fg-subtle">
                               {item.notes}
                             </p>
                           )}
@@ -598,7 +598,7 @@ export function InventoryManager({
                             {item.createdFromPlanId && (
                               <Link
                                 href={`/app/plans/${item.createdFromPlanId}`}
-                                className="text-[#5CE1C9] hover:underline"
+                                className="text-accent-text hover:underline"
                               >
                                 Created from Plan {item.createdFromPlanId.slice(0, 8)}
                               </Link>
@@ -606,7 +606,7 @@ export function InventoryManager({
                             {item.consumedByPlanId && (
                               <Link
                                 href={`/app/plans/${item.consumedByPlanId}`}
-                                className="text-[#A9B4B4] hover:underline"
+                                className="text-fg-muted hover:underline"
                               >
                                 Consumed by Plan {item.consumedByPlanId.slice(0, 8)}
                               </Link>
@@ -627,14 +627,14 @@ export function InventoryManager({
                             />
                           )}
                         </td>
-                        <td className="py-3 pr-4 text-[#A9B4B4]">
+                        <td className="py-3 pr-4 text-fg-muted">
                           {mat ? mat.name : 'Unknown material'}
                         </td>
-                        <td className="py-3 pr-4 font-mono text-[#F2F0E9]">
+                        <td className="py-3 pr-4 font-mono text-fg">
                           <div>
                             {formatDimensionsMm(item.widthMm, item.heightMm)}
                           </div>
-                          <div className="text-[11px] text-[#738287]">
+                          <div className="text-[11px] text-fg-subtle">
                             {formatAreaM2(item.widthMm * item.heightMm)}
                           </div>
                         </td>
@@ -678,7 +678,7 @@ export function InventoryManager({
                               Remove
                             </Button>
                           ) : (
-                            <span className="text-[11px] text-[#738287]">
+                            <span className="text-[11px] text-fg-subtle">
                               Audit locked
                             </span>
                           )}

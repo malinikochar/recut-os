@@ -110,8 +110,8 @@ export function CommitPlanBar({
       <Card
         className={
           effectiveCommitted
-            ? 'border-[#29B49B]/50 bg-[#141B1F]'
-            : 'border-[#E8AA65]/45 bg-[#141B1F]'
+            ? 'border-accent-border bg-bg-subtle'
+            : 'border-amber-border bg-bg-subtle'
         }
       >
         <CardHeader className="pb-4">
@@ -131,7 +131,7 @@ export function CommitPlanBar({
                 {effectiveCommitted ? (
                   <>
                     Inventory transaction executed for{' '}
-                    <span className="font-medium text-[#F2F0E9]">
+                    <span className="font-medium text-fg">
                       {jobTitle}
                     </span>
                     {committedAt && (
@@ -155,7 +155,7 @@ export function CommitPlanBar({
                 ) : (
                   <>
                     Committing executes an atomic row-locked transaction: marks{' '}
-                    <span className="font-mono text-[#F2F0E9]">
+                    <span className="font-mono text-fg">
                       {ownedStockCount}
                     </span>{' '}
                     allocated owned stock{' '}
@@ -163,7 +163,7 @@ export function CommitPlanBar({
                     {newSheetCount > 0 && (
                       <>
                         , logs{' '}
-                        <span className="font-mono text-[#F2F0E9]">
+                        <span className="font-mono text-fg">
                           {newSheetCount}
                         </span>{' '}
                         modeled new standard{' '}
@@ -171,7 +171,7 @@ export function CommitPlanBar({
                       </>
                     )}
                     , and creates{' '}
-                    <span className="font-mono text-[#F2F0E9]">
+                    <span className="font-mono text-fg">
                       {recoverableRemnantCount}
                     </span>{' '}
                     `pending_confirmation` offcut{' '}
@@ -217,7 +217,7 @@ export function CommitPlanBar({
                 </>
               ) : (
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded-lg border border-[#29B49B]/35 bg-[#29B49B]/10 px-3 py-1.5 text-xs font-medium text-[#5CE1C9]">
+                  <span className="inline-flex items-center gap-1.5 rounded-lg border border-accent-border bg-accent-soft px-3 py-1.5 text-xs font-medium text-accent-text">
                     <Lock className="h-3.5 w-3.5" aria-hidden="true" />
                     Audit Locked
                   </span>
@@ -241,7 +241,7 @@ export function CommitPlanBar({
             {commitReceipt && (
               <div
                 role="status"
-                className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#29B49B]/40 bg-[#29B49B]/10 p-3.5 text-xs text-[#5CE1C9]"
+                className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-accent-border bg-accent-soft p-3.5 text-xs text-accent-text"
               >
                 <div className="flex items-center gap-2">
                   <CheckCircle2
@@ -266,11 +266,11 @@ export function CommitPlanBar({
             {error && (
               <div
                 role="alert"
-                className="space-y-3 rounded-xl border border-[#E05A5A]/50 bg-[#E05A5A]/15 p-4 text-xs text-[#FF9999]"
+                className="space-y-3 rounded-xl border border-danger-border bg-danger-soft p-4 text-xs text-danger-text"
               >
-                <div className="flex items-center gap-2 font-semibold text-[#F2F0E9]">
+                <div className="flex items-center gap-2 font-semibold text-fg">
                   <AlertTriangle
-                    className="h-4 w-4 text-[#E05A5A]"
+                    className="h-4 w-4 text-danger-text"
                     aria-hidden="true"
                   />
                   <span>

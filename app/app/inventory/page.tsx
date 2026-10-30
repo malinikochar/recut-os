@@ -66,10 +66,10 @@ export default async function InventoryPage({
   return (
     <div className="space-y-6">
       <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight text-[#F2F0E9]">
+        <h1 className="text-2xl font-bold tracking-tight text-fg">
           Sheet & Remnant Stock
         </h1>
-        <p className="text-sm text-[#A9B4B4]">
+        <p className="text-sm text-fg-muted">
           Track owned full sheets and reusable offcuts by physical rectangle, and
           confirm post-cut remnants after shop measurement.
         </p>

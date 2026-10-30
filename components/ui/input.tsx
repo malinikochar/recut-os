@@ -9,7 +9,7 @@ export const Input = React.forwardRef<
     <input
       type={type}
       className={cn(
-        'flex h-10 w-full rounded-lg border border-[#394950] bg-[#0B1013] px-3 py-2 text-sm text-[#F2F0E9] placeholder:text-[#738287] disabled:cursor-not-allowed disabled:opacity-50',
+        'flex h-10 w-full rounded-lg border border-border-strong bg-bg-page px-3 py-2 text-sm text-fg placeholder:text-fg-subtle disabled:cursor-not-allowed disabled:opacity-50',
         className
       )}
       ref={ref}
@@ -25,7 +25,7 @@ export const Label = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <label
     ref={ref}
-    className={cn('block text-xs font-medium text-[#F2F0E9]', className)}
+    className={cn('block text-xs font-medium text-fg', className)}
     {...props}
   />
 ));
@@ -38,7 +38,7 @@ export const SelectNative = React.forwardRef<
   <select
     ref={ref}
     className={cn(
-      'flex h-10 w-full rounded-lg border border-[#394950] bg-[#0B1013] px-3 py-2 text-sm text-[#F2F0E9] disabled:cursor-not-allowed disabled:opacity-50',
+      'flex h-10 w-full rounded-lg border border-border-strong bg-bg-page px-3 py-2 text-sm text-fg disabled:cursor-not-allowed disabled:opacity-50',
       className
     )}
     {...props}

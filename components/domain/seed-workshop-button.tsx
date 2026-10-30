@@ -57,7 +57,7 @@ export function SeedWorkshopButton({
         )}
       </Button>
       {error && (
-        <p role="alert" className="text-xs text-[#FF9999]">
+        <p role="alert" className="text-xs text-danger-text">
           {error}
         </p>
       )}

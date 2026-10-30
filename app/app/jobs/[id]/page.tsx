@@ -115,18 +115,18 @@ export default async function JobDetailPage({
       <div className="space-y-2">
         <Link
           href="/app/jobs"
-          className="inline-flex items-center gap-1.5 text-xs text-[#A9B4B4] hover:text-[#F2F0E9]"
+          className="inline-flex items-center gap-1.5 text-xs text-fg-muted hover:text-fg"
         >
           <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
           Back to Cutting Jobs
         </Link>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-[#F2F0E9]">
+            <h1 className="text-2xl font-bold tracking-tight text-fg">
               {jobRow.title}
             </h1>
             {jobRow.notes && (
-              <p className="mt-1 text-sm text-[#A9B4B4]">{jobRow.notes}</p>
+              <p className="mt-1 text-sm text-fg-muted">{jobRow.notes}</p>
             )}
           </div>
           <Badge
@@ -168,7 +168,7 @@ export default async function JobDetailPage({
                   Saved cutting plans for {jobRow.title}
                 </caption>
                 <thead>
-                  <tr className="border-b border-[#2A363C] text-[#A9B4B4]">
+                  <tr className="border-b border-border-subtle text-fg-muted">
                     <th scope="col" className="py-2.5 pr-4 font-medium">
                       Plan ID
                     </th>
@@ -189,7 +189,7 @@ export default async function JobDetailPage({
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#2A363C]/60 tabular-nums">
+                <tbody className="divide-y divide-border-subtle/70 tabular-nums">
                   {planRows.map((pl) => {
                     const summaryObj = (pl.optimized_summary ?? {}) as {
                       metrics?: PlanMetrics;
@@ -201,16 +201,16 @@ export default async function JobDetailPage({
                       : 0;
                     return (
                       <tr key={pl.id}>
-                        <td className="py-3 pr-4 font-mono text-[#F2F0E9]">
+                        <td className="py-3 pr-4 font-mono text-fg">
                           <div className="flex items-center gap-1.5">
                             <FileSpreadsheet
-                              className="h-3.5 w-3.5 text-[#29B49B]"
+                              className="h-3.5 w-3.5 text-accent-text"
                               aria-hidden="true"
                             />
                             <span>{pl.id.slice(0, 8)}</span>
                           </div>
                         </td>
-                        <td className="py-3 pr-4 text-[#A9B4B4]">
+                        <td className="py-3 pr-4 text-fg-muted">
                           {new Date(pl.created_at).toLocaleString('en-US', {
                             month: 'short',
                             day: 'numeric',
@@ -218,10 +218,10 @@ export default async function JobDetailPage({
                             minute: '2-digit',
                           })}
                         </td>
-                        <td className="py-3 pr-4 font-mono text-[#F2F0E9]">
+                        <td className="py-3 pr-4 font-mono text-fg">
                           {ownedCount}
                         </td>
-                        <td className="py-3 pr-4 font-mono text-[#5CE1C9]">
+                        <td className="py-3 pr-4 font-mono text-accent-text">
                           {metrics ? (
                             <>
                               {metrics.newSheetCount} (
@@ -247,7 +247,7 @@ export default async function JobDetailPage({
                         <td className="py-3">
                           <Link
                             href={`/app/plans/${pl.id}`}
-                            className="inline-flex items-center gap-1 font-medium text-[#5CE1C9] hover:underline"
+                            className="inline-flex items-center gap-1 font-medium text-accent-text hover:underline"
                           >
                             <span>
                               {pl.status === 'committed'

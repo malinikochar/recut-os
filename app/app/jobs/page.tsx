@@ -60,10 +60,10 @@ export default async function JobsListPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-2xl font-bold tracking-tight text-[#F2F0E9]">
+          <h1 className="text-2xl font-bold tracking-tight text-fg">
             Cutting Jobs
           </h1>
-          <p className="text-sm text-[#A9B4B4]">
+          <p className="text-sm text-fg-muted">
             Specify rectangular part requirements, generate kerf-aware cutting
             plans, and commit approved layouts to shop inventory.
           </p>
@@ -87,9 +87,9 @@ export default async function JobsListPage() {
         </CardHeader>
         <CardContent>
           {jobs.length === 0 ? (
-            <div className="rounded-lg border border-dashed border-[#2A363C] p-10 text-center text-sm text-[#A9B4B4]">
+            <div className="rounded-lg border border-dashed border-border-subtle p-10 text-center text-sm text-fg-muted">
               <ClipboardList
-                className="mx-auto mb-2 h-7 w-7 text-[#738287]"
+                className="mx-auto mb-2 h-7 w-7 text-fg-subtle"
                 aria-hidden="true"
               />
               <p>No cutting jobs yet.</p>
@@ -102,7 +102,7 @@ export default async function JobsListPage() {
               <table className="w-full border-collapse text-left text-xs">
                 <caption className="sr-only">Cutting jobs list</caption>
                 <thead>
-                  <tr className="border-b border-[#2A363C] text-[#A9B4B4]">
+                  <tr className="border-b border-border-subtle text-fg-muted">
                     <th scope="col" className="py-2.5 pr-4 font-medium">
                       Job Title
                     </th>
@@ -123,7 +123,7 @@ export default async function JobsListPage() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#2A363C]/60 tabular-nums">
+                <tbody className="divide-y divide-border-subtle/70 tabular-nums">
                   {jobs.map((job) => {
                     const demand = piecesByJob.get(job.id) ?? {
                       rows: 0,
@@ -135,21 +135,21 @@ export default async function JobsListPage() {
                         <td className="py-3 pr-4">
                           <Link
                             href={`/app/jobs/${job.id}`}
-                            className="font-medium text-[#F2F0E9] hover:text-[#5CE1C9]"
+                            className="font-medium text-fg hover:text-accent-text"
                           >
                             {job.title}
                           </Link>
                           {job.notes && (
-                            <p className="mt-0.5 truncate text-[11px] text-[#738287]">
+                            <p className="mt-0.5 truncate text-[11px] text-fg-subtle">
                               {job.notes}
                             </p>
                           )}
                         </td>
-                        <td className="py-3 pr-4 font-mono text-[#F2F0E9]">
+                        <td className="py-3 pr-4 font-mono text-fg">
                           {demand.pieces} pieces ({demand.rows}{' '}
                           {demand.rows === 1 ? 'row' : 'rows'})
                         </td>
-                        <td className="py-3 pr-4 font-mono text-[#A9B4B4]">
+                        <td className="py-3 pr-4 font-mono text-fg-muted">
                           {planCount}
                         </td>
                         <td className="py-3 pr-4">
@@ -165,7 +165,7 @@ export default async function JobsListPage() {
                             {job.status}
                           </Badge>
                         </td>
-                        <td className="py-3 pr-4 text-[#A9B4B4]">
+                        <td className="py-3 pr-4 text-fg-muted">
                           {new Date(job.updated_at).toLocaleDateString(
                             'en-US',
                             {
@@ -178,7 +178,7 @@ export default async function JobsListPage() {
                         <td className="py-3">
                           <Link
                             href={`/app/jobs/${job.id}`}
-                            className="font-medium text-[#5CE1C9] hover:underline"
+                            className="font-medium text-accent-text hover:underline"
                           >
                             Open Job
                           </Link>

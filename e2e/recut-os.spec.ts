@@ -19,6 +19,63 @@ async function navigateViaAppNav(page: Page, label: string) {
 }
 
 test.describe('ReCut OS — End-to-End Verification Suite', () => {
+  test('defaults to light theme on first visit and supports persistent dark/light theme switching across routes', async ({
+    page,
+  }) => {
+    test.setTimeout(60_000);
+    await page.goto('/');
+
+    // 1. Default theme must be 'light' when no localStorage preference exists
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+    const lightBg = await page.evaluate(
+      () => getComputedStyle(document.body).backgroundColor
+    );
+    expect(lightBg).toBe('rgb(246, 248, 247)');
+
+    const switchToDark = page.getByRole('button', {
+      name: 'Switch to dark theme',
+    });
+    await expect(switchToDark).toBeVisible();
+
+    // 2. Toggle to dark theme
+    await switchToDark.click();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+    await expect(
+      page.getByRole('button', { name: 'Switch to light theme' })
+    ).toBeVisible();
+
+    const darkBg = await page.evaluate(
+      () => getComputedStyle(document.body).backgroundColor
+    );
+    expect(darkBg).toBe('rgb(11, 16, 19)');
+
+    const storedDark = await page.evaluate(() =>
+      window.localStorage.getItem('recut-theme')
+    );
+    expect(storedDark).toBe('dark');
+
+    // 3. Navigate to /demo and reload — dark theme persists without reverting
+    await page.getByRole('link', { name: /Try the live demo/i }).click();
+    await expect(page).toHaveURL(/\/demo$/);
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+
+    await page.reload({ waitUntil: 'networkidle' });
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+
+    // 4. Toggle back to light theme on /demo
+    const demoSwitchToLight = page.getByRole('button', {
+      name: 'Switch to light theme',
+    });
+    await expect(demoSwitchToLight).toBeVisible();
+    await demoSwitchToLight.click();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+
+    const storedLight = await page.evaluate(() =>
+      window.localStorage.getItem('recut-theme')
+    );
+    expect(storedLight).toBe('light');
+  });
+
   test('public landing reaches interactive /demo in 1 click, renders verified SVG & cut sequence, and reports infeasible fixtures honestly', async ({
     page,
   }) => {
@@ -109,6 +166,13 @@ test.describe('ReCut OS — End-to-End Verification Suite', () => {
     await expect(
       page.getByRole('heading', { name: 'Workshop Recovery Console' })
     ).toBeVisible();
+
+    // Verify AppShell starts in default light theme and toggles cleanly on both desktop & mobile
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+    await page.getByRole('button', { name: 'Switch to dark theme' }).click();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+    await page.getByRole('button', { name: 'Switch to light theme' }).click();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
 
     // 2. Create Material in Catalog
     await navigateViaAppNav(page, 'Material Catalog');

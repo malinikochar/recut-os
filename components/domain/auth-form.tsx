@@ -51,12 +51,12 @@ export function AuthForm({
   };
 
   return (
-    <Card className="w-full max-w-md border-[#394950]">
+    <Card className="w-full max-w-md border-border-strong">
       <CardHeader className="space-y-3">
         <div
           role="tablist"
           aria-label="Authentication mode"
-          className="grid grid-cols-2 rounded-lg border border-[#2A363C] bg-[#0B1013] p-1"
+          className="grid grid-cols-2 rounded-lg border border-border-subtle bg-bg-shell p-1"
         >
           <button
             type="button"
@@ -69,8 +69,8 @@ export function AuthForm({
             }}
             className={`rounded-md py-2 text-xs font-semibold transition-colors cursor-pointer ${
               mode === 'signin'
-                ? 'bg-[#29B49B] text-[#0B1013]'
-                : 'text-[#A9B4B4] hover:text-[#F2F0E9]'
+                ? 'bg-accent text-accent-fg'
+                : 'text-fg-muted hover:text-fg'
             }`}
           >
             Sign in
@@ -86,8 +86,8 @@ export function AuthForm({
             }}
             className={`rounded-md py-2 text-xs font-semibold transition-colors cursor-pointer ${
               mode === 'signup'
-                ? 'bg-[#29B49B] text-[#0B1013]'
-                : 'text-[#A9B4B4] hover:text-[#F2F0E9]'
+                ? 'bg-accent text-accent-fg'
+                : 'text-fg-muted hover:text-fg'
             }`}
           >
             Create account
@@ -112,7 +112,7 @@ export function AuthForm({
         {error && (
           <div
             role="alert"
-            className="flex items-start gap-2.5 rounded-lg border border-[#E05A5A]/50 bg-[#E05A5A]/15 p-3 text-xs text-[#FF9999]"
+            className="flex items-start gap-2.5 rounded-lg border border-danger-border bg-danger-soft p-3 text-xs text-danger-text"
           >
             <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
             <span>{error}</span>
@@ -122,7 +122,7 @@ export function AuthForm({
         {notice && (
           <div
             role="status"
-            className="flex items-start gap-2.5 rounded-lg border border-[#29B49B]/40 bg-[#29B49B]/15 p-3 text-xs text-[#5CE1C9]"
+            className="flex items-start gap-2.5 rounded-lg border border-accent-border bg-accent-soft p-3 text-xs text-accent-text"
           >
             <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
             <span>{notice}</span>
@@ -175,10 +175,10 @@ export function AuthForm({
           </Button>
         </form>
 
-        <div className="border-t border-[#2A363C] pt-4 text-center">
+        <div className="border-t border-border-subtle pt-4 text-center">
           <Link
             href="/demo"
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-[#5CE1C9] hover:underline"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-accent-text hover:underline"
           >
             <FlaskConical className="h-3.5 w-3.5" aria-hidden="true" />
             Evaluating for Arbiter Hacks? Explore the 1-click public /demo without

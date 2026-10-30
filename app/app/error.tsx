@@ -20,9 +20,9 @@ export default function WorkspaceError({
 }) {
   return (
     <div className="mx-auto max-w-xl py-12">
-      <Card className="border-[#E05A5A]/45">
+      <Card className="border-danger-border">
         <CardHeader>
-          <div className="flex items-center gap-2 text-[#FF9999]">
+          <div className="flex items-center gap-2 text-danger-text">
             <AlertTriangle className="h-5 w-5" aria-hidden="true" />
             <CardTitle>Workspace Operation Interrupted</CardTitle>
           </div>
@@ -32,7 +32,7 @@ export default function WorkspaceError({
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="rounded-lg border border-[#2A363C] bg-[#0B1013] p-3 font-mono text-xs text-[#A9B4B4]">
+          <p className="rounded-lg border border-border-subtle bg-bg-subtle p-3 font-mono text-xs text-fg-muted">
             {error.message || 'Unexpected workspace runtime error.'}
           </p>
           <Button type="button" onClick={reset}>

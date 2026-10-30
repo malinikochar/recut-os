@@ -38,10 +38,10 @@ export default async function MaterialsPage() {
   return (
     <div className="space-y-6">
       <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight text-[#F2F0E9]">
+        <h1 className="text-2xl font-bold tracking-tight text-fg">
           Material Catalog
         </h1>
-        <p className="text-sm text-[#A9B4B4]">
+        <p className="text-sm text-fg-muted">
           Configure sheet dimensions, unit prices, saw kerf widths, grain
           constraints, and minimum reusable offcut dimensions.
         </p>

@@ -1,25 +1,30 @@
 import Link from 'next/link';
 import { ArrowLeft, FlaskConical, Scissors } from 'lucide-react';
+import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { Button } from '@/components/ui/button';
 
 export default function NotFoundPage() {
   return (
     <main
       id="main-content"
-      className="flex min-h-screen flex-col items-center justify-center bg-[#0B1013] px-4 text-center text-[#F2F0E9]"
+      className="relative flex min-h-screen flex-col items-center justify-center bg-bg-page px-4 text-center text-fg"
     >
-      <div className="max-w-md space-y-5 rounded-2xl border border-[#2A363C] bg-[#141B1F] p-8">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl border border-[#29B49B]/40 bg-[#29B49B]/15 text-[#29B49B]">
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
+        <ThemeToggle />
+      </div>
+
+      <div className="max-w-md space-y-5 rounded-2xl border border-border-subtle bg-bg-card p-8 shadow-sm">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl border border-accent-border bg-accent-soft text-accent-text">
           <Scissors className="h-6 w-6" aria-hidden="true" />
         </div>
         <div className="space-y-2">
-          <p className="font-mono text-xs uppercase tracking-wider text-[#29B49B]">
+          <p className="font-mono text-xs uppercase tracking-wider text-accent-text">
             HTTP 404
           </p>
           <h1 className="text-2xl font-bold tracking-tight">
             Requested Sheet or Route Not Found
           </h1>
-          <p className="text-sm text-[#A9B4B4]">
+          <p className="text-sm text-fg-muted">
             This workshop resource may not exist or belongs to a different
             authenticated account.
           </p>

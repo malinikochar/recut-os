@@ -212,7 +212,7 @@ export function MaterialsManager({ materials }: MaterialsManagerProps) {
             {error && (
               <div
                 role="alert"
-                className="rounded-lg border border-[#E05A5A]/50 bg-[#E05A5A]/15 p-3 text-xs text-[#FF9999]"
+                className="rounded-lg border border-danger-border bg-danger-soft p-3 text-xs text-danger-text"
               >
                 {error}
               </div>
@@ -220,7 +220,7 @@ export function MaterialsManager({ materials }: MaterialsManagerProps) {
             {statusMessage && (
               <div
                 role="status"
-                className="flex items-center gap-2 rounded-lg border border-[#29B49B]/40 bg-[#29B49B]/10 p-3 text-xs text-[#5CE1C9]"
+                className="flex items-center gap-2 rounded-lg border border-accent-border bg-accent-soft p-3 text-xs text-accent-text"
               >
                 <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />
                 <span>{statusMessage}</span>
@@ -335,7 +335,7 @@ export function MaterialsManager({ materials }: MaterialsManagerProps) {
                   }
                 />
                 {previewMinor !== null && (
-                  <p className="font-mono text-[11px] tabular-nums text-[#738287]">
+                  <p className="font-mono text-[11px] tabular-nums text-fg-subtle">
                     Stored exact: {previewMinor} minor units (
                     {formatMinorCurrency(previewMinor, form.currencyCode)})
                   </p>
@@ -407,8 +407,8 @@ export function MaterialsManager({ materials }: MaterialsManagerProps) {
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#2A363C] pt-4">
-              <p className="text-xs text-[#738287]">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-subtle pt-4">
+              <p className="text-xs text-fg-subtle">
                 Residual offcuts smaller than the minimum reusable rectangle on
                 both orientations are classified as unusable scrap.
               </p>
@@ -440,9 +440,9 @@ export function MaterialsManager({ materials }: MaterialsManagerProps) {
         </CardHeader>
         <CardContent>
           {materials.length === 0 ? (
-            <div className="rounded-lg border border-dashed border-[#2A363C] p-8 text-center text-sm text-[#A9B4B4]">
+            <div className="rounded-lg border border-dashed border-border-subtle p-8 text-center text-sm text-fg-muted">
               <Layers
-                className="mx-auto mb-2 h-6 w-6 text-[#738287]"
+                className="mx-auto mb-2 h-6 w-6 text-fg-subtle"
                 aria-hidden="true"
               />
               <p>No materials defined yet. Use the form above to add one.</p>
@@ -452,7 +452,7 @@ export function MaterialsManager({ materials }: MaterialsManagerProps) {
               <table className="w-full border-collapse text-left text-xs">
                 <caption className="sr-only">Material catalog specifications</caption>
                 <thead>
-                  <tr className="border-b border-[#2A363C] text-[#A9B4B4]">
+                  <tr className="border-b border-border-subtle text-fg-muted">
                     <th scope="col" className="py-2.5 pr-4 font-medium">
                       Material
                     </th>
@@ -473,22 +473,22 @@ export function MaterialsManager({ materials }: MaterialsManagerProps) {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#2A363C]/60 tabular-nums">
+                <tbody className="divide-y divide-border-subtle/70 tabular-nums">
                   {materials.map((mat) => (
                     <tr key={mat.id}>
                       <td className="py-3 pr-4">
-                        <p className="font-medium text-[#F2F0E9]">{mat.name}</p>
-                        <p className="text-[11px] text-[#738287]">
+                        <p className="font-medium text-fg">{mat.name}</p>
+                        <p className="text-[11px] text-fg-subtle">
                           {mat.category} · {mat.thicknessMm} mm thick
                         </p>
                       </td>
-                      <td className="py-3 pr-4 font-mono text-[#F2F0E9]">
+                      <td className="py-3 pr-4 font-mono text-fg">
                         {formatDimensionsMm(
                           mat.standardWidthMm,
                           mat.standardHeightMm
                         )}
                       </td>
-                      <td className="py-3 pr-4 font-mono text-[#5CE1C9]">
+                      <td className="py-3 pr-4 font-mono text-accent-text">
                         {formatMinorCurrency(
                           mat.pricePerSheetMinor,
                           mat.currencyCode
@@ -508,7 +508,7 @@ export function MaterialsManager({ materials }: MaterialsManagerProps) {
                           </Badge>
                         </div>
                       </td>
-                      <td className="py-3 pr-4 font-mono text-[#A9B4B4]">
+                      <td className="py-3 pr-4 font-mono text-fg-muted">
                         {formatDimensionsMm(
                           mat.minReusableWidthMm,
                           mat.minReusableHeightMm

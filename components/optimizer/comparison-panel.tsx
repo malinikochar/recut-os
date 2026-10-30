@@ -47,11 +47,11 @@ export function PlanComparisonWorkspace({
       <div
         role="note"
         aria-label="Impact accounting disclaimer"
-        className="flex items-start gap-3 rounded-xl border border-[#394950] bg-[#11171B] p-4 text-xs text-[#A9B4B4]"
+        className="flex items-start gap-3 rounded-xl border border-border-strong bg-bg-subtle p-4 text-xs text-fg-muted"
       >
-        <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#29B49B]" aria-hidden="true" />
+        <Info className="mt-0.5 h-4 w-4 shrink-0 text-accent-text" aria-hidden="true" />
         <div className="space-y-1">
-          <p className="font-medium text-[#F2F0E9]">
+          <p className="font-medium text-fg">
             Estimated from these inputs. No physical material has been verified as
             saved.
           </p>
@@ -66,7 +66,7 @@ export function PlanComparisonWorkspace({
       </div>
 
       {optimized.warnings.length > 0 && (
-        <div className="rounded-xl border border-[#E8AA65]/40 bg-[#E8AA65]/10 p-4 text-xs text-[#F0C28D]">
+        <div className="rounded-xl border border-amber-border bg-amber-soft p-4 text-xs text-amber-text">
           <div className="flex items-center gap-2 font-semibold">
             <AlertTriangle className="h-4 w-4" aria-hidden="true" />
             <span>Planner notices</span>
@@ -83,18 +83,18 @@ export function PlanComparisonWorkspace({
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Card>
           <CardContent className="space-y-1 p-5">
-            <span className="text-xs font-medium text-[#A9B4B4]">
+            <span className="text-xs font-medium text-fg-muted">
               New Sheets Purchased
             </span>
             <div className="flex items-baseline gap-2.5 tabular-nums">
-              <span className="text-2xl font-bold text-[#F2F0E9]">
+              <span className="text-2xl font-bold text-fg">
                 {optimized.metrics.newSheetCount}
               </span>
-              <span className="text-xs text-[#A9B4B4]">
+              <span className="text-xs text-fg-muted">
                 vs {baseline.metrics.newSheetCount} baseline
               </span>
             </div>
-            <p className="text-xs tabular-nums text-[#5CE1C9]">
+            <p className="text-xs tabular-nums text-accent-text">
               {sheetsDelta > 0
                 ? `${sheetsDelta} fewer new standard ${
                     sheetsDelta === 1 ? 'sheet' : 'sheets'
@@ -108,11 +108,11 @@ export function PlanComparisonWorkspace({
 
         <Card>
           <CardContent className="space-y-1 p-5">
-            <span className="text-xs font-medium text-[#A9B4B4]">
+            <span className="text-xs font-medium text-fg-muted">
               Modeled New Purchase Spend
             </span>
             <div className="flex items-baseline gap-2.5 tabular-nums">
-              <span className="text-2xl font-bold text-[#F2F0E9]">
+              <span className="text-2xl font-bold text-fg">
                 {formatMinorCurrency(
                   optimized.metrics.newSheetPurchaseCostMinor,
                   currencyCode
@@ -126,7 +126,7 @@ export function PlanComparisonWorkspace({
                 {costDelta === 0 ? '0% delta' : pctLabel}
               </Badge>
             </div>
-            <p className="text-xs tabular-nums text-[#A9B4B4]">
+            <p className="text-xs tabular-nums text-fg-muted">
               Baseline:{' '}
               {formatMinorCurrency(
                 baseline.metrics.newSheetPurchaseCostMinor,
@@ -140,19 +140,19 @@ export function PlanComparisonWorkspace({
 
         <Card>
           <CardContent className="space-y-1 p-5">
-            <span className="text-xs font-medium text-[#A9B4B4]">
+            <span className="text-xs font-medium text-fg-muted">
               Owned Stock Allocated
             </span>
             <div className="flex items-baseline gap-2.5 tabular-nums">
-              <span className="text-2xl font-bold text-[#F2F0E9]">
+              <span className="text-2xl font-bold text-fg">
                 {optimized.metrics.availableRemnantUnitsUsed +
                   optimized.metrics.availableFullSheetUnitsUsed}
               </span>
-              <span className="text-xs text-[#A9B4B4]">
+              <span className="text-xs text-fg-muted">
                 ({optimized.metrics.availableRemnantUnitsUsed} remnants)
               </span>
             </div>
-            <p className="text-xs tabular-nums text-[#A9B4B4]">
+            <p className="text-xs tabular-nums text-fg-muted">
               {formatAreaM2(
                 optimized.metrics.availableRemnantAreaUsedMm2 +
                   optimized.metrics.availableFullSheetAreaUsedMm2
@@ -164,18 +164,18 @@ export function PlanComparisonWorkspace({
 
         <Card>
           <CardContent className="space-y-1 p-5">
-            <span className="text-xs font-medium text-[#A9B4B4]">
+            <span className="text-xs font-medium text-fg-muted">
               Recoverable Leftovers vs True Loss
             </span>
             <div className="flex items-baseline gap-2 tabular-nums">
-              <span className="text-2xl font-bold text-[#F2F0E9]">
+              <span className="text-2xl font-bold text-fg">
                 {formatAreaM2(optimized.metrics.recoverableRemnantAreaMm2)}
               </span>
-              <span className="text-xs text-[#A9B4B4]">
+              <span className="text-xs text-fg-muted">
                 ({optimized.metrics.recoverableRemnantCount} pending)
               </span>
             </div>
-            <p className="text-xs tabular-nums text-[#E8AA65]">
+            <p className="text-xs tabular-nums text-amber-text">
               Scrap {formatAreaM2(optimized.metrics.unusableScrapAreaMm2)} + Kerf{' '}
               {formatAreaM2(optimized.metrics.kerfLossAreaMm2)}
             </p>
@@ -185,9 +185,9 @@ export function PlanComparisonWorkspace({
 
       {/* Interactive plan switcher: ReCut OS vs Baseline SVG */}
       <div className="space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#2A363C] bg-[#11171B] p-3">
-          <div className="flex items-center gap-2 text-sm font-medium text-[#F2F0E9]">
-            <Scale className="h-4 w-4 text-[#29B49B]" aria-hidden="true" />
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border-subtle bg-bg-shell p-3">
+          <div className="flex items-center gap-2 text-sm font-medium text-fg">
+            <Scale className="h-4 w-4 text-accent-text" aria-hidden="true" />
             <span>Inspect Cutting Layouts:</span>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -241,7 +241,7 @@ export function PlanComparisonWorkspace({
                 Side-by-side metric comparison between new-sheet baseline and ReCut OS
               </caption>
               <thead>
-                <tr className="border-b border-[#2A363C] text-[#A9B4B4]">
+                <tr className="border-b border-border-subtle text-fg-muted">
                   <th scope="col" className="py-2.5 pr-4 font-medium">
                     Accounting Metric
                   </th>
@@ -256,15 +256,15 @@ export function PlanComparisonWorkspace({
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#2A363C]/60 tabular-nums">
+              <tbody className="divide-y divide-border-subtle/70 tabular-nums">
                 <tr>
-                  <td className="py-2.5 pr-4 font-medium text-[#F2F0E9]">
+                  <td className="py-2.5 pr-4 font-medium text-fg">
                     New standard sheets purchased
                   </td>
                   <td className="py-2.5 pr-4 font-mono">
                     {baseline.metrics.newSheetCount}
                   </td>
-                  <td className="py-2.5 pr-4 font-mono text-[#5CE1C9]">
+                  <td className="py-2.5 pr-4 font-mono text-accent-text">
                     {optimized.metrics.newSheetCount}
                   </td>
                   <td className="py-2.5 font-mono">
@@ -276,7 +276,7 @@ export function PlanComparisonWorkspace({
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-2.5 pr-4 font-medium text-[#F2F0E9]">
+                  <td className="py-2.5 pr-4 font-medium text-fg">
                     New sheet purchase spend
                   </td>
                   <td className="py-2.5 pr-4 font-mono">
@@ -285,7 +285,7 @@ export function PlanComparisonWorkspace({
                       currencyCode
                     )}
                   </td>
-                  <td className="py-2.5 pr-4 font-mono text-[#5CE1C9]">
+                  <td className="py-2.5 pr-4 font-mono text-accent-text">
                     {formatMinorCurrency(
                       optimized.metrics.newSheetPurchaseCostMinor,
                       currencyCode
@@ -300,7 +300,7 @@ export function PlanComparisonWorkspace({
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-2.5 pr-4 font-medium text-[#F2F0E9]">
+                  <td className="py-2.5 pr-4 font-medium text-fg">
                     Owned remnants consumed
                   </td>
                   <td className="py-2.5 pr-4 font-mono">0 (0.000 m²)</td>
@@ -308,12 +308,12 @@ export function PlanComparisonWorkspace({
                     {optimized.metrics.availableRemnantUnitsUsed} (
                     {formatAreaM2(optimized.metrics.availableRemnantAreaUsedMm2)})
                   </td>
-                  <td className="py-2.5 font-mono text-[#A9B4B4]">
+                  <td className="py-2.5 font-mono text-fg-muted">
                     {optimized.metrics.availableRemnantUnitsUsed} offcuts reused
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-2.5 pr-4 font-medium text-[#F2F0E9]">
+                  <td className="py-2.5 pr-4 font-medium text-fg">
                     Total opened stock area
                   </td>
                   <td className="py-2.5 pr-4 font-mono">
@@ -322,13 +322,13 @@ export function PlanComparisonWorkspace({
                   <td className="py-2.5 pr-4 font-mono">
                     {formatAreaM2(optimized.metrics.openedStockAreaMm2)}
                   </td>
-                  <td className="py-2.5 font-mono text-[#A9B4B4]">
+                  <td className="py-2.5 font-mono text-fg-muted">
                     Util: {baseline.metrics.usedMaterialUtilizationPct}% vs{' '}
                     {optimized.metrics.usedMaterialUtilizationPct}%
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-2.5 pr-4 font-medium text-[#F2F0E9]">
+                  <td className="py-2.5 pr-4 font-medium text-fg">
                     Recoverable residual area (pending confirmation)
                   </td>
                   <td className="py-2.5 pr-4 font-mono">
@@ -339,12 +339,12 @@ export function PlanComparisonWorkspace({
                     {formatAreaM2(optimized.metrics.recoverableRemnantAreaMm2)} (
                     {optimized.metrics.recoverableRemnantCount})
                   </td>
-                  <td className="py-2.5 font-mono text-[#A9B4B4]">
+                  <td className="py-2.5 font-mono text-fg-muted">
                     Requires shop verification
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-2.5 pr-4 font-medium text-[#F2F0E9]">
+                  <td className="py-2.5 pr-4 font-medium text-fg">
                     Unusable below-threshold scrap
                   </td>
                   <td className="py-2.5 pr-4 font-mono">
@@ -353,12 +353,12 @@ export function PlanComparisonWorkspace({
                   <td className="py-2.5 pr-4 font-mono">
                     {formatAreaM2(optimized.metrics.unusableScrapAreaMm2)}
                   </td>
-                  <td className="py-2.5 font-mono text-[#A9B4B4]">
+                  <td className="py-2.5 font-mono text-fg-muted">
                     Non-recoverable offcut area
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-2.5 pr-4 font-medium text-[#F2F0E9]">
+                  <td className="py-2.5 pr-4 font-medium text-fg">
                     Saw kerf loss & cut operations
                   </td>
                   <td className="py-2.5 pr-4 font-mono">
@@ -369,7 +369,7 @@ export function PlanComparisonWorkspace({
                     {formatAreaM2(optimized.metrics.kerfLossAreaMm2)} (
                     {optimized.metrics.totalCutCount} cuts)
                   </td>
-                  <td className="py-2.5 font-mono text-[#A9B4B4]">
+                  <td className="py-2.5 font-mono text-fg-muted">
                     Exact strip geometry
                   </td>
                 </tr>
@@ -378,8 +378,8 @@ export function PlanComparisonWorkspace({
           </div>
 
           {comparison && (
-            <div className="rounded-lg border border-[#2A363C] bg-[#11171B] p-4 text-xs text-[#A9B4B4]">
-              <p className="font-semibold text-[#F2F0E9]">
+            <div className="rounded-lg border border-border-subtle bg-bg-subtle p-4 text-xs text-fg-muted">
+              <p className="font-semibold text-fg">
                 Model Assumptions & Limitations
               </p>
               <ul className="mt-2 list-disc space-y-1 pl-5">

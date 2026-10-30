@@ -282,7 +282,7 @@ export function JobEditorForm({
           {error && (
             <div
               role="alert"
-              className="rounded-lg border border-[#E05A5A]/50 bg-[#E05A5A]/15 p-3 text-xs text-[#FF9999]"
+              className="rounded-lg border border-danger-border bg-danger-soft p-3 text-xs text-danger-text"
             >
               {error}
             </div>
@@ -290,7 +290,7 @@ export function JobEditorForm({
           {statusMessage && (
             <div
               role="status"
-              className="flex items-center gap-2 rounded-lg border border-[#29B49B]/40 bg-[#29B49B]/10 p-3 text-xs text-[#5CE1C9]"
+              className="flex items-center gap-2 rounded-lg border border-accent-border bg-accent-soft p-3 text-xs text-accent-text"
             >
               <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />
               <span>{statusMessage}</span>
@@ -323,7 +323,7 @@ export function JobEditorForm({
 
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-[#F2F0E9]">
+              <h3 className="text-sm font-semibold text-fg">
                 Required Rectangular Parts ({rows.length}{' '}
                 {rows.length === 1 ? 'row' : 'rows'})
               </h3>
@@ -346,7 +346,7 @@ export function JobEditorForm({
                 return (
                   <div
                     key={row.rowKey}
-                    className="rounded-xl border border-[#2A363C] bg-[#11171B] p-4"
+                    className="rounded-xl border border-border-subtle bg-bg-subtle p-4"
                   >
                     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-12">
                       <div className="space-y-1 lg:col-span-3">
@@ -443,11 +443,11 @@ export function JobEditorForm({
                       </div>
                     </div>
 
-                    <div className="mt-3 flex flex-wrap items-center justify-between gap-3 border-t border-[#2A363C]/70 pt-3">
+                    <div className="mt-3 flex flex-wrap items-center justify-between gap-3 border-t border-border-subtle/80 pt-3">
                       <div className="flex flex-wrap items-center gap-4">
                         <label
                           htmlFor={`part-rot-${row.rowKey}`}
-                          className="inline-flex cursor-pointer items-center gap-2 text-xs text-[#F2F0E9]"
+                          className="inline-flex cursor-pointer items-center gap-2 text-xs text-fg"
                         >
                           <input
                             id={`part-rot-${row.rowKey}`}
@@ -459,7 +459,7 @@ export function JobEditorForm({
                                 allowRotation: e.target.checked,
                               })
                             }
-                            className="h-4 w-4 rounded border-[#394950] bg-[#0B1013] accent-[#29B49B]"
+                            className="h-4 w-4 rounded border-border-strong bg-bg-page accent-accent"
                           />
                           <span>Allow 90° rotation</span>
                         </label>
@@ -467,7 +467,7 @@ export function JobEditorForm({
                         <div className="flex items-center gap-2">
                           <Label
                             htmlFor={`part-grain-${row.rowKey}`}
-                            className="text-xs text-[#A9B4B4]"
+                            className="text-xs text-fg-muted"
                           >
                             Required Grain:
                           </Label>
@@ -489,7 +489,7 @@ export function JobEditorForm({
                         </div>
 
                         {selectedMat && (
-                          <span className="font-mono text-[11px] text-[#738287]">
+                          <span className="font-mono text-[11px] text-fg-subtle">
                             Envelope: {selectedMat.standardWidthMm}×
                             {selectedMat.standardHeightMm} mm · Kerf{' '}
                             {selectedMat.kerfMm} mm
@@ -531,8 +531,8 @@ export function JobEditorForm({
           </div>
 
           {!readOnly && (
-            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#2A363C] pt-4">
-              <p className="text-xs text-[#A9B4B4]">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-subtle pt-4">
+              <p className="text-xs text-fg-muted">
                 {mode === 'create'
                   ? 'After saving, open the job to run the guillotine optimizer against your live remnant stock.'
                   : 'Save part changes before generating a new cutting plan.'}

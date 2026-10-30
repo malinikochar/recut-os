@@ -4,21 +4,21 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-colors duration-150 disabled:pointer-events-none disabled:opacity-50 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#29B49B]',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-colors duration-150 disabled:pointer-events-none disabled:opacity-50 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
   {
     variants: {
       variant: {
         default:
-          'bg-[#29B49B] text-[#0B1013] font-semibold hover:bg-[#229A84] shadow-sm',
+          'bg-accent text-accent-fg font-semibold hover:bg-accent-hover shadow-sm',
         secondary:
-          'bg-[#232E33] text-[#F2F0E9] border border-[#394950] hover:bg-[#2B3940]',
+          'bg-bg-elevated text-fg border border-border-strong hover:bg-bg-elevated-hover',
         outline:
-          'border border-[#394950] bg-transparent text-[#F2F0E9] hover:bg-[#1C2529]',
-        ghost: 'text-[#A9B4B4] hover:bg-[#1C2529] hover:text-[#F2F0E9]',
+          'border border-border-strong bg-transparent text-fg hover:bg-bg-shell',
+        ghost: 'text-fg-muted hover:bg-bg-shell hover:text-fg',
         amber:
-          'bg-[#E8AA65]/15 text-[#E8AA65] border border-[#E8AA65]/40 hover:bg-[#E8AA65]/25',
+          'bg-amber-soft text-amber-text border border-amber-border hover:bg-amber-soft-hover',
         destructive:
-          'bg-[#E05A5A]/15 text-[#F48FB1] border border-[#E05A5A]/45 text-[#FF8A8A] hover:bg-[#E05A5A]/25',
+          'bg-danger-soft text-danger-text border border-danger-border hover:bg-danger-soft-hover',
       },
       size: {
         default: 'h-10 px-4 py-2',
